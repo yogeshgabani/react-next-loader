@@ -4,7 +4,7 @@
 
 **v1.0.0 — Stable release.** Production-ready, fully typed, SSR-safe, tree-shakable, and accessible.
 
-🌐 **[Live Demo →](https://react-next-loader.vercel.app)** &nbsp;•&nbsp; 📦 **[NPM](https://www.npmjs.com/package/react-next-loader)** &nbsp;•&nbsp; 💻 **[GitHub](https://github.com/yogeshgabani/react-next-loader)**
+🌐 **[Live Demo →](https://react-next-loader.netlify.app/)** &nbsp;•&nbsp; 📦 **[NPM](https://www.npmjs.com/package/react-next-loader)** &nbsp;•&nbsp; 💻 **[GitHub](https://github.com/yogeshgabani/react-next-loader)**
 
 ---
 
@@ -40,7 +40,7 @@
 
 Try every loader, skeleton, progress bar, and text effect interactively in the browser — no install required.
 
-👉 **Open playground:** [https://react-next-loader.vercel.app](https://react-next-loader.vercel.app)
+👉 **Open playground:** [https://react-next-loader.netlify.app/](https://react-next-loader.netlify.app/)
 
 The playground lets you:
 
