@@ -217,6 +217,8 @@
     "build": "cross-env NODE_OPTIONS=--max-old-space-size=8192 tsup",
     "build:watch": "cross-env NODE_OPTIONS=--max-old-space-size=8192 tsup --watch",
     "dev": "vite --config playground/vite.config.ts",
+    "build:playground": "vite build --config playground/vite.config.ts",
+    "preview:playground": "vite preview --config playground/vite.config.ts",
     "typecheck": "cross-env NODE_OPTIONS=--max-old-space-size=8192 tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",

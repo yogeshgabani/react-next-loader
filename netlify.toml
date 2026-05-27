@@ -1,0 +1,33 @@
+# Netlify deployment config for the react-next-loader playground
+# https://docs.netlify.com/configure-builds/file-based-configuration/
+
+[build]
+  # Run from repo root
+  base = ""
+  # Build the Vite playground (NOT the library)
+  command = "npm run build:playground"
+  # Vite writes to <root>/dist by default → playground/dist here
+  publish = "playground/dist"
+
+[build.environment]
+  # Match local Node version requirement from package.json (engines.node >= 18)
+  NODE_VERSION = "20"
+  NPM_FLAGS = "--legacy-peer-deps"
+
+# SPA-style fallback so direct URLs and refreshes work
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Long-cache hashed assets (Vite outputs hashed filenames into /assets/*)
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Don't cache the HTML shell — always fetch fresh
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
