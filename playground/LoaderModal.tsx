@@ -4,7 +4,7 @@ import {
   type LabelPosition,
   type LoaderSize,
   type LoaderType,
-} from 'react-loadify';
+} from 'react-next-loader';
 
 interface LoaderModalProps {
   type: LoaderType | null;
@@ -243,7 +243,7 @@ export function LoaderModal({
     const propLines = props.length === 1 ? ` ${props[0]} ` : `\n  ${props.join('\n  ')}\n`;
     return {
       name: n,
-      snippet: `import { ${n} } from 'react-loadify';\n\n<${n}${propLines}/>`,
+      snippet: `import { ${n} } from 'react-next-loader';\n\n<${n}${propLines}/>`,
     };
   }, [
     type,

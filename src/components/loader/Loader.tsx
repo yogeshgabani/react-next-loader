@@ -13,7 +13,7 @@ export function Loader({ type = 'spinner', ...rest }: LoaderProps) {
   if (!Component) {
     if (process.env.NODE_ENV !== 'production') {
       console.warn(
-        `[react-loadify] Unknown loader type "${type}". Falling back to "spinner".`,
+        `[react-next-loader] Unknown loader type "${type}". Falling back to "spinner".`,
       );
     }
     const Fallback = LOADER_REGISTRY.spinner;

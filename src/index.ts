@@ -1,7 +1,7 @@
 // Unified entry point — re-exports everything.
 // For best tree-shaking, prefer subpath imports:
-//   import { Spinner } from 'react-loadify/loaders';
-//   import { Skeleton } from 'react-loadify/skeletons';
+//   import { Spinner } from 'react-next-loader/loaders';
+//   import { Skeleton } from 'react-next-loader/skeletons';
 
 export { Loader } from './components/loader/Loader';
 export type { LoaderProps } from './components/loader/Loader';

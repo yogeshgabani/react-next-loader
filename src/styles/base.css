@@ -1,6 +1,6 @@
-/* react-loadify base stylesheet
+/* react-next-loader base stylesheet
  * Import once in your app:
- *   import 'react-loadify/styles.css';
+ *   import 'react-next-loader/styles.css';
  *
  * The library auto-injects its keyframes when needed, so this file is OPTIONAL.
  * Use it when you prefer external CSS over JS injection, or to override theme defaults.

@@ -12,7 +12,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "paths": {
-      "react-loadify": ["../src/index.ts"]
+      "react-next-loader": ["../src/index.ts"]
     }
   },
   "include": ["./**/*.ts", "./**/*.tsx", "../src/**/*"]

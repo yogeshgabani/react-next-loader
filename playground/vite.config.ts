@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      'react-loadify': resolve(__dirname, '../src/index.ts'),
+      'react-next-loader': resolve(__dirname, '../src/index.ts'),
     },
   },
   server: {
