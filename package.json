@@ -165,7 +165,7 @@
   "author": "Yogesh Gabani",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yogeshgabani/react-next-loader"
+    "url": "git+https://github.com/yogeshgabani/react-next-loader.git"
   },
   "bugs": {
     "url": "https://github.com/yogeshgabani/react-next-loader/issues"
@@ -239,11 +239,13 @@
     }
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.2",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
     "cross-env": "^7.0.3",
     "framer-motion": "^11.2.0",
+    "publint": "^0.3.21",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "tsup": "^8.1.0",
