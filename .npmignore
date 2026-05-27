@@ -1,0 +1,15 @@
+src
+examples
+.changeset
+.storybook
+.vscode
+.idea
+*.test.ts
+*.test.tsx
+tsconfig.json
+tsup.config.ts
+vitest.config.ts
+.eslintrc*
+.prettierrc*
+coverage
+node_modules

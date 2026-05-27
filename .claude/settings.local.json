@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir \"c:\\\\yogesh\\\\New folder \\(3\\)\\\\react-loader\")"
+    ]
+  }
+}
