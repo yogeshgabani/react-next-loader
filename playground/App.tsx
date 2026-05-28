@@ -581,8 +581,9 @@ const PKG_TABS = [
 ];
 
 /* ------------------------------------------------------------------ */
-/* Social links — URLs are read from .env (VITE_SOCIAL_*) with sample */
-/* fallbacks so the playground works out-of-the-box.                  */
+/* Social links — URLs are read from .env (VITE_SOCIAL_*).             */
+/* If a URL is missing, clicking the icon opens a "data not available" */
+/* modal instead of navigating to a broken/empty link.                 */
 /* ------------------------------------------------------------------ */
 
 interface SocialLink {
@@ -598,7 +599,7 @@ const SOCIAL_LINKS: SocialLink[] = [
   {
     key: "whatsapp",
     label: "WhatsApp",
-    href: import.meta.env.VITE_SOCIAL_WHATSAPP || "https://wa.me/919999999999",
+    href: import.meta.env.VITE_SOCIAL_WHATSAPP || "",
     brand: "#25D366",
     icon: (
       <svg
@@ -615,9 +616,7 @@ const SOCIAL_LINKS: SocialLink[] = [
   {
     key: "instagram",
     label: "Instagram",
-    href:
-      import.meta.env.VITE_SOCIAL_INSTAGRAM ||
-      "https://instagram.com/yogeshgabani",
+    href: import.meta.env.VITE_SOCIAL_INSTAGRAM || "",
     brand: "#E4405F",
     icon: (
       <svg
@@ -634,9 +633,7 @@ const SOCIAL_LINKS: SocialLink[] = [
   {
     key: "facebook",
     label: "Facebook",
-    href:
-      import.meta.env.VITE_SOCIAL_FACEBOOK ||
-      "https://facebook.com/yogeshgabani",
+    href: import.meta.env.VITE_SOCIAL_FACEBOOK || "",
     brand: "#1877F2",
     icon: (
       <svg
@@ -653,9 +650,7 @@ const SOCIAL_LINKS: SocialLink[] = [
   {
     key: "youtube",
     label: "YouTube",
-    href:
-      import.meta.env.VITE_SOCIAL_YOUTUBE ||
-      "https://youtube.com/@yogeshgabani",
+    href: import.meta.env.VITE_SOCIAL_YOUTUBE || "",
     brand: "#FF0000",
     icon: (
       <svg
@@ -672,8 +667,7 @@ const SOCIAL_LINKS: SocialLink[] = [
   {
     key: "twitter",
     label: "X (Twitter)",
-    href:
-      import.meta.env.VITE_SOCIAL_TWITTER || "https://twitter.com/yogeshgabani",
+    href: import.meta.env.VITE_SOCIAL_TWITTER || "",
     brand: "#0F1419",
     brandDark: "#E7E9EA",
     icon: (
@@ -691,9 +685,7 @@ const SOCIAL_LINKS: SocialLink[] = [
   {
     key: "linkedin",
     label: "LinkedIn",
-    href:
-      import.meta.env.VITE_SOCIAL_LINKEDIN ||
-      "https://linkedin.com/in/yogeshgabani",
+    href: import.meta.env.VITE_SOCIAL_LINKEDIN || "",
     brand: "#0A66C2",
     icon: (
       <svg
@@ -710,8 +702,7 @@ const SOCIAL_LINKS: SocialLink[] = [
   {
     key: "github",
     label: "GitHub",
-    href:
-      import.meta.env.VITE_SOCIAL_GITHUB || "https://github.com/yogeshgabani",
+    href: import.meta.env.VITE_SOCIAL_GITHUB || "",
     brand: "#24292F",
     brandDark: "#F0F6FC",
     icon: (
@@ -731,59 +722,255 @@ const SOCIAL_LINKS: SocialLink[] = [
 function SocialIcons({ size = 36 }: { size?: number }) {
   const { resolvedMode } = useTheme();
   const isDark = resolvedMode === "dark";
+  const [missing, setMissing] = useState<SocialLink | null>(null);
+
+  // ESC closes the unavailable-link modal
+  useEffect(() => {
+    if (!missing) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMissing(null);
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [missing]);
+
+  return (
+    <>
+      <div
+        style={{
+          display: "flex",
+          gap: 8,
+          alignItems: "center",
+          flexWrap: "wrap",
+        }}
+      >
+        {SOCIAL_LINKS.map((s) => {
+          const hoverColor = isDark && s.brandDark ? s.brandDark : s.brand;
+          const available = Boolean(s.href);
+          return (
+            <a
+              key={s.key}
+              href={available ? s.href : "#"}
+              target={available ? "_blank" : undefined}
+              rel="noreferrer noopener"
+              aria-label={available ? s.label : `${s.label} — not available`}
+              title={available ? s.label : `${s.label} — not configured yet`}
+              onClick={(e) => {
+                if (!available) {
+                  e.preventDefault();
+                  setMissing(s);
+                }
+              }}
+              style={{
+                width: size,
+                height: size,
+                borderRadius: 999,
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "inherit",
+                background: "color-mix(in srgb, currentColor 4%, transparent)",
+                border:
+                  "1px solid color-mix(in srgb, currentColor 12%, transparent)",
+                textDecoration: "none",
+                transition: "all 180ms ease",
+                opacity: available ? 1 : 0.65,
+                cursor: "pointer",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = `color-mix(in srgb, ${hoverColor} 14%, transparent)`;
+                e.currentTarget.style.borderColor = `color-mix(in srgb, ${hoverColor} 55%, transparent)`;
+                e.currentTarget.style.color = hoverColor;
+                e.currentTarget.style.transform = "translateY(-2px)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background =
+                  "color-mix(in srgb, currentColor 4%, transparent)";
+                e.currentTarget.style.borderColor =
+                  "color-mix(in srgb, currentColor 12%, transparent)";
+                e.currentTarget.style.color = "inherit";
+                e.currentTarget.style.transform = "";
+              }}
+            >
+              {s.icon}
+            </a>
+          );
+        })}
+      </div>
+      {missing && (
+        <SocialUnavailableModal
+          social={missing}
+          onClose={() => setMissing(null)}
+        />
+      )}
+    </>
+  );
+}
+
+function SocialUnavailableModal({
+  social,
+  onClose,
+}: {
+  social: SocialLink;
+  onClose: () => void;
+}) {
+  // Prevent body scroll while modal is open
+  useEffect(() => {
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, []);
 
   return (
     <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="rnl-social-modal-title"
+      aria-describedby="rnl-social-modal-desc"
+      onClick={onClose}
       style={{
+        position: "fixed",
+        inset: 0,
+        zIndex: 200,
         display: "flex",
-        gap: 8,
         alignItems: "center",
-        flexWrap: "wrap",
+        justifyContent: "center",
+        background: "rgba(0, 0, 0, 0.58)",
+        backdropFilter: "blur(6px)",
+        WebkitBackdropFilter: "blur(6px)",
+        padding: 16,
       }}
     >
-      {SOCIAL_LINKS.map((s) => {
-        const hoverColor = isDark && s.brandDark ? s.brandDark : s.brand;
-        return (
-          <a
-            key={s.key}
-            href={s.href}
-            target="_blank"
-            rel="noreferrer noopener"
-            aria-label={s.label}
-            title={s.label}
-            style={{
-              width: size,
-              height: size,
-              borderRadius: 999,
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "inherit",
-              background: "color-mix(in srgb, currentColor 4%, transparent)",
-              border:
-                "1px solid color-mix(in srgb, currentColor 12%, transparent)",
-              textDecoration: "none",
-              transition: "all 180ms ease",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = `color-mix(in srgb, ${hoverColor} 14%, transparent)`;
-              e.currentTarget.style.borderColor = `color-mix(in srgb, ${hoverColor} 55%, transparent)`;
-              e.currentTarget.style.color = hoverColor;
-              e.currentTarget.style.transform = "translateY(-2px)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background =
-                "color-mix(in srgb, currentColor 4%, transparent)";
-              e.currentTarget.style.borderColor =
-                "color-mix(in srgb, currentColor 12%, transparent)";
-              e.currentTarget.style.color = "inherit";
-              e.currentTarget.style.transform = "";
-            }}
-          >
-            {s.icon}
-          </a>
-        );
-      })}
+      <div
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          position: "relative",
+          maxWidth: 380,
+          width: "100%",
+          background: "var(--rl-theme-bg)",
+          color: "inherit",
+          borderRadius: 16,
+          padding: "32px 24px 24px",
+          border:
+            "1px solid color-mix(in srgb, currentColor 12%, transparent)",
+          boxShadow: "0 24px 60px rgba(0, 0, 0, 0.4)",
+          textAlign: "center",
+          overflow: "hidden",
+        }}
+      >
+        {/* Top gradient border */}
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            height: 3,
+            background:
+              "linear-gradient(90deg, #6366f1 0%, #a855f7 50%, #ec4899 100%)",
+          }}
+        />
+
+        {/* Close X (top-right) */}
+        <button
+          aria-label="Close"
+          onClick={onClose}
+          style={{
+            position: "absolute",
+            top: 10,
+            right: 10,
+            width: 30,
+            height: 30,
+            borderRadius: 8,
+            border: "none",
+            background: "transparent",
+            color: "inherit",
+            cursor: "pointer",
+            fontSize: 20,
+            lineHeight: 1,
+            opacity: 0.55,
+            transition: "opacity 160ms, background 160ms",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.opacity = "1";
+            e.currentTarget.style.background =
+              "color-mix(in srgb, currentColor 8%, transparent)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.opacity = "0.55";
+            e.currentTarget.style.background = "transparent";
+          }}
+        >
+          ×
+        </button>
+
+        {/* Big social icon */}
+        <div
+          style={{
+            width: 64,
+            height: 64,
+            margin: "0 auto 16px",
+            borderRadius: "50%",
+            background: `color-mix(in srgb, ${social.brand} 16%, transparent)`,
+            color: social.brand,
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <div style={{ transform: "scale(1.7)" }}>{social.icon}</div>
+        </div>
+
+        <h3
+          id="rnl-social-modal-title"
+          style={{
+            margin: "0 0 8px",
+            fontSize: 18,
+            fontWeight: 700,
+            letterSpacing: "-0.01em",
+          }}
+        >
+          Data Not Available
+        </h3>
+        <p
+          id="rnl-social-modal-desc"
+          style={{
+            margin: "0 0 20px",
+            fontSize: 13,
+            color: "var(--rl-text-muted, #52525b)",
+            lineHeight: 1.55,
+          }}
+        >
+          The <strong style={{ color: "inherit" }}>{social.label}</strong> link
+          hasn&apos;t been configured yet. Please check back later.
+        </p>
+
+        <button
+          onClick={onClose}
+          style={{
+            padding: "8px 22px",
+            borderRadius: 999,
+            border: "none",
+            background: BRAND_GRADIENT,
+            color: "#fff",
+            fontSize: 13,
+            fontWeight: 600,
+            cursor: "pointer",
+            boxShadow: BRAND_SHADOW,
+            transition: "transform 160ms",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = "translateY(-1px)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = "";
+          }}
+        >
+          Got it
+        </button>
+      </div>
     </div>
   );
 }
@@ -1982,6 +2169,325 @@ function ScrollToTop() {
 }
 
 /* ------------------------------------------------------------------ */
+/* Site stats strip — Last Updated / Total Hits / Total Visitors      */
+/* ------------------------------------------------------------------ */
+
+// When you ship a new build, bump this constant (it's just a visible label).
+const SITE_LAST_UPDATED = "May 27, 2026";
+
+// Abacus is a free, public hit-counter API (no auth required).
+// Counters are isolated per namespace → key, so this site has its own bucket.
+const STATS_NAMESPACE = "rnl-yogeshgabani";
+const STATS_HITS_KEY = "hits";
+const STATS_VISITORS_KEY = "visitors";
+const STATS_VISITOR_FLAG = "rnl_visitor_id"; // localStorage key
+
+function formatStat(n: number): string {
+  if (!Number.isFinite(n) || n < 0) return "—";
+  if (n >= 1_000_000) return (n / 1_000_000).toFixed(1) + "M";
+  if (n >= 10_000) return (n / 1000).toFixed(1) + "K";
+  return n.toLocaleString("en-US");
+}
+
+// Animate a number from 0 → target over ~1.5s with ease-out cubic.
+function useCountUp(target: number, durationMs = 1500): number {
+  const [value, setValue] = useState(0);
+  useEffect(() => {
+    if (!target || target <= 0) {
+      setValue(0);
+      return;
+    }
+    let raf = 0;
+    const start = performance.now();
+    const tick = (now: number) => {
+      const t = Math.min(1, (now - start) / durationMs);
+      const eased = 1 - Math.pow(1 - t, 3);
+      setValue(Math.round(target * eased));
+      if (t < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [target, durationMs]);
+  return value;
+}
+
+const STATS_CSS = `
+.pg-stats-strip {
+  position: relative;
+  margin: 28px 0 12px;
+  padding-top: 30px;
+}
+/* Top gradient divider line — fades on both edges, brand colours in centre */
+.pg-stats-strip::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in srgb, #6366f1 80%, transparent) 18%,
+    #a855f7 50%,
+    color-mix(in srgb, #ec4899 80%, transparent) 82%,
+    transparent 100%
+  );
+}
+.pg-stats-strip-inner {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.pg-stat {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 18px;
+  border-radius: 14px;
+  border: 1px solid color-mix(in srgb, currentColor 10%, transparent);
+  background: var(--rl-theme-bg);
+  min-width: 0;
+  overflow: hidden;
+  transition: transform 200ms, border-color 200ms, box-shadow 200ms;
+}
+/* Top gradient border (brand stripe accent) */
+.pg-stat::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+  opacity: 0.55;
+  transition: opacity 200ms, height 200ms;
+}
+.pg-stat:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--rl-theme-primary) 30%, transparent);
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--rl-theme-primary) 14%, transparent);
+}
+.pg-stat:hover::before {
+  opacity: 1;
+  height: 3px;
+}
+.pg-stat-highlight {
+  border-color: color-mix(in srgb, var(--rl-theme-primary) 35%, transparent);
+  background:
+    linear-gradient(135deg,
+      color-mix(in srgb, #a855f7 9%, transparent),
+      color-mix(in srgb, #38bdf8 9%, transparent)),
+    var(--rl-theme-bg);
+}
+/* Highlight card gets a thicker, fully-opaque top stripe */
+.pg-stat-highlight::before {
+  height: 3px;
+  opacity: 1;
+}
+.pg-stat-highlight:hover::before {
+  height: 4px;
+}
+.pg-stat-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--rl-theme-primary) 14%, transparent);
+  color: var(--rl-theme-primary);
+  flex-shrink: 0;
+}
+.pg-stat-icon svg { width: 18px; height: 18px; }
+.pg-stat-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.pg-stat-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--rl-text-muted, #52525b);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+.pg-stat-value {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+.pg-stat-num {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" on, "lnum" on;
+}
+.pg-stat-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: rgba(239, 68, 68, 0.16);
+  color: #ef4444;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+.pg-stat-live-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #ef4444;
+  animation: pg-pulse 1.5s ease-in-out infinite;
+}
+@keyframes pg-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.8); }
+}
+@media (max-width: 720px) {
+  .pg-stats-strip-inner { grid-template-columns: 1fr; gap: 8px; }
+  .pg-stat { padding: 12px 14px; gap: 10px; }
+  .pg-stat-icon { width: 32px; height: 32px; }
+  .pg-stat-icon svg { width: 16px; height: 16px; }
+  .pg-stat-value { font-size: 17px; }
+  .pg-stat-label { font-size: 10px; }
+}
+`;
+
+function SiteStatsStrip() {
+  const [hits, setHits] = useState(0);
+  const [visitors, setVisitors] = useState(0);
+  const hitsAnim = useCountUp(hits);
+  const visitorsAnim = useCountUp(visitors);
+
+  // Inject CSS once
+  useEffect(() => {
+    const id = "pg-stats-style";
+    if (document.getElementById(id)) return;
+    const style = document.createElement("style");
+    style.id = id;
+    style.textContent = STATS_CSS;
+    document.head.appendChild(style);
+  }, []);
+
+  // Fetch counters on mount
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const base = "https://abacus.jasoncameron.dev";
+
+    // Total hits — increment on every page load
+    fetch(`${base}/hit/${STATS_NAMESPACE}/${STATS_HITS_KEY}`)
+      .then((r) => (r.ok ? r.json() : Promise.reject()))
+      .then((d) => setHits(Number(d?.value) || 0))
+      .catch(() => {});
+
+    // Total visitors — increment only for new visitors (localStorage flag)
+    const isNew = !localStorage.getItem(STATS_VISITOR_FLAG);
+    const visitorUrl = isNew
+      ? `${base}/hit/${STATS_NAMESPACE}/${STATS_VISITORS_KEY}`
+      : `${base}/get/${STATS_NAMESPACE}/${STATS_VISITORS_KEY}`;
+    fetch(visitorUrl)
+      .then((r) => (r.ok ? r.json() : Promise.reject()))
+      .then((d) => {
+        setVisitors(Number(d?.value) || 0);
+        if (isNew) {
+          try {
+            localStorage.setItem(STATS_VISITOR_FLAG, String(Date.now()));
+          } catch {
+            /* private mode etc. — ignore */
+          }
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  return (
+    <div className="pg-stats-strip" role="group" aria-label="Site stats">
+      <div className="pg-stats-strip-inner">
+        <div className="pg-stat">
+          <span className="pg-stat-icon" aria-hidden="true">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <rect x="3" y="4" width="18" height="17" rx="2" />
+              <path d="M16 2v4M8 2v4M3 10h18" />
+            </svg>
+          </span>
+          <span className="pg-stat-body">
+            <span className="pg-stat-label">Last Updated</span>
+            <span className="pg-stat-value">{SITE_LAST_UPDATED}</span>
+          </span>
+        </div>
+
+        <div className="pg-stat">
+          <span className="pg-stat-icon" aria-hidden="true">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z" />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+          </span>
+          <span className="pg-stat-body">
+            <span className="pg-stat-label">Total Hits</span>
+            <span className="pg-stat-value pg-stat-num">
+              {hits > 0 ? formatStat(hitsAnim) : "—"}
+            </span>
+          </span>
+        </div>
+
+        <div className="pg-stat pg-stat-highlight">
+          <span className="pg-stat-icon" aria-hidden="true">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" />
+            </svg>
+          </span>
+          <span className="pg-stat-body">
+            <span className="pg-stat-label">
+              Total Visitors
+              <span className="pg-stat-live" aria-label="live">
+                <span className="pg-stat-live-dot" />
+                LIVE
+              </span>
+            </span>
+            <span className="pg-stat-value pg-stat-num">
+              {visitors > 0 ? formatStat(visitorsAnim) : "—"}
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /* App                                                                 */
 /* ------------------------------------------------------------------ */
 
@@ -2092,6 +2598,8 @@ export function App() {
           )}
 
           <Footer totalCount={ALL_LOADER_TYPES.length} />
+
+          <SiteStatsStrip />
         </main>
 
         <LoaderModal
