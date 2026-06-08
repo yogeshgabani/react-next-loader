@@ -43,7 +43,7 @@ export const CardSkeleton = forwardRef<HTMLDivElement, CardSkeletonProps>(functi
         padding: 16,
         borderRadius: 12,
         background: 'var(--rl-theme-bg, transparent)',
-        border: '1px solid var(--rl-theme-surface, rgba(0,0,0,0.06))',
+        border: '1px solid color-mix(in srgb, currentColor 12%, transparent)',
         display: 'flex',
         flexDirection: 'column',
         gap: 12,

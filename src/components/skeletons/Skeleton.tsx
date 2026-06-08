@@ -1,9 +1,14 @@
 'use client';
 
-import { forwardRef, useEffect, type CSSProperties, type HTMLAttributes } from 'react';
+import { forwardRef, type CSSProperties, type HTMLAttributes } from 'react';
 import { KEYFRAME } from '../../animations/keyframes';
 import { cn } from '../../utils/cn';
 import { injectKeyframes } from '../../utils/injectKeyframes';
+
+// Belt-and-braces: ensure keyframes exist before any Skeleton renders.
+// The injectKeyframes module also auto-injects at load time; this catch
+// covers edge cases where bundlers tree-shake the top-level side effect.
+injectKeyframes();
 
 export type SkeletonAnimation = 'shimmer' | 'pulse' | 'wave' | 'none';
 
@@ -39,15 +44,16 @@ export const Skeleton = forwardRef<HTMLDivElement, SkeletonProps>(function Skele
   },
   ref,
 ) {
-  useEffect(() => {
-    injectKeyframes();
-  }, []);
-
   const radius =
     circle ? '50%' : rounded === true ? '6px' : rounded === false ? '0' : `${rounded}px`;
 
-  const base = baseColor ?? 'var(--rl-theme-surface, #e5e7eb)';
-  const hi = highlightColor ?? 'color-mix(in srgb, var(--rl-theme-surface, #e5e7eb) 70%, #fff)';
+  // Defaults use currentColor mixed with transparent so the skeleton is
+  // visible in BOTH light and dark themes without depending on the surface
+  // token (which can be too close to the page background).
+  //   - In light mode currentColor is dark → produces a soft grey overlay.
+  //   - In dark mode currentColor is light → produces a subtle light overlay.
+  const base = baseColor ?? 'color-mix(in srgb, currentColor 14%, transparent)';
+  const hi = highlightColor ?? 'color-mix(in srgb, currentColor 28%, transparent)';
   const duration = `${1.4 / Math.max(speed, 0.01)}s`;
 
   let bg: string = base;

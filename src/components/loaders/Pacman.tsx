@@ -17,13 +17,15 @@ export const Pacman = forwardRef<HTMLDivElement, BaseLoaderProps>(function Pacma
           gap: '6%',
         }}
       >
-        {/* Pac-Man (left) — two halves that pivot on his left side to chomp */}
+        {/* Pac-Man (left) — two halves that pivot on his left side to chomp.
+            aspect-ratio 1/1 keeps him perfectly round (not an ellipse). */}
         <span
           style={{
             position: 'relative',
-            width: '40%',
-            height: '100%',
+            width: '45%',
+            aspectRatio: '1 / 1',
             flexShrink: 0,
+            alignSelf: 'center',
           }}
         >
           <span
@@ -34,7 +36,9 @@ export const Pacman = forwardRef<HTMLDivElement, BaseLoaderProps>(function Pacma
               width: '100%',
               height: '50%',
               background: 'var(--rl-color)',
-              borderRadius: '100% 100% 0 0 / 200% 200% 0 0',
+              // 50% horizontal radius + 100% vertical radius forms a perfect
+              // top semicircle on a square box.
+              borderRadius: '50% 50% 0 0 / 100% 100% 0 0',
               boxShadow: 'var(--rl-glow)',
               transformOrigin: '0% 100%',
               animation: `${KEYFRAME.pacmanTop} var(--rl-speed) ease-in-out infinite`,
@@ -48,7 +52,7 @@ export const Pacman = forwardRef<HTMLDivElement, BaseLoaderProps>(function Pacma
               width: '100%',
               height: '50%',
               background: 'var(--rl-color)',
-              borderRadius: '0 0 100% 100% / 0 0 200% 200%',
+              borderRadius: '0 0 50% 50% / 0 0 100% 100%',
               boxShadow: 'var(--rl-glow)',
               transformOrigin: '0% 0%',
               animation: `${KEYFRAME.pacmanBottom} var(--rl-speed) ease-in-out infinite`,

@@ -1,9 +1,13 @@
 'use client';
 
-import { forwardRef, useEffect, type HTMLAttributes } from 'react';
+import { forwardRef, type HTMLAttributes } from 'react';
 import { KEYFRAME } from '../../animations/keyframes';
 import { cn } from '../../utils/cn';
 import { injectKeyframes } from '../../utils/injectKeyframes';
+
+// Auto-inject keyframes on module load — covers cases where the
+// injectKeyframes module's own top-level call gets tree-shaken.
+injectKeyframes();
 
 export interface LinearProgressProps extends Omit<HTMLAttributes<HTMLDivElement>, 'color'> {
   value?: number;
@@ -37,14 +41,12 @@ export const LinearProgress = forwardRef<HTMLDivElement, LinearProgressProps>(
     },
     ref,
   ) {
-    useEffect(() => {
-      injectKeyframes();
-    }, []);
-
     const isIndeterminate = indeterminate || value == null;
     const pct = isIndeterminate ? 0 : Math.min(100, Math.max(0, (value! / max) * 100));
     const fill = color ?? 'var(--rl-theme-primary, #7c3aed)';
-    const track = trackColor ?? 'var(--rl-theme-surface, rgba(0,0,0,0.08))';
+    // Track uses currentColor so it stays visible on both light and dark backgrounds
+    // (previous `var(--rl-theme-surface, …)` fallback was invisible in light mode).
+    const track = trackColor ?? 'color-mix(in srgb, currentColor 14%, transparent)';
     const radius = rounded ? `${thickness}px` : 0;
 
     let fillBg: string = fill;

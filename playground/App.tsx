@@ -282,6 +282,9 @@ function ThemedShell({ children }: { children: ReactNode }) {
     root.style.setProperty("--rl-text-strong", isDark ? "#f4f4f5" : "#18181b");
     root.style.setProperty("--rl-text-muted", isDark ? "#d4d4d8" : "#3f3f46");
     root.style.setProperty("--rl-text-faint", isDark ? "#a1a1aa" : "#52525b");
+
+    // Tell the global scrollbar styles (in index.html) which theme is active.
+    root.setAttribute("data-rl-theme", isDark ? "dark" : "light");
   }, [resolvedMode]);
   return <>{children}</>;
 }
@@ -414,7 +417,7 @@ function TopBar({
                 flexShrink: 0,
               }}
             >
-              V1.0.0
+              V1.0.1
             </span>
           )}
         </div>
@@ -487,7 +490,7 @@ function Hero({ totalCount }: { totalCount: number }) {
             background: "currentColor",
           }}
         />
-        V1.0.0 · Now available
+        V1.0.1 · Now available
       </div>
 
       {/* Headline with partial gradient on the middle phrase */}
@@ -853,8 +856,7 @@ function SocialUnavailableModal({
           color: "inherit",
           borderRadius: 16,
           padding: "32px 24px 24px",
-          border:
-            "1px solid color-mix(in srgb, currentColor 12%, transparent)",
+          border: "1px solid color-mix(in srgb, currentColor 12%, transparent)",
           boxShadow: "0 24px 60px rgba(0, 0, 0, 0.4)",
           textAlign: "center",
           overflow: "hidden",
@@ -1094,6 +1096,20 @@ function Toolbar({
   image: string;
   setImage: (img: string) => void;
 }) {
+  const { resolvedMode } = useTheme();
+  const isLight = resolvedMode === "light";
+  // Solid borders for swatches in light mode (white card → translucent
+  // currentColor borders are too faint, especially for the white/transparent
+  // default swatch).
+  const swatchBorder = isLight
+    ? "1px solid #9ca3af"
+    : "1px solid color-mix(in srgb, currentColor 25%, transparent)";
+  // Stronger stripe pattern for the "no color / default" swatch so it stands
+  // out against a white card.
+  const stripesPattern = isLight
+    ? "repeating-linear-gradient(45deg, #d4d4d8 0 4px, transparent 4px 8px)"
+    : "repeating-linear-gradient(45deg, color-mix(in srgb, currentColor 18%, transparent) 0 4px, transparent 4px 8px)";
+
   const onImageFile = (file: File | null) => {
     if (!file) return;
     const reader = new FileReader();
@@ -1247,10 +1263,8 @@ function Toolbar({
                   border:
                     color === p.value
                       ? "2px solid var(--rl-theme-primary)"
-                      : "1px solid color-mix(in srgb, currentColor 12%, transparent)",
-                  background:
-                    p.value ||
-                    "repeating-linear-gradient(45deg, color-mix(in srgb, currentColor 10%, transparent) 0 4px, transparent 4px 8px)",
+                      : swatchBorder,
+                  background: p.value || stripesPattern,
                   cursor: "pointer",
                   padding: 0,
                   transition: "all 160ms",
@@ -1266,8 +1280,7 @@ function Toolbar({
                 height: 30,
                 padding: 2,
                 borderRadius: 7,
-                border:
-                  "1px solid color-mix(in srgb, currentColor 12%, transparent)",
+                border: swatchBorder,
                 background: "transparent",
                 cursor: "pointer",
                 marginLeft: 4,
@@ -1315,7 +1328,7 @@ function Toolbar({
                   border:
                     previewBg === p.key
                       ? "2px solid var(--rl-theme-primary)"
-                      : "1px solid color-mix(in srgb, currentColor 12%, transparent)",
+                      : swatchBorder,
                   background: resolveSwatchBg(p.key),
                   cursor: "pointer",
                   padding: 0,
@@ -1332,8 +1345,7 @@ function Toolbar({
                 height: 30,
                 padding: 2,
                 borderRadius: 7,
-                border:
-                  "1px solid color-mix(in srgb, currentColor 12%, transparent)",
+                border: swatchBorder,
                 background: "transparent",
                 cursor: "pointer",
                 marginLeft: 4,
@@ -2488,6 +2500,320 @@ function SiteStatsStrip() {
 }
 
 /* ------------------------------------------------------------------ */
+/* Version history / changelog                                         */
+/* ------------------------------------------------------------------ */
+
+interface ChangelogEntry {
+  version: string;
+  date: string;
+  type: "Initial" | "Major" | "Minor" | "Patch";
+  highlights: string[];
+}
+
+const CHANGELOG: ChangelogEntry[] = [
+  {
+    version: "1.0.1",
+    date: "June 8, 2026",
+    type: "Patch",
+    highlights: [
+      "Skeletons now visible in light theme without ThemeProvider",
+      "Pacman is perfectly round (was rendering as an ellipse)",
+      "LinearProgress / CircularProgress track visible without theme tokens",
+      "Animations work on first paint — keyframes auto-inject at module load",
+      "CardSkeleton border visible in light mode",
+      "Playground: mobile-friendly category bar, social-link footer, live visitor counter, theme-aware swatch borders",
+    ],
+  },
+  {
+    version: "1.0.0",
+    date: "June 8, 2026",
+    type: "Initial",
+    highlights: [
+      "90+ animated loaders, 20+ text effects, 13 skeleton components",
+      "Linear + circular progress bars, image loader with 18+ animations",
+      "Theme system with light / dark / auto modes",
+      "SSR-safe, fully typed, tree-shakable, accessible",
+      "Hooks: useReducedMotion, useDelayedLoading",
+      "Subpath imports for optimal bundle size",
+    ],
+  },
+];
+
+const VERSION_CSS = `
+.pg-ver-wrap {
+  margin: 36px 0 12px;
+  position: relative;
+}
+/* Section heading with brand gradient underline */
+.pg-ver-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.pg-ver-title {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.pg-ver-title-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: linear-gradient(135deg,
+    color-mix(in srgb, #6366f1 18%, transparent),
+    color-mix(in srgb, #ec4899 18%, transparent));
+  color: var(--rl-theme-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.pg-ver-sub {
+  font-size: 12px;
+  color: var(--rl-text-muted, #52525b);
+}
+.pg-ver-sub a {
+  color: var(--rl-theme-primary);
+  text-decoration: none;
+  font-weight: 600;
+}
+.pg-ver-sub a:hover { text-decoration: underline; }
+.pg-ver-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  max-height: 500px;
+  overflow: auto;
+}
+.pg-ver-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 24px;
+  padding: 20px 22px;
+  border-radius: 14px;
+  border: 1px solid color-mix(in srgb, currentColor 10%, transparent);
+  background: var(--rl-theme-bg);
+  transition: transform 200ms, border-color 200ms, box-shadow 200ms;
+  overflow: hidden;
+}
+.pg-ver-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+  opacity: 0.55;
+  transition: opacity 200ms, height 200ms;
+  border-radius: 14px 14px 0 0;
+}
+.pg-ver-card:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--rl-theme-primary) 30%, transparent);
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--rl-theme-primary) 14%, transparent);
+}
+.pg-ver-card:hover::before { opacity: 1; height: 3px; }
+.pg-ver-card-latest::before { height: 3px; opacity: 1; }
+.pg-ver-card-latest:hover::before { height: 4px; }
+.pg-ver-meta { min-width: 0; }
+.pg-ver-version {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+}
+.pg-ver-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  border-radius: 999px;
+  text-transform: uppercase;
+}
+.pg-ver-badge-latest {
+  background: linear-gradient(135deg, #6366f1, #a855f7, #ec4899);
+  color: #fff;
+}
+.pg-ver-badge-patch {
+  background: color-mix(in srgb, #22c55e 16%, transparent);
+  color: #16a34a;
+}
+.pg-ver-badge-minor {
+  background: color-mix(in srgb, #0ea5e9 16%, transparent);
+  color: #0284c7;
+}
+.pg-ver-badge-major {
+  background: color-mix(in srgb, #f43f5e 16%, transparent);
+  color: #e11d48;
+}
+.pg-ver-badge-initial {
+  background: color-mix(in srgb, #a855f7 18%, transparent);
+  color: var(--rl-theme-primary);
+}
+.pg-ver-date {
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--rl-text-muted, #52525b);
+}
+.pg-ver-bullets {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+.pg-ver-bullet {
+  display: grid;
+  grid-template-columns: 16px 1fr;
+  gap: 10px;
+  align-items: start;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--rl-text-muted, #52525b);
+}
+.pg-ver-bullet-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-top: 7px;
+  margin-left: 4px;
+  border-radius: 50%;
+  background: var(--rl-theme-primary);
+  flex-shrink: 0;
+}
+@media (max-width: 720px) {
+  .pg-ver-card {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding: 16px 16px;
+  }
+  .pg-ver-version { font-size: 18px; }
+  .pg-ver-bullet { font-size: 12px; }
+}
+`;
+
+function VersionHistory() {
+  // Inject CSS once
+  useEffect(() => {
+    const id = "pg-ver-style";
+    if (document.getElementById(id)) return;
+    const style = document.createElement("style");
+    style.id = id;
+    style.textContent = VERSION_CSS;
+    document.head.appendChild(style);
+  }, []);
+
+  return (
+    <section
+      className="pg-ver-wrap"
+      role="region"
+      aria-label="Version history and changelog"
+    >
+      <div className="pg-ver-head">
+        <div>
+          <div className="pg-ver-title">
+            <span className="pg-ver-title-icon" aria-hidden="true">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M12 8v4l3 2" />
+                <circle cx="12" cy="12" r="10" />
+              </svg>
+            </span>
+            Version History
+          </div>
+          {/* <div className="pg-ver-sub" style={{ marginTop: 4 }}>
+            See what&apos;s new in every release.&nbsp;Full notes on{" "}
+            <a
+              href="https://github.com/yogeshgabani/react-next-loader/blob/main/CHANGELOG.md"
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              GitHub CHANGELOG.md →
+            </a>
+          </div> */}
+        </div>
+      </div>
+
+      <div className="pg-ver-list">
+        {CHANGELOG.map((entry, idx) => {
+          const isLatest = idx === 0;
+          const badgeClass =
+            entry.type === "Patch"
+              ? "pg-ver-badge-patch"
+              : entry.type === "Minor"
+                ? "pg-ver-badge-minor"
+                : entry.type === "Major"
+                  ? "pg-ver-badge-major"
+                  : "pg-ver-badge-initial";
+
+          return (
+            <article
+              key={entry.version}
+              className={`pg-ver-card${isLatest ? " pg-ver-card-latest" : ""}`}
+            >
+              <div className="pg-ver-meta">
+                <div className="pg-ver-version">
+                  v{entry.version}
+                  {isLatest && (
+                    <span className="pg-ver-badge pg-ver-badge-latest">
+                      Latest
+                    </span>
+                  )}
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 6,
+                    marginTop: 6,
+                  }}
+                >
+                  <span className={`pg-ver-badge ${badgeClass}`}>
+                    {entry.type}
+                  </span>
+                </div>
+                <div className="pg-ver-date">{entry.date}</div>
+              </div>
+
+              <ul className="pg-ver-bullets">
+                {entry.highlights.map((h, i) => (
+                  <li key={i} className="pg-ver-bullet">
+                    <span className="pg-ver-bullet-dot" aria-hidden="true" />
+                    <span>{h}</span>
+                  </li>
+                ))}
+              </ul>
+            </article>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /* App                                                                 */
 /* ------------------------------------------------------------------ */
 
@@ -2596,6 +2922,8 @@ export function App() {
               ))}
             </div>
           )}
+
+          <VersionHistory />
 
           <Footer totalCount={ALL_LOADER_TYPES.length} />
 

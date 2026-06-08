@@ -39,9 +39,63 @@
 
     <title>react-next-loader — Developed by Yogesh Gabani</title>
     <style>
-      :root { color-scheme: light dark; }
+      :root {
+        color-scheme: light dark;
+        /* Scrollbar tokens — overridden per theme by ThemedShell */
+        --rl-sb-track: rgba(0, 0, 0, 0.04);
+        --rl-sb-thumb: rgba(0, 0, 0, 0.22);
+        --rl-sb-thumb-hover: rgba(0, 0, 0, 0.38);
+        --rl-sb-thumb-active: #a855f7;
+        --rl-sb-width: 12px;
+      }
+      [data-rl-theme="dark"] {
+        --rl-sb-track: rgba(255, 255, 255, 0.04);
+        --rl-sb-thumb: rgba(255, 255, 255, 0.18);
+        --rl-sb-thumb-hover: rgba(255, 255, 255, 0.34);
+        --rl-sb-thumb-active: #a855f7;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-rl-theme]) {
+          --rl-sb-track: rgba(255, 255, 255, 0.04);
+          --rl-sb-thumb: rgba(255, 255, 255, 0.18);
+          --rl-sb-thumb-hover: rgba(255, 255, 255, 0.34);
+        }
+      }
+
       * { box-sizing: border-box; }
       html, body { margin: 0; padding: 0; font-family: ui-sans-serif, system-ui, sans-serif; }
+
+      /* Firefox */
+      html {
+        scrollbar-width: thin;
+        scrollbar-color: var(--rl-sb-thumb) var(--rl-sb-track);
+      }
+
+      /* WebKit / Chromium (Chrome, Edge, Safari, Opera) */
+      ::-webkit-scrollbar {
+        width: var(--rl-sb-width);
+        height: var(--rl-sb-width);
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--rl-sb-track);
+        border-radius: 999px;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--rl-sb-thumb);
+        border-radius: 999px;
+        border: 3px solid transparent;
+        background-clip: padding-box;
+        transition: background 200ms;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--rl-sb-thumb-hover);
+        background-clip: padding-box;
+      }
+      ::-webkit-scrollbar-thumb:active {
+        background: linear-gradient(180deg, #6366f1, #a855f7, #ec4899);
+        background-clip: padding-box;
+      }
+      ::-webkit-scrollbar-corner { background: transparent; }
     </style>
   </head>
   <body>

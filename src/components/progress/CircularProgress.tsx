@@ -1,11 +1,14 @@
 'use client';
 
-import { forwardRef, useEffect, type HTMLAttributes, type ReactNode } from 'react';
+import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 import { KEYFRAME } from '../../animations/keyframes';
 import { cn } from '../../utils/cn';
 import { injectKeyframes } from '../../utils/injectKeyframes';
 import { resolveSize } from '../../utils/size';
 import type { LoaderSize } from '../../types';
+
+// Auto-inject keyframes on module load — defense in depth.
+injectKeyframes();
 
 export interface CircularProgressProps extends Omit<HTMLAttributes<HTMLDivElement>, 'color'> {
   value?: number;
@@ -41,10 +44,6 @@ export const CircularProgress = forwardRef<HTMLDivElement, CircularProgressProps
     },
     ref,
   ) {
-    useEffect(() => {
-      injectKeyframes();
-    }, []);
-
     const px = resolveSize(size);
     const isIndeterminate = indeterminate || value == null;
     const pct = isIndeterminate ? 0 : Math.min(100, Math.max(0, (value! / max) * 100));
@@ -91,7 +90,7 @@ export const CircularProgress = forwardRef<HTMLDivElement, CircularProgressProps
             cy={px / 2}
             r={radius}
             fill="none"
-            stroke={trackColor ?? 'var(--rl-theme-surface, rgba(0,0,0,0.08))'}
+            stroke={trackColor ?? 'color-mix(in srgb, currentColor 14%, transparent)'}
             strokeWidth={thickness}
           />
           <circle

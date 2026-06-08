@@ -1,8 +1,18 @@
+<div align="center">
+
 # react-next-loader
 
 > All-in-one React loader library — 90+ animated loaders, skeletons, progress bars, text effects, AI-style loaders, and image loaders. Works seamlessly with React, Next.js (App + Pages Router), Vite, Remix, and CRA — in both TypeScript and JavaScript.
 
-**v1.0.0 — Stable release.** Production-ready, fully typed, SSR-safe, tree-shakable, and accessible.
+[![npm](https://img.shields.io/npm/v/react-next-loader.svg?color=4f46e5&style=flat-square)](https://www.npmjs.com/package/react-next-loader)
+[![downloads](https://img.shields.io/npm/dm/react-next-loader.svg?color=10b981&style=flat-square)](https://www.npmjs.com/package/react-next-loader)
+[![types](https://img.shields.io/badge/types-included-3178c6?style=flat-square)](#typescript)
+[![license](https://img.shields.io/badge/license-MIT-emerald?style=flat-square)](./LICENSE)
+[![bundle](https://img.shields.io/badge/tree--shakable-✓-10b981?style=flat-square)](#bundle-size)
+
+</div>
+
+**v1.0.1 — Stable release.** Production-ready, fully typed, SSR-safe, tree-shakable, and accessible.
 
 🌐 **[Live Demo →](https://react-next-loader.netlify.app/)** &nbsp;•&nbsp; 📦 **[NPM](https://www.npmjs.com/package/react-next-loader)** &nbsp;•&nbsp; 💻 **[GitHub](https://github.com/yogeshgabani/react-next-loader)**
 
@@ -31,6 +41,7 @@
 - [Browser support](#browser-support)
 - [Scripts](#scripts)
 - [Contributing](#contributing)
+- [Changelog](#changelog)
 - [Keywords](#keywords)
 - [License](#license)
 
@@ -103,7 +114,7 @@ npm i framer-motion
 ## Quick start
 
 ```tsx
-import { Spinner, Dots, Skeleton, LinearProgress } from 'react-next-loader';
+import { Spinner, Dots, Skeleton, LinearProgress } from "react-next-loader";
 
 export default function Demo() {
   return (
@@ -141,33 +152,43 @@ import { Loader } from 'react-next-loader';
 ## Loaders catalog
 
 ### Basic
+
 `Spinner`, `DualRing`, `Circle`, `Dots`, `Bars`, `Pulse`, `Ripple`, `Wave`
 
 ### Motion / scale
+
 `Beat`, `Bounce`, `Scale`, `Sync`, `Rise`, `Skew`, `Square`, `Hash`, `Fade`
 
 ### Ring / circle
+
 `Clip`, `Puff`, `Ring`, `Rotate`, `TailSpin`, `Oval`, `Moon`, `ColorRing`, `ThreeCircles`
 
 ### Shapes
+
 `Triangle`, `BallTriangle`, `Hourglass`, `Grid`, `Pacman`, `ClimbingBox`, `Infinity`, `Vortex`
 
 ### Specialty
+
 `Clock`, `Watch`, `Propagate`, `MagnifyingGlass`
 
 ### react-loader-spinner family
+
 `Audio`, `Blocks`, `Comment`, `DNA`, `FallingLines`, `FidgetSpinner`, `Hearts`, `LineWave`, `MutatingDots`, `Radio`, `RevolvingDot`, `Rings`, `RotatingLines`, `RotatingTriangles`, `ThreeDots`
 
 ### AI / modern
+
 `GradientOrb`, `NeuralNetwork`, `AIThinking`, `Matrix`, `Hologram`, `Cyberpunk`, `FloatingGlass`
 
 ### Creative
+
 `Bolt`, `Book`, `Boxes`, `Wifi`, `Sunspot`, `XLVI`
 
 ### 3D / advanced
+
 `Cube`, `Orbit`, `Typing`, `Blink`, `Squircle`
 
 ### Multi-color / new
+
 `RotatingSquare`, `Hairball`, `Whirl`, `FlipFlop`, `ThreeD`
 
 ```tsx
@@ -282,11 +303,11 @@ Supported animations: `spin`, `pulse`, `fade`, `bounce`, `scale`, `shake`, `flip
 ## Theming
 
 ```tsx
-import { ThemeProvider } from 'react-next-loader/theme';
+import { ThemeProvider } from "react-next-loader/theme";
 
 <ThemeProvider mode="auto">
   <App />
-</ThemeProvider>
+</ThemeProvider>;
 ```
 
 `mode` accepts `'light' | 'dark' | 'auto'`. Pass custom token overrides per mode:
@@ -294,8 +315,8 @@ import { ThemeProvider } from 'react-next-loader/theme';
 ```tsx
 <ThemeProvider
   tokens={{
-    light: { colorPrimary: '#16a34a' },
-    dark:  { colorPrimary: '#22d3ee' },
+    light: { colorPrimary: "#16a34a" },
+    dark: { colorPrimary: "#22d3ee" },
   }}
 >
   <App />
@@ -305,11 +326,11 @@ import { ThemeProvider } from 'react-next-loader/theme';
 Access the current theme programmatically:
 
 ```tsx
-import { useTheme } from 'react-next-loader/theme';
+import { useTheme } from "react-next-loader/theme";
 
 function MyComponent() {
   const { mode, tokens, setMode } = useTheme();
-  return <button onClick={() => setMode('dark')}>Dark mode</button>;
+  return <button onClick={() => setMode("dark")}>Dark mode</button>;
 }
 ```
 
@@ -320,7 +341,7 @@ function MyComponent() {
 You can also import the raw token objects:
 
 ```tsx
-import { lightTokens, darkTokens } from 'react-next-loader/theme';
+import { lightTokens, darkTokens } from "react-next-loader/theme";
 ```
 
 ---
@@ -329,28 +350,28 @@ import { lightTokens, darkTokens } from 'react-next-loader/theme';
 
 Every loader accepts these props:
 
-| Prop              | Type                                              | Default       |
-| ----------------- | ------------------------------------------------- | ------------- |
-| `size`            | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| number`  | `'md'`        |
-| `width`           | `number \| string`                                | derived       |
-| `height`          | `number \| string`                                | derived       |
-| `color`           | CSS color string                                  | theme primary |
-| `speed`           | `number` (animation speed multiplier)             | `1`           |
-| `thickness`       | `number` (stroke/border thickness in px)          | varies        |
-| `rounded`         | `boolean`                                         | varies        |
-| `glow`            | `boolean`                                         | `false`       |
-| `aria-label`      | `string`                                          | `'Loading'`   |
-| `label`           | `ReactNode` (inline visible label)                | —             |
-| `labelPosition`   | `'right' \| 'left' \| 'top' \| 'bottom'`          | `'right'`     |
-| `labelColor`      | `string`                                          | `'inherit'`   |
-| `labelFontSize`   | `number \| string`                                | inherit       |
-| `labelWeight`     | `number \| string`                                | inherit       |
-| `labelStyle`      | `CSSProperties`                                   | —             |
-| `gap`             | `number` (spacing between loader and label)       | `8`           |
-| `text`            | `string` (for text-style loaders)                 | —             |
-| `image`           | `string` (for image-style loaders)                | —             |
-| `className`       | `string`                                          | —             |
-| `style`           | `CSSProperties`                                   | —             |
+| Prop            | Type                                             | Default       |
+| --------------- | ------------------------------------------------ | ------------- |
+| `size`          | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| number` | `'md'`        |
+| `width`         | `number \| string`                               | derived       |
+| `height`        | `number \| string`                               | derived       |
+| `color`         | CSS color string                                 | theme primary |
+| `speed`         | `number` (animation speed multiplier)            | `1`           |
+| `thickness`     | `number` (stroke/border thickness in px)         | varies        |
+| `rounded`       | `boolean`                                        | varies        |
+| `glow`          | `boolean`                                        | `false`       |
+| `aria-label`    | `string`                                         | `'Loading'`   |
+| `label`         | `ReactNode` (inline visible label)               | —             |
+| `labelPosition` | `'right' \| 'left' \| 'top' \| 'bottom'`         | `'right'`     |
+| `labelColor`    | `string`                                         | `'inherit'`   |
+| `labelFontSize` | `number \| string`                               | inherit       |
+| `labelWeight`   | `number \| string`                               | inherit       |
+| `labelStyle`    | `CSSProperties`                                  | —             |
+| `gap`           | `number` (spacing between loader and label)      | `8`           |
+| `text`          | `string` (for text-style loaders)                | —             |
+| `image`         | `string` (for image-style loaders)               | —             |
+| `className`     | `string`                                         | —             |
+| `style`         | `CSSProperties`                                  | —             |
 
 Example with label:
 
@@ -367,11 +388,11 @@ Example with label:
 Avoid flicker for fast requests, enforce a minimum visible duration.
 
 ```tsx
-import { useDelayedLoading } from 'react-next-loader';
+import { useDelayedLoading } from "react-next-loader";
 
 function Page({ isFetching }: { isFetching: boolean }) {
   const showLoader = useDelayedLoading(isFetching, {
-    delay: 200,       // wait 200ms before showing
+    delay: 200, // wait 200ms before showing
     minDuration: 400, // once shown, keep visible at least 400ms
   });
 
@@ -384,7 +405,7 @@ function Page({ isFetching }: { isFetching: boolean }) {
 Returns `true` when the user has `prefers-reduced-motion: reduce` set.
 
 ```tsx
-import { useReducedMotion } from 'react-next-loader';
+import { useReducedMotion } from "react-next-loader";
 
 const reduced = useReducedMotion();
 // reduced === true → simpler animation or static placeholder
@@ -398,7 +419,7 @@ All components emit `"use client"` automatically and are SSR-safe. Use them insi
 
 ```tsx
 // app/page.tsx (Server Component)
-import { Spinner } from 'react-next-loader/loaders';
+import { Spinner } from "react-next-loader/loaders";
 
 export default function Page() {
   return <Spinner />;
@@ -437,10 +458,10 @@ Every loader includes:
 For the smallest bundle, import from subpaths instead of the root:
 
 ```tsx
-import { Spinner }          from 'react-next-loader/loaders';
-import { Skeleton }         from 'react-next-loader/skeletons';
-import { LinearProgress }   from 'react-next-loader/progress';
-import { ThemeProvider }    from 'react-next-loader/theme';
+import { Spinner } from "react-next-loader/loaders";
+import { Skeleton } from "react-next-loader/skeletons";
+import { LinearProgress } from "react-next-loader/progress";
+import { ThemeProvider } from "react-next-loader/theme";
 ```
 
 The library is published as ESM + CJS with `sideEffects: false` for tree-shaking (CSS is marked as a side effect so it isn't dropped).
@@ -450,7 +471,7 @@ The library is published as ESM + CJS with `sideEffects: false` for tree-shaking
 Keyframes are auto-injected at runtime, so the library works with zero CSS setup. If you prefer external CSS (for stricter CSP, CSS-in-JS migration, or build pipelines that prefer files), import the optional stylesheet **once**:
 
 ```ts
-import 'react-next-loader/styles.css';
+import "react-next-loader/styles.css";
 ```
 
 ---
@@ -473,13 +494,13 @@ import type {
   CircularProgressProps,
   ImageLoaderProps,
   ImageAnimation,
-} from 'react-next-loader';
+} from "react-next-loader";
 ```
 
 Build a custom loader on top of the public primitive:
 
 ```tsx
-import { LoaderBase, type LoaderBaseProps } from 'react-next-loader';
+import { LoaderBase, type LoaderBaseProps } from "react-next-loader";
 
 function MyLoader(props: LoaderBaseProps) {
   return <LoaderBase {...props}>{/* your svg / markup */}</LoaderBase>;
@@ -509,18 +530,18 @@ Modern evergreen browsers (Chrome, Edge, Firefox, Safari, Opera). For loaders th
 
 For local development of this library:
 
-| Script              | Purpose                                                         |
-| ------------------- | --------------------------------------------------------------- |
-| `npm run dev`       | Start the local playground (Vite) to preview loaders            |
-| `npm run build`     | Build the library with `tsup` (ESM + CJS + types)               |
-| `npm run build:watch` | Watch-mode library build                                      |
-| `npm run typecheck` | Run TypeScript in `--noEmit` mode                               |
-| `npm run test`      | Run the Vitest test suite once                                  |
-| `npm run test:watch`| Watch-mode tests                                                |
-| `npm run lint`      | ESLint over `src/**/*.{ts,tsx}`                                 |
-| `npm run format`    | Prettier write over `src` files                                 |
-| `npm run publint`   | Validate the published package shape                            |
-| `npm run attw`      | Run `@arethetypeswrong/cli` against the packed tarball          |
+| Script                | Purpose                                                |
+| --------------------- | ------------------------------------------------------ |
+| `npm run dev`         | Start the local playground (Vite) to preview loaders   |
+| `npm run build`       | Build the library with `tsup` (ESM + CJS + types)      |
+| `npm run build:watch` | Watch-mode library build                               |
+| `npm run typecheck`   | Run TypeScript in `--noEmit` mode                      |
+| `npm run test`        | Run the Vitest test suite once                         |
+| `npm run test:watch`  | Watch-mode tests                                       |
+| `npm run lint`        | ESLint over `src/**/*.{ts,tsx}`                        |
+| `npm run format`      | Prettier write over `src` files                        |
+| `npm run publint`     | Validate the published package shape                   |
+| `npm run attw`        | Run `@arethetypeswrong/cli` against the packed tarball |
 
 ---
 
@@ -539,6 +560,32 @@ If you're adding a new loader, please:
 - Re-export from `src/components/loaders/index.ts`
 - Register it in `src/registry.ts` so the unified `<Loader type="..." />` works
 - Add a preview entry to the playground
+
+---
+
+## Changelog
+
+A short summary of recent releases. See **[CHANGELOG.md](./CHANGELOG.md)** for full release notes.
+
+### v1.0.1 — _2026-06-08_ (Patch)
+
+- 🐛 Skeletons now visible in light theme without `<ThemeProvider>`
+- 🐛 `Pacman` is perfectly round (was rendering as an ellipse)
+- 🐛 `LinearProgress` / `CircularProgress` track visible without theme tokens
+- 🐛 Animations work on first paint — `injectKeyframes()` auto-runs at module load
+- 🐛 `CardSkeleton` border visible in light mode
+- ✨ Playground: mobile-friendly category bar, social-link footer with WhatsApp / Instagram / Facebook / YouTube / X / LinkedIn / GitHub, live visitor counter, theme-aware swatch borders
+
+### v1.0.0 — _2026-06-08_ (Initial release) 🎉
+
+- 90+ animated loaders, 20+ text effects, 13 skeleton components
+- Linear + circular progress bars, image loader with 18+ animations
+- Theme system with `light` / `dark` / `auto` modes
+- SSR-safe, fully typed, tree-shakable, accessible
+- Hooks: `useReducedMotion`, `useDelayedLoading`
+- Subpath imports for optimal bundle size
+
+> Full release history with all changes: **[CHANGELOG.md](./CHANGELOG.md)**
 
 ---
 

@@ -1,10 +1,14 @@
 'use client';
 
-import { forwardRef, useEffect, type CSSProperties, type ReactNode } from 'react';
+import { forwardRef, type CSSProperties, type ReactNode } from 'react';
 import type { BaseLoaderProps } from '../types';
 import { resolveSize } from '../utils/size';
 import { cn } from '../utils/cn';
 import { injectKeyframes } from '../utils/injectKeyframes';
+
+// Belt-and-braces: ensure keyframes exist before any loader renders.
+// The injectKeyframes module also auto-injects at load time.
+injectKeyframes();
 
 export interface LoaderBaseProps extends BaseLoaderProps {
   children: ReactNode;
@@ -56,10 +60,6 @@ export const LoaderBase = forwardRef<HTMLDivElement, LoaderBaseProps>(function L
   },
   ref,
 ) {
-  useEffect(() => {
-    injectKeyframes();
-  }, []);
-
   const px = resolveSize(size);
   const visualW = toCssLen(width, `${px}px`);
   const visualH = toCssLen(height, `${px}px`);

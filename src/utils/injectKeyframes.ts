@@ -18,3 +18,11 @@ export function injectKeyframes(): void {
   document.head.appendChild(style);
   injected = true;
 }
+
+// Auto-inject keyframes the moment this module is loaded.
+// Required so that animations work on a component's FIRST paint —
+// without this, useEffect-based injection ran *after* the browser had
+// already painted the element with an animation pointing at a missing
+// `@keyframes` rule, leaving the loader/skeleton frozen.
+// Guarded against SSR via the `typeof document` check above.
+injectKeyframes();

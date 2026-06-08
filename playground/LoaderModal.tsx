@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState, type CSSProperties } from 'react';
 import {
   Loader,
+  useTheme,
   type LabelPosition,
   type LoaderSize,
   type LoaderType,
@@ -140,6 +141,8 @@ export function LoaderModal({
   previewBg = 'stripes',
   initialImage = '',
 }: LoaderModalProps) {
+  const { resolvedMode } = useTheme();
+  const isLight = resolvedMode === 'light';
   const [size, setSize] = useState<LoaderSize>(initialSize);
   const [color, setColor] = useState(initialColor);
   const [speed, setSpeed] = useState(1);
@@ -161,6 +164,16 @@ export function LoaderModal({
     'shimmer' | 'pulse' | 'wave' | 'none'
   >('shimmer');
   const [copied, setCopied] = useState(false);
+
+  // Solid borders for swatches in light mode (translucent currentColor borders
+  // are too faint on white card, especially for the "default" white swatch).
+  const swatchBorder = isLight
+    ? '1px solid #9ca3af'
+    : '1px solid color-mix(in srgb, currentColor 25%, transparent)';
+  // Stronger stripe pattern for the "no color / default" swatch.
+  const stripesPattern = isLight
+    ? 'repeating-linear-gradient(45deg, #d4d4d8 0 4px, transparent 4px 8px)'
+    : 'repeating-linear-gradient(45deg, color-mix(in srgb, currentColor 18%, transparent) 0 4px, transparent 4px 8px)';
 
   const isTextLoader = !!type && type.startsWith('text-');
   const isImageLoader = !!type && type.startsWith('image-');
@@ -385,7 +398,7 @@ export function LoaderModal({
                     flex: 1,
                     height: 32,
                     borderRadius: 7,
-                    border: '1px solid color-mix(in srgb, currentColor 12%, transparent)',
+                    border: swatchBorder,
                     background:
                       size === s
                         ? BRAND_GRADIENT
@@ -414,7 +427,7 @@ export function LoaderModal({
                       flex: 1,
                       height: 32,
                       borderRadius: 7,
-                      border: '1px solid color-mix(in srgb, currentColor 12%, transparent)',
+                      border: swatchBorder,
                       background:
                         skeletonAnimation === a
                           ? BRAND_GRADIENT
@@ -442,7 +455,7 @@ export function LoaderModal({
                   gap: 8,
                   padding: '6px 12px',
                   borderRadius: 8,
-                  border: '1px solid color-mix(in srgb, currentColor 12%, transparent)',
+                  border: swatchBorder,
                   background: 'color-mix(in srgb, currentColor 3%, transparent)',
                   cursor: 'pointer',
                   fontSize: 12,
@@ -460,7 +473,7 @@ export function LoaderModal({
                       height: 20,
                       objectFit: 'cover',
                       borderRadius: 4,
-                      border: '1px solid color-mix(in srgb, currentColor 12%, transparent)',
+                      border: swatchBorder,
                     }}
                   />
                 ) : (
@@ -490,7 +503,7 @@ export function LoaderModal({
                     marginTop: 4,
                     padding: '3px 8px',
                     borderRadius: 999,
-                    border: '1px solid color-mix(in srgb, currentColor 12%, transparent)',
+                    border: swatchBorder,
                     background: 'transparent',
                     color: 'inherit',
                     fontSize: 10,
@@ -523,7 +536,7 @@ export function LoaderModal({
                       fontSize: 10,
                       padding: '3px 8px',
                       borderRadius: 999,
-                      border: '1px solid color-mix(in srgb, currentColor 12%, transparent)',
+                      border: swatchBorder,
                       background: text === p ? BRAND_GRADIENT : 'transparent',
                       color: text === p ? '#fff' : 'inherit',
                       cursor: 'pointer',
@@ -562,10 +575,8 @@ export function LoaderModal({
                     border:
                       color === p.value
                         ? '2px solid var(--rl-theme-primary)'
-                        : '1px solid color-mix(in srgb, currentColor 12%, transparent)',
-                    background:
-                      p.value ||
-                      'repeating-linear-gradient(45deg, color-mix(in srgb, currentColor 10%, transparent) 0 4px, transparent 4px 8px)',
+                        : swatchBorder,
+                    background: p.value || stripesPattern,
                     cursor: 'pointer',
                     padding: 0,
                   }}
@@ -580,7 +591,7 @@ export function LoaderModal({
                   height: 30,
                   padding: 2,
                   borderRadius: 7,
-                  border: '1px solid color-mix(in srgb, currentColor 12%, transparent)',
+                  border: swatchBorder,
                   background: 'transparent',
                   cursor: 'pointer',
                 }}
@@ -612,13 +623,22 @@ export function LoaderModal({
                 width: 56,
                 height: 30,
                 borderRadius: 999,
-                border: 'none',
+                // Solid borders in light mode (white card → currentColor-based
+                // borders are too faint). Translucent borders work fine on dark.
+                border: glow
+                  ? '1px solid transparent'
+                  : isLight
+                    ? '1px solid #9ca3af'
+                    : '1px solid color-mix(in srgb, currentColor 45%, transparent)',
                 background: glow
                   ? BRAND_GRADIENT
-                  : 'color-mix(in srgb, currentColor 15%, transparent)',
+                  : isLight
+                    ? '#e5e7eb'
+                    : 'color-mix(in srgb, currentColor 28%, transparent)',
                 cursor: 'pointer',
                 padding: 0,
-                transition: 'background 160ms',
+                transition: 'background 160ms, border-color 160ms',
+                boxSizing: 'border-box',
               }}
               role="switch"
               aria-checked={glow}
@@ -626,13 +646,20 @@ export function LoaderModal({
               <span
                 style={{
                   position: 'absolute',
-                  top: 3,
-                  left: glow ? 28 : 3,
+                  top: 2,
+                  left: glow ? 27 : 2,
                   width: 24,
                   height: 24,
                   borderRadius: '50%',
                   background: '#fff',
-                  boxShadow: '0 2px 6px rgba(0,0,0,0.2)',
+                  // Solid darker border in light mode for clear visibility on
+                  // the white modal card.
+                  border: isLight
+                    ? '1px solid #9ca3af'
+                    : '1px solid color-mix(in srgb, currentColor 35%, transparent)',
+                  boxShadow: isLight
+                    ? '0 2px 6px rgba(0, 0, 0, 0.22), 0 0 0 1px rgba(0, 0, 0, 0.06)'
+                    : '0 2px 8px rgba(0, 0, 0, 0.4)',
                   transition: 'left 200ms cubic-bezier(0.4, 0, 0.2, 1)',
                 }}
               />
@@ -667,7 +694,7 @@ export function LoaderModal({
                     fontSize: 10,
                     padding: '3px 8px',
                     borderRadius: 999,
-                    border: '1px solid color-mix(in srgb, currentColor 12%, transparent)',
+                    border: swatchBorder,
                     background:
                       label === p ? BRAND_GRADIENT : 'transparent',
                     color: label === p ? '#fff' : 'inherit',
@@ -693,7 +720,7 @@ export function LoaderModal({
                     flex: 1,
                     height: 32,
                     borderRadius: 7,
-                    border: '1px solid color-mix(in srgb, currentColor 12%, transparent)',
+                    border: swatchBorder,
                     background:
                       labelPosition === p.value && label
                         ? BRAND_GRADIENT
@@ -727,10 +754,8 @@ export function LoaderModal({
                     border:
                       labelColor === p.value
                         ? '2px solid var(--rl-theme-primary)'
-                        : '1px solid color-mix(in srgb, currentColor 12%, transparent)',
-                    background:
-                      p.value ||
-                      'repeating-linear-gradient(45deg, color-mix(in srgb, currentColor 10%, transparent) 0 4px, transparent 4px 8px)',
+                        : swatchBorder,
+                    background: p.value || stripesPattern,
                     cursor: label ? 'pointer' : 'not-allowed',
                     opacity: label ? 1 : 0.5,
                     padding: 0,
@@ -747,7 +772,7 @@ export function LoaderModal({
                   height: 30,
                   padding: 2,
                   borderRadius: 7,
-                  border: '1px solid color-mix(in srgb, currentColor 12%, transparent)',
+                  border: swatchBorder,
                   background: 'transparent',
                   cursor: label ? 'pointer' : 'not-allowed',
                   opacity: label ? 1 : 0.5,
@@ -793,7 +818,7 @@ export function LoaderModal({
                     flex: 1,
                     height: 32,
                     borderRadius: 7,
-                    border: '1px solid color-mix(in srgb, currentColor 12%, transparent)',
+                    border: swatchBorder,
                     background:
                       labelWeight === w.value && label
                         ? BRAND_GRADIENT
