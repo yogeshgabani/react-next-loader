@@ -45,6 +45,7 @@ export const KEYFRAME = {
   vortex: 'rl-vortex',
   watchTick: 'rl-watch-tick',
   magnifyMove: 'rl-magnify-move',
+  magnifyScan: 'rl-magnify-scan',
 
   // v0.3.0 — react-loader-spinner remaining
   audioBar: 'rl-audio-bar',
@@ -133,6 +134,53 @@ export const KEYFRAME = {
   imgTada: 'rl-img-tada',
   imgZoom: 'rl-img-zoom',
   imgFade: 'rl-img-fade',
+
+  // v1.1.0 — extended classic loaders
+  foldCube: 'rl-fold-cube',
+  cubeGrid: 'rl-cube-grid',
+  bounceScale: 'rl-bounce-scale',
+  rotatePlane: 'rl-rotate-plane',
+  circleFade: 'rl-circle-fade',
+  flowerPulse: 'rl-flower-pulse',
+  helixWave: 'rl-helix-wave',
+  newtonLeft: 'rl-newton-left',
+  newtonRight: 'rl-newton-right',
+  jelly: 'rl-jelly',
+  heartBeat: 'rl-heart-beat',
+
+  // v1.2.0 — more loaders (ldrs + fun/shapes)
+  ellipsisGrow: 'rl-ellipsis-grow',
+  ellipsisShrink: 'rl-ellipsis-shrink',
+  ellipsisMove: 'rl-ellipsis-move',
+  metronomeSwing: 'rl-metronome',
+  wobbleX: 'rl-wobble-x',
+  batteryCharge: 'rl-battery',
+  bladeFade: 'rl-blade-fade',
+
+  // v1.3.0 — line & bar loaders
+  lineBar: 'rl-line-bar',
+  lineSlide: 'rl-line-slide',
+
+  // v1.3.0 — more text effects
+  textFade: 'rl-text-fade',
+  textBlur: 'rl-text-blur',
+  textJump: 'rl-text-jump',
+  textFill: 'rl-text-fill',
+  textSwing: 'rl-text-swing',
+  textSquish: 'rl-text-squish',
+
+  // v1.4.0 — 3D pyramid
+  pyramidSpin: 'rl-pyramid-spin',
+
+  // v1.4.0 — uiverse picks
+  neonGlow: 'rl-neon-glow',
+  audiPulse: 'rl-audi-pulse',
+  staggerBar: 'rl-stagger-bar',
+  staggerBall: 'rl-stagger-ball',
+  foldRibbon: 'rl-fold-ribbon',
+  drawPath: 'rl-draw-path',
+  loadingBall: 'rl-loading-ball',
+  matchGlow: 'rl-match-glow',
 } as const;
 
 export type KeyframeName = (typeof KEYFRAME)[keyof typeof KEYFRAME];
@@ -331,6 +379,16 @@ export const KEYFRAMES_CSS = `
 @keyframes ${KEYFRAME.magnifyMove} {
   0%, 100% { transform: translate(-15%, -15%); }
   50% { transform: translate(15%, 15%); }
+}
+@keyframes ${KEYFRAME.magnifyScan} {
+  0%, 100% { transform: translate(0%, -24%); }
+  12.5%    { transform: translate(17%, -17%); }
+  25%      { transform: translate(24%, 0%); }
+  37.5%    { transform: translate(17%, 17%); }
+  50%      { transform: translate(0%, 24%); }
+  62.5%    { transform: translate(-17%, 17%); }
+  75%      { transform: translate(-24%, 0%); }
+  87.5%    { transform: translate(-17%, -17%); }
 }
 
 /* v0.3.0 — react-loader-spinner remaining */
@@ -697,5 +755,166 @@ export const KEYFRAMES_CSS = `
 @keyframes ${KEYFRAME.imgFade} {
   0%, 100% { opacity: 1; }
   50%      { opacity: 0.25; }
+}
+
+/* v1.1.0 — extended classic loaders */
+@keyframes ${KEYFRAME.foldCube} {
+  0%, 10%   { transform: perspective(140px) rotateX(-180deg); opacity: 0; }
+  25%, 75%  { transform: perspective(140px) rotateX(0deg); opacity: 1; }
+  90%, 100% { transform: perspective(140px) rotateY(180deg); opacity: 0; }
+}
+@keyframes ${KEYFRAME.cubeGrid} {
+  0%, 70%, 100% { transform: scale3D(1, 1, 1); }
+  35%           { transform: scale3D(0, 0, 1); }
+}
+@keyframes ${KEYFRAME.bounceScale} {
+  0%, 100% { transform: scale(0); }
+  50%      { transform: scale(1); }
+}
+@keyframes ${KEYFRAME.rotatePlane} {
+  0%   { transform: perspective(120px) rotateX(0deg) rotateY(0deg); }
+  50%  { transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg); }
+  100% { transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg); }
+}
+@keyframes ${KEYFRAME.circleFade} {
+  0%, 39%, 100% { opacity: 0; }
+  40%           { opacity: 1; }
+}
+@keyframes ${KEYFRAME.flowerPulse} {
+  0%, 100% { transform: rotate(var(--rl-petal, 0deg)) scale(1); opacity: 1; }
+  50%      { transform: rotate(var(--rl-petal, 0deg)) scale(0.5); opacity: 0.4; }
+}
+@keyframes ${KEYFRAME.helixWave} {
+  0%, 100% { transform: translateY(-55%) scale(0.7); opacity: 0.6; }
+  50%      { transform: translateY(55%) scale(1.1); opacity: 1; }
+}
+@keyframes ${KEYFRAME.newtonLeft} {
+  0%, 50%, 100% { transform: rotate(0deg); }
+  25%           { transform: rotate(-48deg); }
+}
+@keyframes ${KEYFRAME.newtonRight} {
+  0%, 50%, 100% { transform: rotate(0deg); }
+  75%           { transform: rotate(48deg); }
+}
+@keyframes ${KEYFRAME.jelly} {
+  0%, 100% { border-radius: 50% 50% 50% 50%; transform: scale(1, 1); }
+  25%      { border-radius: 62% 38% 55% 45%; transform: scale(1.12, 0.88); }
+  50%      { border-radius: 38% 62% 45% 55%; transform: scale(0.88, 1.12); }
+  75%      { border-radius: 55% 45% 62% 38%; transform: scale(1.06, 0.94); }
+}
+@keyframes ${KEYFRAME.heartBeat} {
+  0%, 100% { transform: scale(0.9); }
+  15%      { transform: scale(1.15); }
+  30%      { transform: scale(0.95); }
+  45%      { transform: scale(1.1); }
+  60%      { transform: scale(0.95); }
+}
+
+/* v1.2.0 — more loaders (ldrs + fun/shapes) */
+@keyframes ${KEYFRAME.ellipsisGrow} {
+  0%   { transform: scale(0); }
+  100% { transform: scale(1); }
+}
+@keyframes ${KEYFRAME.ellipsisShrink} {
+  0%   { transform: scale(1); }
+  100% { transform: scale(0); }
+}
+@keyframes ${KEYFRAME.ellipsisMove} {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(180%); }
+}
+@keyframes ${KEYFRAME.metronomeSwing} {
+  0%, 100% { transform: rotate(-32deg); }
+  50%      { transform: rotate(32deg); }
+}
+@keyframes ${KEYFRAME.wobbleX} {
+  0%, 100% { transform: translateX(-22%) scale(0.92, 1.08); }
+  50%      { transform: translateX(22%) scale(1.08, 0.92); }
+}
+@keyframes ${KEYFRAME.batteryCharge} {
+  0%       { transform: scaleX(0.05); }
+  92%, 100% { transform: scaleX(1); }
+}
+@keyframes ${KEYFRAME.bladeFade} {
+  0%   { opacity: 1; }
+  100% { opacity: 0.15; }
+}
+
+/* v1.3.0 — line & bar loaders */
+@keyframes ${KEYFRAME.lineBar} {
+  0%   { left: -40%; }
+  100% { left: 100%; }
+}
+@keyframes ${KEYFRAME.lineSlide} {
+  0%, 100% { left: 2%; }
+  50%      { left: 58%; }
+}
+
+/* v1.3.0 — more text effects */
+@keyframes ${KEYFRAME.textFade} {
+  0%, 80%, 100% { opacity: 0.15; }
+  40%           { opacity: 1; }
+}
+@keyframes ${KEYFRAME.textBlur} {
+  0%, 100% { filter: blur(5px); opacity: 0.35; }
+  50%      { filter: blur(0); opacity: 1; }
+}
+@keyframes ${KEYFRAME.textJump} {
+  0%, 55%, 100% { transform: translateY(0); }
+  25%           { transform: translateY(-70%); }
+}
+@keyframes ${KEYFRAME.textFill} {
+  0%   { background-position: 50% 120%; }
+  100% { background-position: 50% -20%; }
+}
+@keyframes ${KEYFRAME.textSwing} {
+  0%, 100% { transform: rotate(-14deg); }
+  50%      { transform: rotate(14deg); }
+}
+@keyframes ${KEYFRAME.textSquish} {
+  0%, 100% { transform: scaleY(1); }
+  50%      { transform: scaleY(0.4); }
+}
+
+/* v1.4.0 — 3D pyramid */
+@keyframes ${KEYFRAME.pyramidSpin} {
+  0%   { transform: rotateY(0deg); }
+  100% { transform: rotateY(360deg); }
+}
+
+/* v1.4.0 — uiverse picks */
+@keyframes ${KEYFRAME.neonGlow} {
+  0%, 100% { opacity: 0.55; }
+  50%      { opacity: 1; }
+}
+@keyframes ${KEYFRAME.audiPulse} {
+  0%, 100% { transform: scale(0.8); opacity: 0.3; }
+  40%      { transform: scale(1.12); opacity: 1; }
+}
+@keyframes ${KEYFRAME.staggerBar} {
+  0%, 100% { transform: translateX(-38%); opacity: 0.45; }
+  50%      { transform: translateX(38%); opacity: 1; }
+}
+@keyframes ${KEYFRAME.staggerBall} {
+  0%, 100% { transform: translateX(-140%); }
+  50%      { transform: translateX(140%); }
+}
+@keyframes ${KEYFRAME.foldRibbon} {
+  0%   { transform: rotateY(0deg) rotateX(0deg); }
+  50%  { transform: rotateY(180deg) rotateX(18deg); }
+  100% { transform: rotateY(360deg) rotateX(0deg); }
+}
+@keyframes ${KEYFRAME.drawPath} {
+  0%   { stroke-dashoffset: 100; }
+  50%  { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: -100; }
+}
+@keyframes ${KEYFRAME.loadingBall} {
+  0%, 100% { transform: translateX(-160%); }
+  50%      { transform: translateX(160%); }
+}
+@keyframes ${KEYFRAME.matchGlow} {
+  0%, 100% { opacity: 0.35; transform: scale(0.9); }
+  50%      { opacity: 1; transform: scale(1.06); }
 }
 `;

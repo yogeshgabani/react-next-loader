@@ -1,19 +1,26 @@
 import { defineConfig } from 'tsup';
-import { copyFileSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
+import { copyFileSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 
 const USE_CLIENT = '"use client";';
 
 function prependUseClient(dir: string) {
-  for (const entry of readdirSync(dir)) {
-    const full = join(dir, entry);
-    const stat = statSync(full);
-    if (stat.isDirectory()) {
+  // Use withFileTypes to avoid a separate statSync per entry — the DTS build may
+  // still be finalising hashed .d.cts files, and stat'ing a vanished one throws ENOENT.
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    const full = join(dir, entry.name);
+    if (entry.isDirectory()) {
       prependUseClient(full);
       continue;
     }
-    if (!/\.(js|cjs|mjs)$/.test(entry)) continue;
-    const contents = readFileSync(full, 'utf8');
+    // Only runtime JS needs the directive; declaration files (.d.ts/.d.cts) are skipped.
+    if (!/\.(js|cjs|mjs)$/.test(entry.name)) continue;
+    let contents: string;
+    try {
+      contents = readFileSync(full, 'utf8');
+    } catch {
+      continue;
+    }
     if (contents.startsWith(USE_CLIENT)) continue;
     writeFileSync(full, `${USE_CLIENT}\n${contents}`);
   }

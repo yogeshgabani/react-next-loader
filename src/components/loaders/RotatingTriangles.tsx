@@ -24,6 +24,7 @@ export const RotatingTriangles = forwardRef<HTMLDivElement, RotatingTrianglesPro
           {/* Top triangle pointing DOWN */}
           <svg
             viewBox="0 0 100 100"
+            preserveAspectRatio="none"
             style={{
               position: 'absolute',
               top: 0,
@@ -38,6 +39,7 @@ export const RotatingTriangles = forwardRef<HTMLDivElement, RotatingTrianglesPro
           {/* Bottom triangle pointing UP */}
           <svg
             viewBox="0 0 100 100"
+            preserveAspectRatio="none"
             style={{
               position: 'absolute',
               top: '50%',

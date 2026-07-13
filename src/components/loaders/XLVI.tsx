@@ -15,7 +15,11 @@ export const XLVI = forwardRef<HTMLDivElement, BaseLoaderProps>(function XLVI(pr
             position: 'absolute',
             inset: 0,
             borderRadius: '50%',
-            border: `${thickness}px solid transparent`,
+            // Longhand only (see DualRing): the shorthand resets colors on
+            // `thickness` change, hiding the ring.
+            borderStyle: 'solid',
+            borderWidth: `${thickness}px`,
+            borderColor: 'transparent',
             borderTopColor: 'var(--rl-color)',
             borderRightColor: 'var(--rl-color)',
             boxSizing: 'border-box',
@@ -28,7 +32,9 @@ export const XLVI = forwardRef<HTMLDivElement, BaseLoaderProps>(function XLVI(pr
             position: 'absolute',
             inset: '20%',
             borderRadius: '50%',
-            border: `${thickness}px solid transparent`,
+            borderStyle: 'solid',
+            borderWidth: `${thickness}px`,
+            borderColor: 'transparent',
             borderBottomColor: 'var(--rl-color)',
             borderLeftColor: 'var(--rl-color)',
             boxSizing: 'border-box',

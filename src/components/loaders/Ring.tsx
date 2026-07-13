@@ -14,7 +14,11 @@ export const Ring = forwardRef<HTMLDivElement, BaseLoaderProps>(function Ring(pr
           width: '100%',
           height: '100%',
           borderRadius: '50%',
-          border: `${thickness}px solid color-mix(in srgb, var(--rl-color) 25%, transparent)`,
+          // Longhand only (see DualRing): the `border` shorthand would reset the
+          // colored top/right edges to the track color whenever `thickness` changes.
+          borderStyle: 'solid',
+          borderWidth: `${thickness}px`,
+          borderColor: 'color-mix(in srgb, var(--rl-color) 25%, transparent)',
           borderTopColor: 'var(--rl-color)',
           borderRightColor: 'var(--rl-color)',
           boxSizing: 'border-box',

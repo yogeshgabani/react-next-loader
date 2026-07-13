@@ -14,7 +14,12 @@ export const Spinner = forwardRef<HTMLDivElement, BaseLoaderProps>(function Spin
           width: '100%',
           height: '100%',
           borderRadius: '50%',
-          border: `${thickness}px solid color-mix(in srgb, var(--rl-color) 20%, transparent)`,
+          // Longhand only: mixing the `border` shorthand with `borderTopColor`
+          // resets the top color to the track color whenever `thickness` (and
+          // thus the shorthand) changes, making the spinner look static/faint.
+          borderStyle: 'solid',
+          borderWidth: `${thickness}px`,
+          borderColor: 'color-mix(in srgb, var(--rl-color) 20%, transparent)',
           borderTopColor: 'var(--rl-color)',
           boxShadow: 'var(--rl-glow)',
           animation: `${KEYFRAME.spin} var(--rl-speed) linear infinite`,

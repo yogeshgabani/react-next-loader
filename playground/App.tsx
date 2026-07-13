@@ -21,6 +21,54 @@ import { LoaderModal } from "./LoaderModal";
 /* ------------------------------------------------------------------ */
 
 const CATEGORIES: Record<string, LoaderType[]> = {
+  "New designs": [
+    "gradient-spinner",
+    "conic-gradient",
+    "border-rotate",
+    "simple-circle",
+  ],
+  Classics: [
+    "folding-cube",
+    "cube-grid",
+    "chasing-dots",
+    "double-bounce",
+    "rotating-plane",
+    "fading-circle",
+    "atom",
+    "fingerprint",
+    "flower",
+    "pinwheel",
+    "helix",
+    "newton-cradle",
+    "jelly",
+    "spiral",
+    "gear",
+    "heart",
+  ],
+  "Modern & fun": [
+    "roller",
+    "ellipsis",
+    "ring-2",
+    "spinner-blade",
+    "ping",
+    "pulse-ring",
+    "metronome",
+    "waveform",
+    "wobble",
+    "quantum",
+    "trefoil",
+    "dot-stream",
+    "reuleaux",
+    "superballs",
+    "planet",
+    "coin-flip",
+    "droplet",
+    "battery",
+    "star",
+    "hexagon",
+    "pentagon",
+    "gears",
+  ],
   Basics: [
     "spinner",
     "dual-ring",
@@ -52,6 +100,18 @@ const CATEGORIES: Record<string, LoaderType[]> = {
     "moon",
     "color-ring",
     "three-circles",
+    "neon-ring",
+    "audi-rings",
+    "capsule-pinwheel",
+    "stagger-bars",
+    "progress-bar",
+    "curve-arcs",
+    "fold-ribbon",
+    "shape-draw",
+    "bicycle",
+    "loading-ball",
+    "rain-cloud",
+    "matchstick",
   ],
   Shapes: [
     "triangle",
@@ -63,7 +123,7 @@ const CATEGORIES: Record<string, LoaderType[]> = {
     "infinity",
     "vortex",
   ],
-  Specialty: ["clock", "watch", "propagate", "magnifying-glass"],
+  Specialty: ["clock", "watch", "propagate", "magnifying-glass", "magnifying-scan"],
   Dots: [
     "audio",
     "comment",
@@ -75,6 +135,12 @@ const CATEGORIES: Record<string, LoaderType[]> = {
     "rings",
   ],
   Lines: [
+    "line-bar",
+    "line-slide",
+    "line-scale",
+    "line-scale-pulse",
+    "barcode",
+    "equalizer",
     "falling-lines",
     "rotating-lines",
     "rotating-triangles",
@@ -101,7 +167,7 @@ const CATEGORIES: Record<string, LoaderType[]> = {
     "hairball",
     "whirl",
   ],
-  "3D & advanced": ["cube", "orbit", "typing", "blink", "squircle", "three-d"],
+  "3D & advanced": ["cube", "pyramid", "orbit", "typing", "blink", "squircle", "three-d"],
   Text: [
     "text-sequence",
     "text-wave",
@@ -125,6 +191,12 @@ const CATEGORIES: Record<string, LoaderType[]> = {
     "text-rainbow",
     "text-ripple",
     "text-zoom",
+    "text-fade",
+    "text-blur",
+    "text-jump",
+    "text-swing",
+    "text-squish",
+    "text-fill",
   ],
   Image: [
     "image-spin",
@@ -161,6 +233,87 @@ const CATEGORIES: Record<string, LoaderType[]> = {
     "skeleton-comment",
   ],
 };
+
+/* ------------------------------------------------------------------ */
+/* "NEW" badge config                                                  */
+/*                                                                      */
+/* To flag a design as new: add one line below with the date it was    */
+/* added (YYYY-MM-DD). A "NEW" badge shows on that loader's card for    */
+/* NEW_BADGE_DAYS days after that date, then disappears automatically. */
+/* Adding more designs later? Just add more lines here — same rule.    */
+/* ------------------------------------------------------------------ */
+
+const NEW_BADGE_DAYS = 30;
+
+const NEW_DESIGNS: Partial<Record<LoaderType, string>> = {
+  "gradient-spinner": "2026-07-13",
+  "conic-gradient": "2026-07-13",
+  "border-rotate": "2026-07-13",
+  "simple-circle": "2026-07-13",
+  // v1.1.0 — extended classic loaders
+  "folding-cube": "2026-07-13",
+  "cube-grid": "2026-07-13",
+  "chasing-dots": "2026-07-13",
+  "double-bounce": "2026-07-13",
+  "rotating-plane": "2026-07-13",
+  "fading-circle": "2026-07-13",
+  atom: "2026-07-13",
+  fingerprint: "2026-07-13",
+  flower: "2026-07-13",
+  pinwheel: "2026-07-13",
+  helix: "2026-07-13",
+  "newton-cradle": "2026-07-13",
+  jelly: "2026-07-13",
+  spiral: "2026-07-13",
+  gear: "2026-07-13",
+  heart: "2026-07-13",
+  // v1.2.0 — more loaders (ldrs + fun/shapes)
+  roller: "2026-07-13",
+  ellipsis: "2026-07-13",
+  "ring-2": "2026-07-13",
+  "spinner-blade": "2026-07-13",
+  ping: "2026-07-13",
+  "pulse-ring": "2026-07-13",
+  metronome: "2026-07-13",
+  waveform: "2026-07-13",
+  wobble: "2026-07-13",
+  quantum: "2026-07-13",
+  trefoil: "2026-07-13",
+  "dot-stream": "2026-07-13",
+  reuleaux: "2026-07-13",
+  superballs: "2026-07-13",
+  planet: "2026-07-13",
+  "coin-flip": "2026-07-13",
+  droplet: "2026-07-13",
+  battery: "2026-07-13",
+  star: "2026-07-13",
+  hexagon: "2026-07-13",
+  pentagon: "2026-07-13",
+  gears: "2026-07-13",
+  // v1.3.0 — line & bar + more text
+  "line-bar": "2026-07-13",
+  "line-slide": "2026-07-13",
+  "line-scale": "2026-07-13",
+  "line-scale-pulse": "2026-07-13",
+  barcode: "2026-07-13",
+  equalizer: "2026-07-13",
+  "text-fade": "2026-07-13",
+  "text-blur": "2026-07-13",
+  "text-jump": "2026-07-13",
+  "text-swing": "2026-07-13",
+  "text-squish": "2026-07-13",
+  "text-fill": "2026-07-13",
+};
+
+/** True while a design is still within its NEW_BADGE_DAYS window from its added date. */
+function isNewDesign(type: LoaderType): boolean {
+  const added = NEW_DESIGNS[type];
+  if (!added) return false;
+  const addedTime = new Date(`${added}T00:00:00`).getTime();
+  if (Number.isNaN(addedTime)) return false;
+  const ageMs = Date.now() - addedTime;
+  return ageMs >= 0 && ageMs < NEW_BADGE_DAYS * 24 * 60 * 60 * 1000;
+}
 
 const COLOR_PRESETS = [
   { name: "Default", value: "" },
@@ -417,7 +570,7 @@ function TopBar({
                 flexShrink: 0,
               }}
             >
-              V1.0.1
+              V1.1.0
             </span>
           )}
         </div>
@@ -490,7 +643,7 @@ function Hero({ totalCount }: { totalCount: number }) {
             background: "currentColor",
           }}
         />
-        V1.0.1 · Now available
+        V1.1.0 · Now available
       </div>
 
       {/* Headline with partial gradient on the middle phrase */}
@@ -1688,6 +1841,7 @@ function LoaderCard({
       {/* Preview */}
       <div
         style={{
+          position: "relative",
           height: 170,
           display: "flex",
           alignItems: "center",
@@ -1697,6 +1851,28 @@ function LoaderCard({
             "1px solid color-mix(in srgb, currentColor 8%, transparent)",
         }}
       >
+        {isNewDesign(type) && (
+          <span
+            style={{
+              position: "absolute",
+              top: 10,
+              right: 10,
+              padding: "3px 9px",
+              borderRadius: 999,
+              background: BRAND_GRADIENT,
+              color: "#fff",
+              fontSize: 10,
+              fontWeight: 800,
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+              boxShadow: BRAND_SHADOW,
+              pointerEvents: "none",
+              zIndex: 1,
+            }}
+          >
+            New
+          </span>
+        )}
         <Loader
           type={type}
           size={size}
@@ -2511,6 +2687,19 @@ interface ChangelogEntry {
 }
 
 const CHANGELOG: ChangelogEntry[] = [
+  {
+    version: "1.1.0",
+    date: "July 13, 2026",
+    type: "Minor",
+    highlights: [
+      "14 new loaders including a 3D Pyramid and 12 community picks from uiverse.io",
+      "MagnifyingScan — magnifying glass that scans in a circular path",
+      "NeonRing, AudiRings, CapsulePinwheel, StaggerBars, ProgressBar, CurveArcs",
+      "FoldRibbon (3D), ShapeDraw, Bicycle, LoadingBall, RainCloud, Matchstick",
+      "RotatingTriangles now fills its full width (preserveAspectRatio fix)",
+      "More reliable build: 'use client' post-processing no longer races the DTS output",
+    ],
+  },
   {
     version: "1.0.1",
     date: "June 8, 2026",

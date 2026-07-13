@@ -33,7 +33,11 @@ export const ColorRing = forwardRef<HTMLDivElement, ColorRingProps>(function Col
               position: 'absolute',
               inset: 0,
               borderRadius: '50%',
-              border: `${thickness}px solid transparent`,
+              // Longhand only (see DualRing): avoids the shorthand resetting the
+              // colored top edge when `thickness` changes.
+              borderStyle: 'solid',
+              borderWidth: `${thickness}px`,
+              borderColor: 'transparent',
               borderTopColor: c,
               boxSizing: 'border-box',
               animation: `${KEYFRAME.spin} ${1.5 + i * 0.3}s cubic-bezier(0.5, 0, 0.5, 1) infinite`,

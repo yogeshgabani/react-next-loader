@@ -14,7 +14,12 @@ export const DualRing = forwardRef<HTMLDivElement, BaseLoaderProps>(function Dua
           width: '100%',
           height: '100%',
           borderRadius: '50%',
-          border: `${thickness}px solid transparent`,
+          // Longhand only: the `border` shorthand resets border colors on every
+          // update, so mixing it with `borderTopColor` hides the ring when
+          // `thickness` changes. `borderWidth` alone keeps the colors intact.
+          borderStyle: 'solid',
+          borderWidth: `${thickness}px`,
+          borderColor: 'transparent',
           borderTopColor: 'var(--rl-color)',
           borderBottomColor: 'var(--rl-color)',
           boxShadow: 'var(--rl-glow)',

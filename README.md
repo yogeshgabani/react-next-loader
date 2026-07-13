@@ -2,7 +2,7 @@
 
 # react-next-loader
 
-> All-in-one React loader library — 90+ animated loaders, skeletons, progress bars, text effects, AI-style loaders, and image loaders. Works seamlessly with React, Next.js (App + Pages Router), Vite, Remix, and CRA — in both TypeScript and JavaScript.
+> All-in-one React loader library — 100+ animated loaders, skeletons, progress bars, text effects, AI-style loaders, and image loaders. Works seamlessly with React, Next.js (App + Pages Router), Vite, Remix, and CRA — in both TypeScript and JavaScript.
 
 [![npm](https://img.shields.io/npm/v/react-next-loader.svg?color=4f46e5&style=flat-square)](https://www.npmjs.com/package/react-next-loader)
 [![downloads](https://img.shields.io/npm/dm/react-next-loader.svg?color=10b981&style=flat-square)](https://www.npmjs.com/package/react-next-loader)
@@ -12,7 +12,7 @@
 
 </div>
 
-**v1.0.1 — Stable release.** Production-ready, fully typed, SSR-safe, tree-shakable, and accessible.
+**v1.1.0 — 100+ loaders.** Production-ready, fully typed, SSR-safe, tree-shakable, and accessible.
 
 🌐 **[Live Demo →](https://react-next-loader.netlify.app/)** &nbsp;•&nbsp; 📦 **[NPM](https://www.npmjs.com/package/react-next-loader)** &nbsp;•&nbsp; 💻 **[GitHub](https://github.com/yogeshgabani/react-next-loader)**
 
@@ -55,7 +55,7 @@ Try every loader, skeleton, progress bar, and text effect interactively in the b
 
 The playground lets you:
 
-- Browse all 90+ loaders grouped by category (Basics, AI/Modern, 3D, Text, etc.)
+- Browse all 100+ loaders grouped by category (Basics, AI/Modern, 3D, Text, etc.)
 - Tweak `size`, `color`, `speed`, `thickness`, `label`, and other props live
 - Copy ready-to-paste code snippets for each loader
 - Toggle light / dark / auto theme modes
@@ -76,7 +76,7 @@ npm run dev
 
 ## Features
 
-- **90+ animated loaders** — spinners, rings, dots, bars, waves, AI/modern (GradientOrb, NeuralNetwork, Matrix, Hologram, Cyberpunk), 3D (Cube, Orbit), specialty (Clock, Watch, MagnifyingGlass), and more
+- **100+ animated loaders** — spinners, rings, dots, bars, waves, AI/modern (GradientOrb, NeuralNetwork, Matrix, Hologram, Cyberpunk), 3D (Cube, Pyramid, Orbit), specialty (Clock, Watch, MagnifyingGlass, MagnifyingScan), and more
 - **20+ text loader effects** — typing, glitch, neon, rainbow, ripple, flip3D, bounce, elastic, stretch, spin, drop, zoom, and more
 - **13 skeleton components** — text, avatar, card, bar, image, button, profile, list, grid, comment, paragraph variants with shimmer / pulse / wave animations
 - **Progress bars** — linear (determinate + indeterminate, gradient) and circular
@@ -169,7 +169,7 @@ import { Loader } from 'react-next-loader';
 
 ### Specialty
 
-`Clock`, `Watch`, `Propagate`, `MagnifyingGlass`
+`Clock`, `Watch`, `Propagate`, `MagnifyingGlass`, `MagnifyingScan`
 
 ### react-loader-spinner family
 
@@ -185,11 +185,15 @@ import { Loader } from 'react-next-loader';
 
 ### 3D / advanced
 
-`Cube`, `Orbit`, `Typing`, `Blink`, `Squircle`
+`Cube`, `Pyramid`, `Orbit`, `Typing`, `Blink`, `Squircle`
 
 ### Multi-color / new
 
 `RotatingSquare`, `Hairball`, `Whirl`, `FlipFlop`, `ThreeD`
+
+### Fun & community (v1.1.0)
+
+`NeonRing`, `AudiRings`, `CapsulePinwheel`, `StaggerBars`, `ProgressBar`, `CurveArcs`, `FoldRibbon`, `ShapeDraw`, `Bicycle`, `LoadingBall`, `RainCloud`, `Matchstick`
 
 ```tsx
 import { GradientOrb, Cube, NeuralNetwork } from 'react-next-loader/loaders';
@@ -566,6 +570,15 @@ If you're adding a new loader, please:
 ## Changelog
 
 A short summary of recent releases. See **[CHANGELOG.md](./CHANGELOG.md)** for full release notes.
+
+### v1.1.0 — _2026-07-13_ (Minor)
+
+- ✨ **14 new loaders** (catalog now 100+): `MagnifyingScan`, `Pyramid` (3D), and 12 community picks recreated in pure CSS from [uiverse.io](https://uiverse.io/loaders)
+- ✨ `NeonRing`, `AudiRings`, `CapsulePinwheel`, `StaggerBars`, `ProgressBar`, `CurveArcs`, `FoldRibbon`, `ShapeDraw`, `Bicycle`, `LoadingBall`, `RainCloud`, `Matchstick`
+- ✨ New colour props: `AudiRingsProps`, `CapsulePinwheelProps`, `CurveArcsProps`, `FoldRibbonProps`, `RainCloudProps`, `MatchstickProps`
+- 🐛 `RotatingTriangles` now fills its full width (`preserveAspectRatio="none"`)
+- 🐛 More reliable build — `"use client"` post-processing no longer races the DTS output
+- ✅ Minor release — no breaking API changes; all existing imports and props work unchanged
 
 ### v1.0.1 — _2026-06-08_ (Patch)
 

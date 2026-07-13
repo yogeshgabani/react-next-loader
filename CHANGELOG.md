@@ -7,6 +7,56 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.1.0] — 2026-07-13
+
+### Added
+
+- **14 new loaders**, bringing the catalog to 100+ animated loaders:
+  - **`MagnifyingScan`** (`magnifying-scan`) — a magnifying glass that sweeps
+    along a circular scanning path (complements the existing `MagnifyingGlass`).
+  - **`Pyramid`** (`pyramid`) — a rotating 3D tetrahedron built from four
+    translucent triangular faces, each reusing `--rl-color` at a different
+    opacity for a glassy, layered look.
+  - **12 community-inspired picks** recreated in pure CSS from
+    [uiverse.io](https://uiverse.io/loaders):
+    - `NeonRing` (`neon-ring`) — glowing neon ring with a pulsing `LOADING` label.
+    - `AudiRings` (`audi-rings`) — four overlapping rings lighting up in sequence.
+    - `CapsulePinwheel` (`capsule-pinwheel`) — four coloured capsules spinning as a pinwheel.
+    - `StaggerBars` (`stagger-bars`) — staggered sliding bars with a ball gliding across the top.
+    - `ProgressBar` (`progress-bar`) — indeterminate horizontal bar with a sweeping fill.
+    - `CurveArcs` (`curve-arcs`) — three nested, multi-colour arcs spinning together.
+    - `FoldRibbon` (`fold-ribbon`) — a glossy 3D ribbon that folds and tumbles.
+    - `ShapeDraw` (`shape-draw`) — circle, triangle and square outlines drawn on a loop.
+    - `Bicycle` (`bicycle`) — line-art bicycle with spinning wheels.
+    - `LoadingBall` (`loading-ball`) — `Loading...` wordmark with a ball gliding across it.
+    - `RainCloud` (`rain-cloud`) — a cloud with rain drops streaking down.
+    - `Matchstick` (`matchstick`) — two glowing match-sticks pulsing alternately.
+- New per-loader colour props where relevant: `AudiRingsProps`,
+  `CapsulePinwheelProps`, `CurveArcsProps`, `FoldRibbonProps`,
+  `RainCloudProps`, and `MatchstickProps`.
+- All new loaders are registered in `LOADER_REGISTRY`, so the unified
+  `<Loader type="..." />` API works for every one of them.
+
+### Fixed
+
+- **`RotatingTriangles` now fills its full width.** The two triangle SVGs used
+  the default `preserveAspectRatio` ("meet"), which letter-boxed them into the
+  middle half of the box; they now use `preserveAspectRatio="none"` and stretch
+  to the full width.
+- **More reliable production build.** The `prependUseClient` post-build step now
+  reads directory entries with `withFileTypes` and skips declaration files, so it
+  no longer throws `ENOENT` when a hashed `.d.cts` file is still being finalised
+  by the DTS build. (`"use client"` is still injected via the tsup `banner`, so
+  runtime output is unchanged.)
+
+### Notes
+
+- This is a **minor** release: it only adds new loaders and props — there are
+  **no breaking API changes**, so existing imports, component names, and props
+  continue to work unchanged.
+
+---
+
 ## [1.0.1] — 2026-06-08
 
 ### Fixed
