@@ -16,7 +16,11 @@ export const RotatingSquare = forwardRef<HTMLDivElement, BaseLoaderProps>(functi
         style={{
           width: '80%',
           height: '80%',
-          border: `${thickness}px solid var(--rl-color)`,
+          // Longhand only (see DualRing): the shorthand would restore the bottom
+          // edge on every `thickness` change.
+          borderStyle: 'solid',
+          borderWidth: `${thickness}px`,
+          borderColor: 'var(--rl-color)',
           borderBottomColor: 'transparent',
           boxSizing: 'border-box',
           boxShadow: 'var(--rl-glow)',

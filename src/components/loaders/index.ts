@@ -46,6 +46,7 @@ export { Clock } from './Clock';
 export { Watch } from './Watch';
 export { Propagate } from './Propagate';
 export { MagnifyingGlass } from './MagnifyingGlass';
+export { MagnifyingScan } from './MagnifyingScan';
 
 // v0.3.0 — react-loader-spinner remaining
 export { Audio } from './Audio';
@@ -83,6 +84,7 @@ export { XLVI } from './XLVI';
 
 // v0.3.0 — 3D / advanced
 export { Cube } from './Cube';
+export { Pyramid } from './Pyramid';
 export { Orbit } from './Orbit';
 export { Typing } from './Typing';
 export { Blink } from './Blink';
@@ -113,6 +115,90 @@ export { TextGradient } from './TextGradient';
 // v0.6.0 — image loader
 export { ImageLoader } from './ImageLoader';
 export type { ImageLoaderProps, ImageAnimation } from './ImageLoader';
+
+// v1.1.0 — gradient & circle designs
+export { GradientSpinner } from './GradientSpinner';
+export { ConicGradient } from './ConicGradient';
+export { BorderRotate } from './BorderRotate';
+export { SimpleCircle } from './SimpleCircle';
+
+// v1.1.0 — extended classic loaders
+export { FoldingCube } from './FoldingCube';
+export { CubeGrid } from './CubeGrid';
+export { ChasingDots } from './ChasingDots';
+export { DoubleBounce } from './DoubleBounce';
+export { RotatingPlane } from './RotatingPlane';
+export { FadingCircle } from './FadingCircle';
+export { Atom } from './Atom';
+export { Fingerprint } from './Fingerprint';
+export { Flower } from './Flower';
+export { Pinwheel } from './Pinwheel';
+export { Helix } from './Helix';
+export { NewtonCradle } from './NewtonCradle';
+export { Jelly } from './Jelly';
+export { Spiral } from './Spiral';
+export { Gear } from './Gear';
+export { Heart } from './Heart';
+
+// v1.2.0 — more loaders (ldrs + fun/shapes)
+export { Roller } from './Roller';
+export { Ellipsis } from './Ellipsis';
+export { Ring2 } from './Ring2';
+export { SpinnerBlade } from './SpinnerBlade';
+export { Ping } from './Ping';
+export { Metronome } from './Metronome';
+export { Waveform } from './Waveform';
+export { Wobble } from './Wobble';
+export { Quantum } from './Quantum';
+export { Trefoil } from './Trefoil';
+export { DotStream } from './DotStream';
+export { Reuleaux } from './Reuleaux';
+export { Droplet } from './Droplet';
+export { Battery } from './Battery';
+export { Star } from './Star';
+export { CoinFlip } from './CoinFlip';
+export { Hexagon } from './Hexagon';
+export { Pentagon } from './Pentagon';
+export { Gears } from './Gears';
+export { Planet } from './Planet';
+export { Superballs } from './Superballs';
+export { PulseRing } from './PulseRing';
+
+// v1.3.0 — line & bar loaders
+export { LineBar } from './LineBar';
+export { LineSlide } from './LineSlide';
+export { Barcode } from './Barcode';
+export { LineScale } from './LineScale';
+export { LineScalePulse } from './LineScalePulse';
+export { Equalizer } from './Equalizer';
+
+// v1.4.0 — uiverse picks
+export { NeonRing } from './NeonRing';
+export { AudiRings } from './AudiRings';
+export type { AudiRingsProps } from './AudiRings';
+export { CapsulePinwheel } from './CapsulePinwheel';
+export type { CapsulePinwheelProps } from './CapsulePinwheel';
+export { StaggerBars } from './StaggerBars';
+export { ProgressBar } from './ProgressBar';
+export { CurveArcs } from './CurveArcs';
+export type { CurveArcsProps } from './CurveArcs';
+export { FoldRibbon } from './FoldRibbon';
+export type { FoldRibbonProps } from './FoldRibbon';
+export { ShapeDraw } from './ShapeDraw';
+export { Bicycle } from './Bicycle';
+export { LoadingBall } from './LoadingBall';
+export { RainCloud } from './RainCloud';
+export type { RainCloudProps } from './RainCloud';
+export { Matchstick } from './Matchstick';
+export type { MatchstickProps } from './Matchstick';
+
+// v1.3.0 — more text effects
+export { TextFade } from './TextFade';
+export { TextBlur } from './TextBlur';
+export { TextJump } from './TextJump';
+export { TextSwing } from './TextSwing';
+export { TextSquish } from './TextSquish';
+export { TextFill } from './TextFill';
 
 // v0.5.1 — extra text effects
 export { TextTyping } from './TextTyping';

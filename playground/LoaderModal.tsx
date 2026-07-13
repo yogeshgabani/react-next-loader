@@ -604,12 +604,12 @@ export function LoaderModal({
             <input
               type="number"
               min={1}
-              max={12}
+              max={24}
               placeholder="auto"
               value={thickness}
               onChange={(e) => {
                 const v = e.target.value;
-                setThickness(v === '' ? '' : Math.max(1, Math.min(12, Number(v))));
+                setThickness(v === '' ? '' : Math.max(1, Math.min(24, Number(v))));
               }}
               style={{ ...inputStyle, ...mono }}
             />

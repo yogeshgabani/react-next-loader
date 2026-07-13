@@ -14,7 +14,11 @@ export const Clip = forwardRef<HTMLDivElement, BaseLoaderProps>(function Clip(pr
           width: '100%',
           height: '100%',
           borderRadius: '50%',
-          border: `${thickness}px solid var(--rl-color)`,
+          // Longhand only (see DualRing): the `border` shorthand would restore the
+          // bottom/left edges on every `thickness` change, filling the clip gap.
+          borderStyle: 'solid',
+          borderWidth: `${thickness}px`,
+          borderColor: 'var(--rl-color)',
           borderBottomColor: 'transparent',
           borderLeftColor: 'transparent',
           boxShadow: 'var(--rl-glow)',

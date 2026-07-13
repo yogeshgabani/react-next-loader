@@ -48,6 +48,7 @@ export type LoaderType =
   | 'watch'
   | 'propagate'
   | 'magnifying-glass'
+  | 'magnifying-scan'
   // react-loader-spinner remaining
   | 'audio'
   | 'blocks'
@@ -81,6 +82,7 @@ export type LoaderType =
   | 'xlvi'
   // 3D / advanced
   | 'cube'
+  | 'pyramid'
   | 'orbit'
   | 'typing'
   | 'blink'
@@ -132,6 +134,78 @@ export type LoaderType =
   | 'image-tada'
   | 'image-zoom'
   | 'image-ring'
+  // v1.1.0 — gradient & circle designs
+  | 'gradient-spinner'
+  | 'conic-gradient'
+  | 'border-rotate'
+  | 'simple-circle'
+  // v1.1.0 — extended classic loaders
+  | 'folding-cube'
+  | 'cube-grid'
+  | 'chasing-dots'
+  | 'double-bounce'
+  | 'rotating-plane'
+  | 'fading-circle'
+  | 'atom'
+  | 'fingerprint'
+  | 'flower'
+  | 'pinwheel'
+  | 'helix'
+  | 'newton-cradle'
+  | 'jelly'
+  | 'spiral'
+  | 'gear'
+  | 'heart'
+  // v1.2.0 — more loaders (ldrs + fun/shapes)
+  | 'roller'
+  | 'ellipsis'
+  | 'ring-2'
+  | 'spinner-blade'
+  | 'ping'
+  | 'metronome'
+  | 'waveform'
+  | 'wobble'
+  | 'quantum'
+  | 'trefoil'
+  | 'dot-stream'
+  | 'reuleaux'
+  | 'droplet'
+  | 'battery'
+  | 'star'
+  | 'coin-flip'
+  | 'hexagon'
+  | 'pentagon'
+  | 'gears'
+  | 'planet'
+  | 'superballs'
+  | 'pulse-ring'
+  // v1.3.0 — line & bar loaders
+  | 'line-bar'
+  | 'line-slide'
+  | 'barcode'
+  | 'line-scale'
+  | 'line-scale-pulse'
+  | 'equalizer'
+  // v1.3.0 — more text effects
+  | 'text-fade'
+  | 'text-blur'
+  | 'text-jump'
+  | 'text-swing'
+  | 'text-squish'
+  | 'text-fill'
+  // v1.4.0 — uiverse picks
+  | 'neon-ring'
+  | 'audi-rings'
+  | 'capsule-pinwheel'
+  | 'stagger-bars'
+  | 'progress-bar'
+  | 'curve-arcs'
+  | 'fold-ribbon'
+  | 'shape-draw'
+  | 'bicycle'
+  | 'loading-ball'
+  | 'rain-cloud'
+  | 'matchstick'
   // v0.7.0 — skeletons
   | 'skeleton-bar'
   | 'skeleton-text'
@@ -191,6 +265,7 @@ export const LOADER_REGISTRY: Record<LoaderType, LoaderComponent> = {
   watch: lazy(() => import('./components/loaders/Watch').then((m) => ({ default: m.Watch }))),
   propagate: lazy(() => import('./components/loaders/Propagate').then((m) => ({ default: m.Propagate }))),
   'magnifying-glass': lazy(() => import('./components/loaders/MagnifyingGlass').then((m) => ({ default: m.MagnifyingGlass }))),
+  'magnifying-scan': lazy(() => import('./components/loaders/MagnifyingScan').then((m) => ({ default: m.MagnifyingScan }))),
 
   // v0.3.0 — react-loader-spinner remaining
   audio: lazy(() => import('./components/loaders/Audio').then((m) => ({ default: m.Audio }))),
@@ -228,6 +303,7 @@ export const LOADER_REGISTRY: Record<LoaderType, LoaderComponent> = {
 
   // v0.3.0 — 3D / advanced
   cube: lazy(() => import('./components/loaders/Cube').then((m) => ({ default: m.Cube }))),
+  pyramid: lazy(() => import('./components/loaders/Pyramid').then((m) => ({ default: m.Pyramid }))),
   orbit: lazy(() => import('./components/loaders/Orbit').then((m) => ({ default: m.Orbit }))),
   typing: lazy(() => import('./components/loaders/Typing').then((m) => ({ default: m.Typing }))),
   blink: lazy(() => import('./components/loaders/Blink').then((m) => ({ default: m.Blink }))),
@@ -283,6 +359,84 @@ export const LOADER_REGISTRY: Record<LoaderType, LoaderComponent> = {
   'image-tada':      makeImageLazy('tada'),
   'image-zoom':      makeImageLazy('zoom'),
   'image-ring':      makeImageLazy('ring'),
+
+  // v1.1.0 — gradient & circle designs
+  'gradient-spinner': lazy(() => import('./components/loaders/GradientSpinner').then((m) => ({ default: m.GradientSpinner }))),
+  'conic-gradient': lazy(() => import('./components/loaders/ConicGradient').then((m) => ({ default: m.ConicGradient }))),
+  'border-rotate': lazy(() => import('./components/loaders/BorderRotate').then((m) => ({ default: m.BorderRotate }))),
+  'simple-circle': lazy(() => import('./components/loaders/SimpleCircle').then((m) => ({ default: m.SimpleCircle }))),
+
+  // v1.1.0 — extended classic loaders
+  'folding-cube': lazy(() => import('./components/loaders/FoldingCube').then((m) => ({ default: m.FoldingCube }))),
+  'cube-grid': lazy(() => import('./components/loaders/CubeGrid').then((m) => ({ default: m.CubeGrid }))),
+  'chasing-dots': lazy(() => import('./components/loaders/ChasingDots').then((m) => ({ default: m.ChasingDots }))),
+  'double-bounce': lazy(() => import('./components/loaders/DoubleBounce').then((m) => ({ default: m.DoubleBounce }))),
+  'rotating-plane': lazy(() => import('./components/loaders/RotatingPlane').then((m) => ({ default: m.RotatingPlane }))),
+  'fading-circle': lazy(() => import('./components/loaders/FadingCircle').then((m) => ({ default: m.FadingCircle }))),
+  atom: lazy(() => import('./components/loaders/Atom').then((m) => ({ default: m.Atom }))),
+  fingerprint: lazy(() => import('./components/loaders/Fingerprint').then((m) => ({ default: m.Fingerprint }))),
+  flower: lazy(() => import('./components/loaders/Flower').then((m) => ({ default: m.Flower }))),
+  pinwheel: lazy(() => import('./components/loaders/Pinwheel').then((m) => ({ default: m.Pinwheel }))),
+  helix: lazy(() => import('./components/loaders/Helix').then((m) => ({ default: m.Helix }))),
+  'newton-cradle': lazy(() => import('./components/loaders/NewtonCradle').then((m) => ({ default: m.NewtonCradle }))),
+  jelly: lazy(() => import('./components/loaders/Jelly').then((m) => ({ default: m.Jelly }))),
+  spiral: lazy(() => import('./components/loaders/Spiral').then((m) => ({ default: m.Spiral }))),
+  gear: lazy(() => import('./components/loaders/Gear').then((m) => ({ default: m.Gear }))),
+  heart: lazy(() => import('./components/loaders/Heart').then((m) => ({ default: m.Heart }))),
+
+  // v1.2.0 — more loaders (ldrs + fun/shapes)
+  roller: lazy(() => import('./components/loaders/Roller').then((m) => ({ default: m.Roller }))),
+  ellipsis: lazy(() => import('./components/loaders/Ellipsis').then((m) => ({ default: m.Ellipsis }))),
+  'ring-2': lazy(() => import('./components/loaders/Ring2').then((m) => ({ default: m.Ring2 }))),
+  'spinner-blade': lazy(() => import('./components/loaders/SpinnerBlade').then((m) => ({ default: m.SpinnerBlade }))),
+  ping: lazy(() => import('./components/loaders/Ping').then((m) => ({ default: m.Ping }))),
+  metronome: lazy(() => import('./components/loaders/Metronome').then((m) => ({ default: m.Metronome }))),
+  waveform: lazy(() => import('./components/loaders/Waveform').then((m) => ({ default: m.Waveform }))),
+  wobble: lazy(() => import('./components/loaders/Wobble').then((m) => ({ default: m.Wobble }))),
+  quantum: lazy(() => import('./components/loaders/Quantum').then((m) => ({ default: m.Quantum }))),
+  trefoil: lazy(() => import('./components/loaders/Trefoil').then((m) => ({ default: m.Trefoil }))),
+  'dot-stream': lazy(() => import('./components/loaders/DotStream').then((m) => ({ default: m.DotStream }))),
+  reuleaux: lazy(() => import('./components/loaders/Reuleaux').then((m) => ({ default: m.Reuleaux }))),
+  droplet: lazy(() => import('./components/loaders/Droplet').then((m) => ({ default: m.Droplet }))),
+  battery: lazy(() => import('./components/loaders/Battery').then((m) => ({ default: m.Battery }))),
+  star: lazy(() => import('./components/loaders/Star').then((m) => ({ default: m.Star }))),
+  'coin-flip': lazy(() => import('./components/loaders/CoinFlip').then((m) => ({ default: m.CoinFlip }))),
+  hexagon: lazy(() => import('./components/loaders/Hexagon').then((m) => ({ default: m.Hexagon }))),
+  pentagon: lazy(() => import('./components/loaders/Pentagon').then((m) => ({ default: m.Pentagon }))),
+  gears: lazy(() => import('./components/loaders/Gears').then((m) => ({ default: m.Gears }))),
+  planet: lazy(() => import('./components/loaders/Planet').then((m) => ({ default: m.Planet }))),
+  superballs: lazy(() => import('./components/loaders/Superballs').then((m) => ({ default: m.Superballs }))),
+  'pulse-ring': lazy(() => import('./components/loaders/PulseRing').then((m) => ({ default: m.PulseRing }))),
+
+  // v1.3.0 — line & bar loaders
+  'line-bar': lazy(() => import('./components/loaders/LineBar').then((m) => ({ default: m.LineBar }))),
+  'line-slide': lazy(() => import('./components/loaders/LineSlide').then((m) => ({ default: m.LineSlide }))),
+  barcode: lazy(() => import('./components/loaders/Barcode').then((m) => ({ default: m.Barcode }))),
+  'line-scale': lazy(() => import('./components/loaders/LineScale').then((m) => ({ default: m.LineScale }))),
+  'line-scale-pulse': lazy(() => import('./components/loaders/LineScalePulse').then((m) => ({ default: m.LineScalePulse }))),
+  equalizer: lazy(() => import('./components/loaders/Equalizer').then((m) => ({ default: m.Equalizer }))),
+
+  // v1.3.0 — more text effects
+  'text-fade': lazy(() => import('./components/loaders/TextFade').then((m) => ({ default: m.TextFade as ComponentType<BaseLoaderProps> }))),
+  'text-blur': lazy(() => import('./components/loaders/TextBlur').then((m) => ({ default: m.TextBlur as ComponentType<BaseLoaderProps> }))),
+  'text-jump': lazy(() => import('./components/loaders/TextJump').then((m) => ({ default: m.TextJump as ComponentType<BaseLoaderProps> }))),
+  'text-swing': lazy(() => import('./components/loaders/TextSwing').then((m) => ({ default: m.TextSwing as ComponentType<BaseLoaderProps> }))),
+  'text-squish': lazy(() => import('./components/loaders/TextSquish').then((m) => ({ default: m.TextSquish as ComponentType<BaseLoaderProps> }))),
+  'text-fill': lazy(() => import('./components/loaders/TextFill').then((m) => ({ default: m.TextFill as ComponentType<BaseLoaderProps> }))),
+
+  // v1.4.0 — uiverse picks
+  'neon-ring': lazy(() => import('./components/loaders/NeonRing').then((m) => ({ default: m.NeonRing }))),
+  'audi-rings': lazy(() => import('./components/loaders/AudiRings').then((m) => ({ default: m.AudiRings as ComponentType<BaseLoaderProps> }))),
+  'capsule-pinwheel': lazy(() => import('./components/loaders/CapsulePinwheel').then((m) => ({ default: m.CapsulePinwheel as ComponentType<BaseLoaderProps> }))),
+  'stagger-bars': lazy(() => import('./components/loaders/StaggerBars').then((m) => ({ default: m.StaggerBars }))),
+  'progress-bar': lazy(() => import('./components/loaders/ProgressBar').then((m) => ({ default: m.ProgressBar }))),
+  'curve-arcs': lazy(() => import('./components/loaders/CurveArcs').then((m) => ({ default: m.CurveArcs as ComponentType<BaseLoaderProps> }))),
+  'fold-ribbon': lazy(() => import('./components/loaders/FoldRibbon').then((m) => ({ default: m.FoldRibbon as ComponentType<BaseLoaderProps> }))),
+  'shape-draw': lazy(() => import('./components/loaders/ShapeDraw').then((m) => ({ default: m.ShapeDraw }))),
+  bicycle: lazy(() => import('./components/loaders/Bicycle').then((m) => ({ default: m.Bicycle }))),
+  'loading-ball': lazy(() => import('./components/loaders/LoadingBall').then((m) => ({ default: m.LoadingBall }))),
+  'rain-cloud': lazy(() => import('./components/loaders/RainCloud').then((m) => ({ default: m.RainCloud as ComponentType<BaseLoaderProps> }))),
+  matchstick: lazy(() => import('./components/loaders/Matchstick').then((m) => ({ default: m.Matchstick as ComponentType<BaseLoaderProps> }))),
 
   // v0.7.0 — skeletons
   'skeleton-bar':           skeletonLazy('SkeletonBar'),
