@@ -220,6 +220,7 @@
     "dev": "vite --config playground/vite.config.ts",
     "build:playground": "vite build --config playground/vite.config.ts",
     "preview:playground": "vite preview --config playground/vite.config.ts",
+    "og:image": "node scripts/generate-og-image.mjs",
     "typecheck": "cross-env NODE_OPTIONS=--max-old-space-size=8192 tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",

@@ -2357,7 +2357,7 @@ function ScrollToTop() {
 }
 
 /* ------------------------------------------------------------------ */
-/* Site stats strip — Last Updated / Total Hits / Total Visitors      */
+/* Site stats strip — Last Updated / Hits / Visitors / npm Downloads  */
 /* ------------------------------------------------------------------ */
 
 // When you ship a new build, bump this constant (it's just a visible label).
@@ -2369,6 +2369,31 @@ const STATS_NAMESPACE = "rnl-yogeshgabani";
 const STATS_HITS_KEY = "hits";
 const STATS_VISITORS_KEY = "visitors";
 const STATS_VISITOR_FLAG = "rnl_visitor_id"; // localStorage key
+
+// npm's public downloads API (CORS-enabled, no auth required).
+const NPM_PACKAGE = "react-next-loader";
+const NPM_PACKAGE_URL = `https://www.npmjs.com/package/${NPM_PACKAGE}`;
+const NPM_FIRST_PUBLISHED = "2026-05-27";
+const NPM_DOWNLOADS_API = "https://api.npmjs.org/downloads/point";
+
+// All-time downloads. npm caps a single range query at 18 months, so the period
+// since first publish is split into ≤540-day windows and summed.
+function fetchNpmTotalDownloads(): Promise<number> {
+  const DAY = 86_400_000;
+  const toDate = (t: number) => new Date(t).toISOString().slice(0, 10);
+  const now = Date.now();
+  const ranges: string[] = [];
+  for (let start = Date.parse(NPM_FIRST_PUBLISHED); start <= now; start += 540 * DAY) {
+    ranges.push(`${toDate(start)}:${toDate(Math.min(start + 539 * DAY, now))}`);
+  }
+  return Promise.all(
+    ranges.map((range) =>
+      fetch(`${NPM_DOWNLOADS_API}/${range}/${NPM_PACKAGE}`)
+        .then((r) => (r.ok ? r.json() : Promise.reject()))
+        .then((d) => Number(d?.downloads) || 0),
+    ),
+  ).then((parts) => parts.reduce((a, b) => a + b, 0));
+}
 
 function formatStat(n: number): string {
   if (!Number.isFinite(n) || n < 0) return "—";
@@ -2425,7 +2450,7 @@ const STATS_CSS = `
 }
 .pg-stats-strip-inner {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 12px;
 }
 .pg-stat {
@@ -2540,21 +2565,45 @@ const STATS_CSS = `
   0%, 100% { opacity: 1; transform: scale(1); }
   50% { opacity: 0.4; transform: scale(0.8); }
 }
+/* npm downloads card is a link to the package page */
+a.pg-stat {
+  color: inherit;
+  text-decoration: none;
+}
+.pg-stat-week {
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--rl-theme-primary) 16%, transparent);
+  color: var(--rl-theme-primary);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+@media (max-width: 1024px) {
+  .pg-stats-strip-inner { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 @media (max-width: 720px) {
-  .pg-stats-strip-inner { grid-template-columns: 1fr; gap: 8px; }
+  .pg-stats-strip-inner { gap: 8px; }
   .pg-stat { padding: 12px 14px; gap: 10px; }
   .pg-stat-icon { width: 32px; height: 32px; }
   .pg-stat-icon svg { width: 16px; height: 16px; }
   .pg-stat-value { font-size: 17px; }
   .pg-stat-label { font-size: 10px; }
 }
+@media (max-width: 520px) {
+  .pg-stats-strip-inner { grid-template-columns: 1fr; }
+}
 `;
 
 function SiteStatsStrip() {
   const [hits, setHits] = useState(0);
   const [visitors, setVisitors] = useState(0);
+  const [downloads, setDownloads] = useState(0);
+  const [weeklyDownloads, setWeeklyDownloads] = useState(0);
   const hitsAnim = useCountUp(hits);
   const visitorsAnim = useCountUp(visitors);
+  const downloadsAnim = useCountUp(downloads);
 
   // Inject CSS once
   useEffect(() => {
@@ -2594,6 +2643,15 @@ function SiteStatsStrip() {
           }
         }
       })
+      .catch(() => {});
+
+    // npm downloads — all-time total + last 7 days
+    fetchNpmTotalDownloads()
+      .then(setDownloads)
+      .catch(() => {});
+    fetch(`${NPM_DOWNLOADS_API}/last-week/${NPM_PACKAGE}`)
+      .then((r) => (r.ok ? r.json() : Promise.reject()))
+      .then((d) => setWeeklyDownloads(Number(d?.downloads) || 0))
       .catch(() => {});
   }, []);
 
@@ -2670,6 +2728,48 @@ function SiteStatsStrip() {
             </span>
           </span>
         </div>
+
+        <a
+          className="pg-stat"
+          href={NPM_PACKAGE_URL}
+          target="_blank"
+          rel="noreferrer noopener"
+          title={
+            downloads > 0
+              ? `${downloads.toLocaleString("en-US")} total npm downloads`
+              : "View on npm"
+          }
+        >
+          <span className="pg-stat-icon" aria-hidden="true">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+              <path d="M7 10l5 5 5-5M12 15V3" />
+            </svg>
+          </span>
+          <span className="pg-stat-body">
+            <span className="pg-stat-label">
+              npm Downloads
+              {weeklyDownloads > 0 && (
+                <span
+                  className="pg-stat-week"
+                  title={`${weeklyDownloads.toLocaleString("en-US")} downloads in the last 7 days`}
+                >
+                  {formatStat(weeklyDownloads)}/wk
+                </span>
+              )}
+            </span>
+            <span className="pg-stat-value pg-stat-num">
+              {downloads > 0 ? formatStat(downloadsAnim) : "—"}
+            </span>
+          </span>
+        </a>
       </div>
     </div>
   );

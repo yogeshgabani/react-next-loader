@@ -1,0 +1,295 @@
+<!doctype html>
+<!--
+  Open Graph image template for the react-next-loader playground (1200×630).
+  Open this file in a browser to preview it, then run `npm run og:image`
+  to render it to playground/public/og-image.png.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>react-next-loader — OG image</title>
+    <style>
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      html, body { width: 1200px; height: 630px; overflow: hidden; }
+      body {
+        position: relative;
+        font-family: "Segoe UI", Inter, system-ui, -apple-system, sans-serif;
+        color: #f4f4f5;
+        background: #09090f;
+      }
+
+      /* Background: brand glows + faint grid */
+      .bg {
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(620px 420px at 0% 0%, rgba(99, 102, 241, 0.34), transparent 65%),
+          radial-gradient(560px 440px at 100% 100%, rgba(236, 72, 153, 0.26), transparent 65%),
+          radial-gradient(480px 340px at 88% 4%, rgba(56, 189, 248, 0.16), transparent 65%);
+      }
+      .grid-bg {
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+        background-size: 40px 40px;
+        -webkit-mask-image: radial-gradient(ellipse at 40% 50%, #000 25%, transparent 75%);
+        mask-image: radial-gradient(ellipse at 40% 50%, #000 25%, transparent 75%);
+      }
+      .stripe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 6px;
+        background: linear-gradient(90deg, #6366f1, #a855f7 45%, #ec4899);
+      }
+
+      .wrap {
+        position: relative;
+        display: flex;
+        height: 100%;
+        padding: 60px 64px 54px 72px;
+        gap: 44px;
+      }
+
+      /* Left column — copy */
+      .left { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+      .brand { display: flex; align-items: center; gap: 14px; }
+      .logo {
+        width: 56px;
+        height: 56px;
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: linear-gradient(135deg, rgba(168, 85, 247, 0.3), rgba(56, 189, 248, 0.3));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+      }
+      .logo i { width: 9px; height: 9px; border-radius: 50%; }
+      .pill {
+        font-size: 16px;
+        font-weight: 600;
+        padding: 7px 14px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        background: rgba(255, 255, 255, 0.05);
+        color: #d4d4d8;
+      }
+      .pill b { color: #c084fc; font-weight: 700; }
+
+      h1 {
+        margin-top: 34px;
+        font-size: 66px;
+        line-height: 1.02;
+        font-weight: 800;
+        letter-spacing: -0.035em;
+        white-space: nowrap;
+      }
+      h1 .grad {
+        background: linear-gradient(135deg, #818cf8, #c084fc 45%, #f472b6);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      .tagline {
+        margin-top: 18px;
+        font-size: 27px;
+        line-height: 1.35;
+        color: #a1a1aa;
+      }
+      .tagline strong { color: #f4f4f5; font-weight: 600; }
+
+      .chips { margin-top: 26px; display: flex; flex-wrap: wrap; gap: 10px; }
+      .chip {
+        font-size: 17px;
+        font-weight: 600;
+        padding: 7px 14px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.045);
+        color: #e4e4e7;
+      }
+
+      .bottom { margin-top: auto; display: flex; align-items: center; gap: 18px; }
+      .install {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        padding: 13px 20px;
+        border-radius: 14px;
+        border: 1px solid rgba(168, 85, 247, 0.45);
+        background: rgba(168, 85, 247, 0.1);
+        font-family: "Cascadia Code", Consolas, "SFMono-Regular", Menlo, monospace;
+        font-size: 21px;
+        color: #f4f4f5;
+      }
+      .install .prompt { color: #c084fc; }
+      .meta { font-size: 18px; color: #a1a1aa; line-height: 1.4; }
+      .meta strong { color: #f4f4f5; font-weight: 600; }
+
+      /* Right column — static loader previews */
+      .right {
+        width: 396px;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+        align-content: center;
+      }
+      .tile {
+        height: 156px;
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.09);
+        background: rgba(255, 255, 255, 0.04);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+      .tile span.label {
+        position: absolute;
+        left: 14px;
+        bottom: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: #71717a;
+      }
+
+      /* Ring spinner */
+      .ring {
+        width: 76px;
+        height: 76px;
+        border-radius: 50%;
+        background: conic-gradient(from 20deg, rgba(168, 85, 247, 0) 0%, #6366f1 35%, #a855f7 65%, #ec4899 100%);
+        -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 10px), #000 calc(100% - 9px));
+        mask: radial-gradient(farthest-side, transparent calc(100% - 10px), #000 calc(100% - 9px));
+        margin-top: -14px;
+      }
+
+      /* Bouncing dots */
+      .dots { display: flex; align-items: center; gap: 12px; margin-top: -14px; }
+      .dots i { width: 20px; height: 20px; border-radius: 50%; }
+      .dots i:nth-child(1) { background: #6366f1; opacity: 0.55; }
+      .dots i:nth-child(2) { background: #a855f7; transform: translateY(-14px) scale(1.2); box-shadow: 0 0 18px rgba(168, 85, 247, 0.7); }
+      .dots i:nth-child(3) { background: #ec4899; opacity: 0.75; }
+
+      /* Equalizer bars */
+      .bars { display: flex; align-items: flex-end; gap: 8px; height: 78px; margin-top: -14px; }
+      .bars i { width: 12px; border-radius: 6px; background: linear-gradient(180deg, #ec4899, #a855f7 55%, #6366f1); }
+
+      /* Pulse rings */
+      .pulse { position: relative; width: 84px; height: 84px; margin-top: -14px; }
+      .pulse i { position: absolute; border-radius: 50%; left: 50%; top: 50%; transform: translate(-50%, -50%); }
+      .pulse i:nth-child(1) { width: 84px; height: 84px; border: 3px solid rgba(56, 189, 248, 0.22); }
+      .pulse i:nth-child(2) { width: 56px; height: 56px; border: 3px solid rgba(56, 189, 248, 0.5); }
+      .pulse i:nth-child(3) { width: 24px; height: 24px; background: #38bdf8; box-shadow: 0 0 20px rgba(56, 189, 248, 0.8); }
+
+      /* Skeleton card */
+      .skel { display: flex; gap: 12px; align-items: center; width: 150px; margin-top: -14px; }
+      .skel .av { width: 42px; height: 42px; border-radius: 50%; flex-shrink: 0; }
+      .skel .lines { flex: 1; display: flex; flex-direction: column; gap: 9px; }
+      .skel .ln { height: 11px; border-radius: 6px; }
+      .shimmer {
+        background: linear-gradient(90deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.22) 45%, rgba(255, 255, 255, 0.08) 80%);
+      }
+
+      /* Circular progress */
+      .cprog {
+        position: relative;
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: conic-gradient(#a855f7 0 72%, rgba(255, 255, 255, 0.1) 72% 100%);
+        -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 9px), #000 calc(100% - 8px));
+        mask: radial-gradient(farthest-side, transparent calc(100% - 9px), #000 calc(100% - 8px));
+      }
+      .cprog-wrap { position: relative; margin-top: -14px; }
+      .cprog-wrap b {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 19px;
+        font-weight: 700;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg"></div>
+    <div class="grid-bg"></div>
+    <div class="stripe"></div>
+
+    <div class="wrap">
+      <div class="left">
+        <div class="brand">
+          <span class="logo">
+            <i style="background: #a855f7; box-shadow: 0 0 10px #a855f7"></i>
+            <i style="background: #ec4899; box-shadow: 0 0 10px #ec4899"></i>
+            <i style="background: #38bdf8; box-shadow: 0 0 10px #38bdf8"></i>
+          </span>
+          <span class="pill">Open-source · <b>MIT</b></span>
+        </div>
+
+        <h1><span class="grad">react-next-loader</span></h1>
+        <p class="tagline">
+          <strong>100+ animated loaders</strong>, skeletons &amp; progress bars
+          for React and Next.js.
+        </p>
+
+        <div class="chips">
+          <span class="chip">SSR-safe</span>
+          <span class="chip">TypeScript</span>
+          <span class="chip">Tree-shakable</span>
+          <span class="chip">Accessible</span>
+          <span class="chip">Themeable</span>
+        </div>
+
+        <div class="bottom">
+          <span class="install"><span class="prompt">$</span> npm i react-next-loader</span>
+          <span class="meta">
+            by <strong>Yogesh Gabani</strong><br />react-next-loader.netlify.app
+          </span>
+        </div>
+      </div>
+
+      <div class="right">
+        <div class="tile"><div class="ring"></div><span class="label">Ring</span></div>
+        <div class="tile">
+          <div class="dots"><i></i><i></i><i></i></div>
+          <span class="label">Dots</span>
+        </div>
+        <div class="tile">
+          <div class="bars">
+            <i style="height: 34px"></i><i style="height: 62px"></i><i style="height: 78px"></i
+            ><i style="height: 48px"></i><i style="height: 66px"></i>
+          </div>
+          <span class="label">Bars</span>
+        </div>
+        <div class="tile">
+          <div class="pulse"><i></i><i></i><i></i></div>
+          <span class="label">Pulse</span>
+        </div>
+        <div class="tile">
+          <div class="skel">
+            <span class="av shimmer"></span>
+            <span class="lines">
+              <span class="ln shimmer"></span>
+              <span class="ln shimmer" style="width: 70%"></span>
+              <span class="ln shimmer" style="width: 85%"></span>
+            </span>
+          </div>
+          <span class="label">Skeleton</span>
+        </div>
+        <div class="tile">
+          <div class="cprog-wrap"><div class="cprog"></div><b>72%</b></div>
+          <span class="label">Progress</span>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
