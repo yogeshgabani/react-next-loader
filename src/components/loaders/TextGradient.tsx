@@ -11,6 +11,7 @@ export const TextGradient = forwardRef<HTMLSpanElement, BaseLoaderProps>(functio
   {
     text = 'LOADING',
     size,
+    inline,
     speed = 1,
     glow,
     className,
@@ -23,7 +24,7 @@ export const TextGradient = forwardRef<HTMLSpanElement, BaseLoaderProps>(functio
     injectKeyframes();
   }, []);
 
-  const fontSize = resolveTextSize(size);
+  const fontSize = inline ? 'inherit' : resolveTextSize(size);
   const duration = `${3 / Math.max(speed, 0.01)}s`;
 
   return (

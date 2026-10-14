@@ -1,6 +1,7 @@
 import {
   useEffect,
   useMemo,
+  useRef,
   useState,
   type CSSProperties,
   type ReactNode,
@@ -14,7 +15,7 @@ import {
   type LoaderType,
   type ThemeMode,
 } from "react-next-loader";
-import { LoaderModal } from "./LoaderModal";
+import { LoaderModal, pascalCase, usesUnifiedLoader } from "./LoaderModal";
 
 /* ------------------------------------------------------------------ */
 /* Data                                                                */
@@ -68,6 +69,10 @@ const CATEGORIES: Record<string, LoaderType[]> = {
     "hexagon",
     "pentagon",
     "gears",
+    "cardio",
+    "leapfrog",
+    "bouncing-ball",
+    "burst",
   ],
   Basics: [
     "spinner",
@@ -112,6 +117,7 @@ const CATEGORIES: Record<string, LoaderType[]> = {
     "loading-ball",
     "rain-cloud",
     "matchstick",
+    "pie",
   ],
   Shapes: [
     "triangle",
@@ -123,7 +129,7 @@ const CATEGORIES: Record<string, LoaderType[]> = {
     "infinity",
     "vortex",
   ],
-  Specialty: ["clock", "watch", "propagate", "magnifying-glass", "magnifying-scan"],
+  Specialty: ["clock", "watch", "propagate", "magnifying-glass", "magnifying-scan", "radar", "signal"],
   Dots: [
     "audio",
     "comment",
@@ -147,7 +153,7 @@ const CATEGORIES: Record<string, LoaderType[]> = {
     "radio",
     "revolving-dot",
   ],
-  Blocks: ["blocks", "fidget-spinner", "rotating-square", "flip-flop"],
+  Blocks: ["blocks", "fidget-spinner", "rotating-square", "flip-flop", "snake"],
   "AI & modern": [
     "gradient-orb",
     "neural-network",
@@ -156,6 +162,19 @@ const CATEGORIES: Record<string, LoaderType[]> = {
     "hologram",
     "cyberpunk",
     "floating-glass",
+  ],
+  "AI sparkle": [
+    "ai-sparkle",
+    "sparkle-spin",
+    "sparkle-pulse",
+    "sparkle-orbit",
+    "sparkle-trail",
+    "sparkle-burst",
+    "sparkle-wand",
+    "sparkle-dots",
+    "sparkle-ring",
+    "sparkle-field",
+    "text-sparkle",
   ],
   Creative: [
     "bolt",
@@ -166,6 +185,9 @@ const CATEGORIES: Record<string, LoaderType[]> = {
     "xlvi",
     "hairball",
     "whirl",
+    "bubbles",
+    "liquid-fill",
+    "coffee",
   ],
   "3D & advanced": ["cube", "pyramid", "orbit", "typing", "blink", "squircle", "three-d"],
   Text: [
@@ -197,6 +219,9 @@ const CATEGORIES: Record<string, LoaderType[]> = {
     "text-swing",
     "text-squish",
     "text-fill",
+    "text-scramble",
+    "text-underline",
+    "text-highlight",
   ],
   Image: [
     "image-spin",
@@ -267,7 +292,7 @@ const NEW_DESIGNS: Partial<Record<LoaderType, string>> = {
   spiral: "2026-07-13",
   gear: "2026-07-13",
   heart: "2026-07-13",
-  // v1.2.0 — more loaders (ldrs + fun/shapes)
+  // v1.1.0 — more loaders (ldrs + fun/shapes)
   roller: "2026-07-13",
   ellipsis: "2026-07-13",
   "ring-2": "2026-07-13",
@@ -290,7 +315,7 @@ const NEW_DESIGNS: Partial<Record<LoaderType, string>> = {
   hexagon: "2026-07-13",
   pentagon: "2026-07-13",
   gears: "2026-07-13",
-  // v1.3.0 — line & bar + more text
+  // v1.1.0 — line & bar + more text
   "line-bar": "2026-07-13",
   "line-slide": "2026-07-13",
   "line-scale": "2026-07-13",
@@ -303,6 +328,33 @@ const NEW_DESIGNS: Partial<Record<LoaderType, string>> = {
   "text-swing": "2026-07-13",
   "text-squish": "2026-07-13",
   "text-fill": "2026-07-13",
+  // v1.2.0 — new loaders
+  cardio: "2026-10-14",
+  leapfrog: "2026-10-14",
+  "bouncing-ball": "2026-10-14",
+  radar: "2026-10-14",
+  signal: "2026-10-14",
+  "ai-sparkle": "2026-10-14",
+  "text-scramble": "2026-10-14",
+  snake: "2026-10-14",
+  burst: "2026-10-14",
+  bubbles: "2026-10-14",
+  "liquid-fill": "2026-10-14",
+  coffee: "2026-10-14",
+  pie: "2026-10-14",
+  "text-underline": "2026-10-14",
+  "text-highlight": "2026-10-14",
+  // v1.2.0 — AI sparkle family
+  "sparkle-spin": "2026-10-14",
+  "sparkle-pulse": "2026-10-14",
+  "sparkle-orbit": "2026-10-14",
+  "sparkle-trail": "2026-10-14",
+  "sparkle-burst": "2026-10-14",
+  "sparkle-wand": "2026-10-14",
+  "sparkle-dots": "2026-10-14",
+  "sparkle-ring": "2026-10-14",
+  "sparkle-field": "2026-10-14",
+  "text-sparkle": "2026-10-14",
 };
 
 /** True while a design is still within its NEW_BADGE_DAYS window from its added date. */
@@ -370,20 +422,16 @@ function resolveSwatchBg(bg: string): string {
 /* Utils                                                               */
 /* ------------------------------------------------------------------ */
 
-function pascalCase(type: LoaderType): string {
-  return type
-    .split("-")
-    .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
-    .join("");
-}
-
 function snippetForLoader(
   type: LoaderType,
   size: LoaderSize,
   color: string,
 ): string {
-  const name = pascalCase(type);
   const colorAttr = color ? ` color="${color}"` : "";
+  if (usesUnifiedLoader(type)) {
+    return `import { Loader } from 'react-next-loader';\n\n<Loader type="${type}" size="${size}"${colorAttr} />`;
+  }
+  const name = pascalCase(type);
   return `import { ${name} } from 'react-next-loader';\n\n<${name} size="${size}"${colorAttr} />`;
 }
 
@@ -570,7 +618,7 @@ function TopBar({
                 flexShrink: 0,
               }}
             >
-              V1.1.0
+              V1.2.0
             </span>
           )}
         </div>
@@ -643,7 +691,7 @@ function Hero({ totalCount }: { totalCount: number }) {
             background: "currentColor",
           }}
         />
-        V1.1.0 · Now available
+        V1.2.0 · Now available
       </div>
 
       {/* Headline with partial gradient on the middle phrase */}
@@ -1588,17 +1636,29 @@ function Toolbar({
 /* Sticky category bar                                                 */
 /* ------------------------------------------------------------------ */
 
+// Matches the bar's `top` — the height of the sticky TopBar above it.
+const CATEGORY_BAR_TOP = 60;
+
 function CategoryBar({
   active,
   setActive,
   filteredCount,
+  query,
+  setQuery,
 }: {
   active: string;
   setActive: (c: string) => void;
   filteredCount: number;
+  query: string;
+  setQuery: (q: string) => void;
 }) {
   const [hovered, setHovered] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [stuck, setStuck] = useState(false);
+  const [searchFocused, setSearchFocused] = useState(false);
+  const [cols, setCols] = useState(0);
+  const sentinelRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
   const cats = ["All", ...Object.keys(CATEGORIES)];
 
   useEffect(() => {
@@ -1607,6 +1667,100 @@ function CategoryBar({
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
   }, []);
+
+  // The sentinel sits where the bar would be without `sticky`; once it
+  // scrolls past the bar's `top`, the bar is stuck.
+  useEffect(() => {
+    const check = () => {
+      const el = sentinelRef.current;
+      if (el) setStuck(el.getBoundingClientRect().top <= CATEGORY_BAR_TOP + 0.5);
+    };
+    check();
+    window.addEventListener("scroll", check, { passive: true });
+    window.addEventListener("resize", check);
+    return () => {
+      window.removeEventListener("scroll", check);
+      window.removeEventListener("resize", check);
+    };
+  }, []);
+
+  // Column count of the auto-fill grid, so the search can fill the empty
+  // cells after the last category.
+  useEffect(() => {
+    const list = listRef.current;
+    if (isMobile || !list) return;
+    const measure = () =>
+      setCols(getComputedStyle(list).gridTemplateColumns.split(" ").filter(Boolean).length);
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(list);
+    return () => ro.disconnect();
+  }, [isMobile]);
+
+  const onSearch = (q: string) => {
+    setQuery(q);
+    // Scroll back so results start right under the bar, not mid-list.
+    const el = sentinelRef.current;
+    if (!el) return;
+    const top = window.scrollY + el.getBoundingClientRect().top - CATEGORY_BAR_TOP;
+    if (window.scrollY > top) window.scrollTo({ top });
+  };
+
+  // Stay mounted while focused so typing can't unmount the input when the
+  // results shrink and the bar un-sticks.
+  const showSearch = stuck || searchFocused;
+  const remainder = cols ? cats.length % cols : 0;
+  const freeCells = remainder === 0 ? 0 : cols - remainder;
+
+  const search = (
+    <div
+      style={{
+        position: "relative",
+        ...(isMobile
+          ? { marginTop: 8 }
+          : { gridColumn: freeCells >= 2 ? `span ${freeCells}` : "1 / -1" }),
+      }}
+    >
+      <span
+        style={{
+          position: "absolute",
+          left: isMobile ? 10 : 13,
+          top: "50%",
+          transform: "translateY(-50%)",
+          fontSize: isMobile ? 14 : 15,
+          color: "var(--rl-text-faint, #71717a)",
+          pointerEvents: "none",
+        }}
+      >
+        ⌕
+      </span>
+      <input
+        type="search"
+        placeholder="Search loaders by name…"
+        aria-label="Search loaders"
+        value={query}
+        onChange={(e) => onSearch(e.target.value)}
+        onFocus={() => setSearchFocused(true)}
+        onBlur={() => setSearchFocused(false)}
+        style={{
+          width: "100%",
+          height: "100%",
+          boxSizing: "border-box",
+          padding: isMobile ? "7px 10px 7px 30px" : "9px 14px 9px 34px",
+          borderRadius: isMobile ? 9 : 11,
+          border: searchFocused
+            ? "1px solid var(--rl-theme-primary)"
+            : "1px solid color-mix(in srgb, currentColor 11%, transparent)",
+          background: "color-mix(in srgb, currentColor 4%, transparent)",
+          color: "inherit",
+          fontSize: isMobile ? 12 : 13,
+          fontFamily: "inherit",
+          outline: "none",
+          transition: "border-color 160ms",
+        }}
+      />
+    </div>
+  );
 
   // On mobile → horizontal scrollable chip row (saves vertical space)
   // On desktop → responsive grid of equal-width cells
@@ -1630,164 +1784,342 @@ function CategoryBar({
       };
 
   return (
-    <div
-      style={{
-        position: "sticky",
-        top: 60,
-        zIndex: 20,
-        margin: isMobile ? "0 -14px 14px" : "0 -24px 18px",
-        padding: isMobile ? "10px 14px" : "14px 24px",
-        background: "color-mix(in srgb, var(--rl-theme-bg) 88%, transparent)",
-        backdropFilter: "saturate(180%) blur(12px)",
-        WebkitBackdropFilter: "saturate(180%) blur(12px)",
-        borderBottom:
-          "1px solid color-mix(in srgb, currentColor 8%, transparent)",
-      }}
-    >
-      {/* Header row: label on left, "X showing" pill on right */}
+    <>
+      {/* 1px tall with -1px margin so it lands exactly at the bar's natural top. */}
+      <div ref={sentinelRef} aria-hidden style={{ height: 1, marginBottom: -1 }} />
       <div
         style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          marginBottom: isMobile ? 8 : 12,
+          position: "sticky",
+          top: CATEGORY_BAR_TOP,
+          zIndex: 20,
+          margin: isMobile ? "0 -14px 14px" : "0 -24px 18px",
+          padding: isMobile ? "10px 14px" : "14px 24px",
+          background: "color-mix(in srgb, var(--rl-theme-bg) 88%, transparent)",
+          backdropFilter: "saturate(180%) blur(12px)",
+          WebkitBackdropFilter: "saturate(180%) blur(12px)",
+          borderBottom:
+            "1px solid color-mix(in srgb, currentColor 8%, transparent)",
         }}
       >
-        <span
+        {/* Header row: label on left, "X showing" pill on right */}
+        <div
           style={{
-            fontSize: isMobile ? 10 : 11,
-            fontWeight: 700,
-            letterSpacing: "0.08em",
-            textTransform: "uppercase",
-            color: "var(--rl-text-muted, #52525b)",
-          }}
-        >
-          Categories
-        </span>
-        <span
-          style={{
-            display: "inline-flex",
+            display: "flex",
             alignItems: "center",
-            gap: isMobile ? 5 : 6,
-            fontSize: isMobile ? 11 : 12,
-            color: "var(--rl-text-muted, #52525b)",
-            ...mono,
-            whiteSpace: "nowrap",
-            padding: isMobile ? "4px 8px" : "6px 10px",
-            borderRadius: 8,
-            background: "color-mix(in srgb, currentColor 4%, transparent)",
-            border:
-              "1px solid color-mix(in srgb, currentColor 8%, transparent)",
+            justifyContent: "space-between",
+            marginBottom: isMobile ? 8 : 12,
           }}
         >
           <span
             style={{
-              width: 6,
-              height: 6,
-              borderRadius: 999,
-              background: "var(--rl-theme-primary)",
-              boxShadow: "0 0 6px var(--rl-theme-primary)",
+              fontSize: isMobile ? 10 : 11,
+              fontWeight: 700,
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+              color: "var(--rl-text-muted, #52525b)",
             }}
-          />
-          <strong style={{ color: "inherit", fontWeight: 700 }}>
-            {filteredCount}
-          </strong>
-          <span>showing</span>
-        </span>
-      </div>
-
-      {/* Mobile → horizontal scroll chips · Desktop → responsive grid */}
-      <div style={listStyle}>
-        {cats.map((cat) => {
-          const count =
-            cat === "All"
-              ? ALL_LOADER_TYPES.length
-              : (CATEGORIES[cat]?.length ?? 0);
-          const isActive = active === cat;
-          const isHover = hovered === cat;
-
-          return (
-            <button
-              key={cat}
-              onClick={() => setActive(cat)}
-              onMouseEnter={() => setHovered(cat)}
-              onMouseLeave={() => setHovered(null)}
+          >
+            Categories
+          </span>
+          <span
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: isMobile ? 5 : 6,
+              fontSize: isMobile ? 11 : 12,
+              color: "var(--rl-text-muted, #52525b)",
+              ...mono,
+              whiteSpace: "nowrap",
+              padding: isMobile ? "4px 8px" : "6px 10px",
+              borderRadius: 8,
+              background: "color-mix(in srgb, currentColor 4%, transparent)",
+              border:
+                "1px solid color-mix(in srgb, currentColor 8%, transparent)",
+            }}
+          >
+            <span
               style={{
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                gap: isMobile ? 6 : 8,
-                padding: isMobile ? "6px 10px" : "9px 14px",
-                borderRadius: isMobile ? 9 : 11,
-                border: isActive
-                  ? "1px solid transparent"
-                  : "1px solid color-mix(in srgb, currentColor 11%, transparent)",
-                background: isActive
-                  ? BRAND_GRADIENT
-                  : isHover
-                    ? "color-mix(in srgb, currentColor 7%, transparent)"
-                    : "color-mix(in srgb, currentColor 2.5%, transparent)",
-                color: isActive ? "#fff" : "inherit",
-                fontSize: isMobile ? 12 : 13,
-                fontWeight: isActive ? 700 : 500,
-                letterSpacing: "-0.005em",
-                cursor: "pointer",
-                whiteSpace: "nowrap",
-                transform:
-                  isHover && !isActive ? "translateY(-1px)" : "translateY(0)",
-                boxShadow: isActive ? BRAND_SHADOW : "none",
-                transition:
-                  "transform 160ms, background 160ms, box-shadow 200ms, border-color 160ms",
-                textAlign: "left",
-                overflow: "hidden",
-                // Mobile: keep buttons at their natural width inside the horizontal scroll row
-                flexShrink: isMobile ? 0 : undefined,
-                scrollSnapAlign: isMobile ? "start" : undefined,
+                width: 6,
+                height: 6,
+                borderRadius: 999,
+                background: "var(--rl-theme-primary)",
+                boxShadow: "0 0 6px var(--rl-theme-primary)",
               }}
-            >
-              <span
-                style={{
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
-                  minWidth: 0,
-                }}
-              >
-                {cat}
-              </span>
-              <span
+            />
+            <strong style={{ color: "inherit", fontWeight: 700 }}>
+              {filteredCount}
+            </strong>
+            <span>showing</span>
+          </span>
+        </div>
+
+        {/* Mobile → horizontal scroll chips · Desktop → responsive grid */}
+        <div ref={listRef} style={listStyle}>
+          {cats.map((cat) => {
+            const count =
+              cat === "All"
+                ? ALL_LOADER_TYPES.length
+                : (CATEGORIES[cat]?.length ?? 0);
+            const isActive = active === cat;
+            const isHover = hovered === cat;
+
+            return (
+              <button
+                key={cat}
+                onClick={() => setActive(cat)}
+                onMouseEnter={() => setHovered(cat)}
+                onMouseLeave={() => setHovered(null)}
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
-                  justifyContent: "center",
-                  minWidth: isMobile ? 20 : 24,
-                  height: isMobile ? 15 : 18,
-                  padding: isMobile ? "0 5px" : "0 6px",
-                  borderRadius: 999,
-                  fontSize: isMobile ? 9 : 10,
-                  fontWeight: 700,
-                  letterSpacing: "0.02em",
+                  justifyContent: "space-between",
+                  gap: isMobile ? 6 : 8,
+                  padding: isMobile ? "6px 10px" : "9px 14px",
+                  borderRadius: isMobile ? 9 : 11,
+                  border: isActive
+                    ? "1px solid transparent"
+                    : "1px solid color-mix(in srgb, currentColor 11%, transparent)",
                   background: isActive
-                    ? "rgba(255, 255, 255, 0.22)"
-                    : "color-mix(in srgb, currentColor 9%, transparent)",
+                    ? BRAND_GRADIENT
+                    : isHover
+                      ? "color-mix(in srgb, currentColor 7%, transparent)"
+                      : "color-mix(in srgb, currentColor 2.5%, transparent)",
                   color: isActive ? "#fff" : "inherit",
-                  flexShrink: 0,
-                  ...mono,
+                  fontSize: isMobile ? 12 : 13,
+                  fontWeight: isActive ? 700 : 500,
+                  letterSpacing: "-0.005em",
+                  cursor: "pointer",
+                  whiteSpace: "nowrap",
+                  transform:
+                    isHover && !isActive ? "translateY(-1px)" : "translateY(0)",
+                  boxShadow: isActive ? BRAND_SHADOW : "none",
+                  transition:
+                    "transform 160ms, background 160ms, box-shadow 200ms, border-color 160ms",
+                  textAlign: "left",
+                  overflow: "hidden",
+                  // Mobile: keep buttons at their natural width inside the horizontal scroll row
+                  flexShrink: isMobile ? 0 : undefined,
+                  scrollSnapAlign: isMobile ? "start" : undefined,
                 }}
               >
-                {count}
-              </span>
-            </button>
-          );
-        })}
+                <span
+                  style={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                    minWidth: 0,
+                  }}
+                >
+                  {cat}
+                </span>
+                <span
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    minWidth: isMobile ? 20 : 24,
+                    height: isMobile ? 15 : 18,
+                    padding: isMobile ? "0 5px" : "0 6px",
+                    borderRadius: 999,
+                    fontSize: isMobile ? 9 : 10,
+                    fontWeight: 700,
+                    letterSpacing: "0.02em",
+                    background: isActive
+                      ? "rgba(255, 255, 255, 0.22)"
+                      : "color-mix(in srgb, currentColor 9%, transparent)",
+                    color: isActive ? "#fff" : "inherit",
+                    flexShrink: 0,
+                    ...mono,
+                  }}
+                >
+                  {count}
+                </span>
+              </button>
+            );
+          })}
+          {/* Desktop: search fills the empty cells after the last category */}
+          {showSearch && !isMobile && search}
+        </div>
+        {showSearch && isMobile && search}
       </div>
-    </div>
+    </>
   );
 }
 
 /* ------------------------------------------------------------------ */
 /* Loader card                                                         */
 /* ------------------------------------------------------------------ */
+
+/* ------------------------------------------------------------------ */
+/* Loaders in buttons (`inline`)                                       */
+/* ------------------------------------------------------------------ */
+
+type ButtonVariant = "brand" | "dark" | "outline" | "soft";
+
+// `label` is omitted for text loaders (they render their own text) and for
+// icon-only buttons.
+type ButtonDemo = {
+  type: LoaderType;
+  label?: string;
+  text?: string;
+  variant: ButtonVariant;
+  fontSize?: number;
+  iconOnly?: boolean;
+};
+
+const BUTTON_DEMOS: ButtonDemo[] = [
+  { type: "sparkle-spin", label: "Generating…", variant: "brand" },
+  { type: "text-sparkle", text: "Thinking", variant: "dark" },
+  { type: "sparkle-dots", label: "Writing", variant: "outline" },
+  { type: "sparkle-wand", label: "Generate with AI", variant: "soft" },
+  { type: "spinner", label: "Saving", variant: "brand", fontSize: 13 },
+  { type: "three-dots", label: "Sending", variant: "dark", fontSize: 13 },
+  { type: "gradient-spinner", label: "Uploading", variant: "outline", fontSize: 17 },
+  { type: "sparkle-ring", variant: "brand", iconOnly: true },
+  { type: "sparkle-pulse", variant: "soft", iconOnly: true },
+];
+
+function snippetForButton({ type, label, text, iconOnly }: ButtonDemo): string {
+  const unified = usesUnifiedLoader(type);
+  const name = unified ? "Loader" : pascalCase(type);
+  const typeAttr = unified ? ` type="${type}"` : "";
+  const textAttr = text ? ` text="${text}"` : "";
+  const ariaAttr = iconOnly ? ` aria-label="Loading"` : "";
+  return [
+    `import { ${name} } from 'react-next-loader';`,
+    "",
+    `<button disabled${ariaAttr}>`,
+    `  <${name}${typeAttr} inline${textAttr} />`,
+    ...(label ? [`  ${label}`] : []),
+    `</button>`,
+  ].join("\n");
+}
+
+function buttonStyle(variant: ButtonVariant, isDark: boolean, fontSize: number, iconOnly: boolean): CSSProperties {
+  const base: CSSProperties = {
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "0.5em",
+    padding: iconOnly ? "0.7em" : "0.65em 1.15em",
+    borderRadius: iconOnly ? 999 : 10,
+    border: "1.5px solid transparent",
+    fontSize,
+    fontWeight: 600,
+    fontFamily: "inherit",
+    lineHeight: 1.2,
+    cursor: "pointer",
+  };
+  switch (variant) {
+    case "brand":
+      return { ...base, background: BRAND_GRADIENT, color: "#fff", boxShadow: BRAND_SHADOW };
+    case "dark":
+      return { ...base, background: isDark ? "#fafafa" : "#18181b", color: isDark ? "#18181b" : "#fafafa" };
+    case "outline":
+      return { ...base, background: "transparent", borderColor: "var(--rl-theme-primary)", color: "var(--rl-theme-primary)" };
+    case "soft":
+      return {
+        ...base,
+        background: "color-mix(in srgb, var(--rl-theme-primary) 12%, transparent)",
+        color: "var(--rl-theme-primary)",
+      };
+  }
+}
+
+function ButtonShowcase() {
+  const { resolvedMode } = useTheme();
+  const isDark = resolvedMode === "dark";
+  const [selected, setSelected] = useState(0);
+  const [copied, setCopied] = useState(false);
+  const snippet = snippetForButton(BUTTON_DEMOS[selected]);
+
+  const select = (i: number) => {
+    setSelected(i);
+    setCopied(false);
+  };
+
+  const copy = () => {
+    if (typeof navigator !== "undefined" && navigator.clipboard) {
+      navigator.clipboard.writeText(snippet).catch(() => {});
+    }
+    setCopied(true);
+    window.setTimeout(() => setCopied(false), 1400);
+  };
+
+  return (
+    <section style={{ ...card, padding: "18px 20px", marginBottom: 20 }}>
+      <div style={{ fontSize: 16, fontWeight: 700, letterSpacing: "-0.01em" }}>
+        Loaders in buttons
+      </div>
+      <div style={{ fontSize: 13, color: "var(--rl-text-muted, #52525b)", marginTop: 4 }}>
+        Add <code style={{ ...mono, fontSize: 12 }}>inline</code> — the loader takes the
+        button&apos;s font size and text colour. Works with every loader. Click a button
+        to see its code.
+      </div>
+      <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 12, marginTop: 16 }}>
+        {BUTTON_DEMOS.map(({ type, label, text, variant, fontSize = 15, iconOnly = false }, i) => (
+          <button
+            key={type}
+            type="button"
+            onClick={() => select(i)}
+            aria-pressed={selected === i}
+            aria-label={iconOnly ? `${pascalCase(type)} (loading)` : undefined}
+            title="Show code"
+            style={{
+              ...buttonStyle(variant, isDark, fontSize, iconOnly),
+              outline: selected === i ? "2px solid var(--rl-theme-primary)" : "2px solid transparent",
+              outlineOffset: 3,
+              transition: "outline-color 160ms",
+            }}
+          >
+            <Loader type={type} inline text={text} />
+            {label}
+          </button>
+        ))}
+      </div>
+      <div style={{ position: "relative", marginTop: 16 }}>
+        <pre
+          onClick={copy}
+          title="Click to copy"
+          style={{
+            ...mono,
+            fontSize: 12,
+            margin: 0,
+            padding: "10px 84px 10px 12px",
+            borderRadius: 10,
+            overflowX: "auto",
+            cursor: "pointer",
+            background: "color-mix(in srgb, currentColor 6%, transparent)",
+          }}
+        >
+          {snippet}
+        </pre>
+        <button
+          type="button"
+          onClick={copy}
+          style={{
+            position: "absolute",
+            top: 8,
+            right: 8,
+            padding: "5px 12px",
+            borderRadius: 8,
+            border: "none",
+            background: copied
+              ? "var(--rl-theme-primary)"
+              : "color-mix(in srgb, currentColor 8%, transparent)",
+            color: copied ? "#fff" : "inherit",
+            fontSize: 12,
+            fontWeight: 600,
+            cursor: "pointer",
+            transition: "all 160ms",
+          }}
+        >
+          {copied ? "Copied" : "Copy"}
+        </button>
+      </div>
+    </section>
+  );
+}
 
 function LoaderCard({
   type,
@@ -2788,6 +3120,21 @@ interface ChangelogEntry {
 
 const CHANGELOG: ChangelogEntry[] = [
   {
+    version: "1.2.0",
+    date: "October 14, 2026",
+    type: "Minor",
+    highlights: [
+      "25 new loaders, including an AI sparkle family of 11 designs",
+      "SparkleSpin, SparklePulse, SparkleOrbit, SparkleTrail, SparkleBurst, SparkleWand, SparkleDots, SparkleRing, SparkleField, TextSparkle",
+      "Cardio, Leapfrog, BouncingBall, Radar, Signal, Snake, Burst, Bubbles, LiquidFill, Coffee, Pie",
+      "TextScramble, TextUnderline, TextHighlight text effects",
+      "New inline prop — any loader fits inside a button (1em, currentColor)",
+      "Cube and DNA keep their 3D shape at every size",
+      "useDelayedLoading enforces minDuration; setMode() works with <ThemeProvider mode>",
+      "styles.css ships every keyframe; correct .d.cts types for CommonJS",
+    ],
+  },
+  {
     version: "1.1.0",
     date: "July 13, 2026",
     type: "Minor",
@@ -3168,7 +3515,13 @@ export function App() {
             active={activeCategory}
             setActive={setActiveCategory}
             filteredCount={filtered.length}
+            query={query}
+            setQuery={setQuery}
           />
+
+          {(activeCategory === "All" || activeCategory === "AI sparkle") && !query.trim() && (
+            <ButtonShowcase />
+          )}
 
           {filtered.length === 0 ? (
             <div

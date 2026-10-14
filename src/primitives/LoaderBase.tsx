@@ -55,18 +55,22 @@ export const LoaderBase = forwardRef<HTMLDivElement, LoaderBaseProps>(function L
     labelWeight,
     labelStyle,
     gap,
+    inline,
     'aria-label': ariaLabel = 'Loading',
     ...rest
   },
   ref,
 ) {
-  const px = resolveSize(size);
-  const visualW = toCssLen(width, `${px}px`);
-  const visualH = toCssLen(height, `${px}px`);
+  // Inline loaders scale with the surrounding font (e.g. a button's text).
+  const sizeLen = inline ? '1em' : `${resolveSize(size)}px`;
+  const visualW = toCssLen(width, sizeLen);
+  const visualH = toCssLen(height, sizeLen);
 
   const cssVars: CSSProperties = {
-    ['--rl-size' as string]: `${px}px`,
-    ['--rl-color' as string]: color ?? 'var(--rl-theme-primary, currentColor)',
+    ['--rl-size' as string]: sizeLen,
+    // Inline loaders follow the button/text colour rather than the theme primary,
+    // which could be the button's own background colour.
+    ['--rl-color' as string]: color ?? (inline ? 'currentColor' : 'var(--rl-theme-primary, currentColor)'),
     ['--rl-speed' as string]: `${1 / Math.max(speed, 0.01)}s`,
     ['--rl-thickness' as string]: thickness != null ? `${thickness}px` : undefined,
     ['--rl-glow' as string]: glow ? '0 0 12px var(--rl-color)' : 'none',
@@ -80,7 +84,7 @@ export const LoaderBase = forwardRef<HTMLDivElement, LoaderBaseProps>(function L
     <span
       className="rl-label"
       style={{
-        fontSize: toCssLen(labelFontSize, '14px'),
+        fontSize: toCssLen(labelFontSize, inline ? 'inherit' : '14px'),
         lineHeight: 1.3,
         color: labelColor ?? 'inherit',
         fontWeight: labelWeight,
@@ -111,8 +115,11 @@ export const LoaderBase = forwardRef<HTMLDivElement, LoaderBaseProps>(function L
     </span>
   );
 
+  // <button> only allows phrasing content, so inline loaders render a <span>.
+  const Root = (inline ? 'span' : 'div') as 'div';
+
   return (
-    <div
+    <Root
       ref={ref}
       role="status"
       aria-busy="true"
@@ -127,7 +134,8 @@ export const LoaderBase = forwardRef<HTMLDivElement, LoaderBaseProps>(function L
         flexDirection: isColumn ? 'column' : 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        verticalAlign: 'middle',
+        // Inline: sit on the text baseline like an icon glyph.
+        verticalAlign: inline ? '-0.125em' : 'middle',
         gap: hasLabel ? (gap ?? 8) : 0,
         ...style,
         ...innerStyle,
@@ -138,6 +146,6 @@ export const LoaderBase = forwardRef<HTMLDivElement, LoaderBaseProps>(function L
       {visual}
       {!labelFirst && labelEl}
       <span style={SR_ONLY}>{ariaLabel}</span>
-    </div>
+    </Root>
   );
 });

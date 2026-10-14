@@ -1,7 +1,7 @@
 {
   "name": "react-next-loader",
-  "version": "1.1.0",
-  "description": "All-in-one React loader library: 90+ animated loaders, skeletons, progress bars, text/image/AI loaders with theming, SSR support, and tree-shaking.",
+  "version": "1.2.0",
+  "description": "All-in-one React loader library: 100+ animated loaders, skeletons, progress bars, text/image/AI loaders with theming, SSR support, and tree-shaking.",
   "keywords": [
     "react",
     "reactjs",
@@ -187,29 +187,54 @@
   ],
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
     },
     "./loaders": {
-      "types": "./dist/loaders/index.d.ts",
-      "import": "./dist/loaders/index.js",
-      "require": "./dist/loaders/index.cjs"
+      "import": {
+        "types": "./dist/loaders/index.d.ts",
+        "default": "./dist/loaders/index.js"
+      },
+      "require": {
+        "types": "./dist/loaders/index.d.cts",
+        "default": "./dist/loaders/index.cjs"
+      }
     },
     "./skeletons": {
-      "types": "./dist/skeletons/index.d.ts",
-      "import": "./dist/skeletons/index.js",
-      "require": "./dist/skeletons/index.cjs"
+      "import": {
+        "types": "./dist/skeletons/index.d.ts",
+        "default": "./dist/skeletons/index.js"
+      },
+      "require": {
+        "types": "./dist/skeletons/index.d.cts",
+        "default": "./dist/skeletons/index.cjs"
+      }
     },
     "./progress": {
-      "types": "./dist/progress/index.d.ts",
-      "import": "./dist/progress/index.js",
-      "require": "./dist/progress/index.cjs"
+      "import": {
+        "types": "./dist/progress/index.d.ts",
+        "default": "./dist/progress/index.js"
+      },
+      "require": {
+        "types": "./dist/progress/index.d.cts",
+        "default": "./dist/progress/index.cjs"
+      }
     },
     "./theme": {
-      "types": "./dist/theme/index.d.ts",
-      "import": "./dist/theme/index.js",
-      "require": "./dist/theme/index.cjs"
+      "import": {
+        "types": "./dist/theme/index.d.ts",
+        "default": "./dist/theme/index.js"
+      },
+      "require": {
+        "types": "./dist/theme/index.d.cts",
+        "default": "./dist/theme/index.cjs"
+      }
     },
     "./styles.css": "./dist/styles.css",
     "./package.json": "./package.json"
@@ -244,7 +269,7 @@
     "@arethetypeswrong/cli": "^0.18.2",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
-    "@vitejs/plugin-react": "^4.3.1",
+    "@vitejs/plugin-react": "^6.1.2",
     "cross-env": "^7.0.3",
     "framer-motion": "^11.2.0",
     "publint": "^0.3.21",
@@ -252,7 +277,10 @@
     "react-dom": "^18.3.1",
     "tsup": "^8.1.0",
     "typescript": "^5.4.5",
-    "vite": "^5.3.1"
+    "vite": "^8.3.4"
+  },
+  "overrides": {
+    "esbuild": "^0.28.1"
   },
   "engines": {
     "node": ">=18"

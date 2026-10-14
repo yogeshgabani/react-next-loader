@@ -5,19 +5,22 @@ import { LoaderBase } from '../../primitives/LoaderBase';
 import { KEYFRAME } from '../../animations/keyframes';
 import type { BaseLoaderProps } from '../../types';
 
+// Faces sit half the cube's width (70% of the box) from its centre. Tied to
+// --rl-size so the cube stays closed at every size — a fixed 20px only fit ~57px.
+const HALF = 'calc(var(--rl-size) * 0.35)';
 const FACES = [
-  { transform: 'translateZ(20px)' },
-  { transform: 'rotateY(180deg) translateZ(20px)' },
-  { transform: 'rotateY(90deg) translateZ(20px)' },
-  { transform: 'rotateY(-90deg) translateZ(20px)' },
-  { transform: 'rotateX(90deg) translateZ(20px)' },
-  { transform: 'rotateX(-90deg) translateZ(20px)' },
+  { transform: `translateZ(${HALF})` },
+  { transform: `rotateY(180deg) translateZ(${HALF})` },
+  { transform: `rotateY(90deg) translateZ(${HALF})` },
+  { transform: `rotateY(-90deg) translateZ(${HALF})` },
+  { transform: `rotateX(90deg) translateZ(${HALF})` },
+  { transform: `rotateX(-90deg) translateZ(${HALF})` },
 ];
 
 export const Cube = forwardRef<HTMLDivElement, BaseLoaderProps>(function Cube(props, ref) {
   return (
     <LoaderBase ref={ref} {...props}>
-      <span style={{ width: '100%', height: '100%', perspective: '120px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <span style={{ width: '100%', height: '100%', perspective: 'calc(var(--rl-size) * 2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <span
           style={{
             position: 'relative',

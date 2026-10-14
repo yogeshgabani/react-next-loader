@@ -47,50 +47,8 @@
   position: relative;
 }
 
-@keyframes rl-spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-@keyframes rl-pulse {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(0.6); opacity: 0.5; }
-}
-@keyframes rl-bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-60%); }
-}
-@keyframes rl-ripple {
-  0% { transform: scale(0); opacity: 1; }
-  100% { transform: scale(1); opacity: 0; }
-}
-@keyframes rl-wave {
-  0%, 40%, 100% { transform: scaleY(0.4); }
-  20% { transform: scaleY(1); }
-}
-@keyframes rl-dots {
-  0%, 80%, 100% { transform: scale(0); opacity: 0.3; }
-  40% { transform: scale(1); opacity: 1; }
-}
-@keyframes rl-bars {
-  0%, 100% { transform: scaleY(0.4); }
-  50% { transform: scaleY(1); }
-}
-@keyframes rl-shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-@keyframes rl-fade {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 1; }
-}
-@keyframes rl-dual-ring {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-@keyframes rl-progress-indeterminate {
-  0% { left: -40%; right: 100%; }
-  60%, 100% { left: 100%; right: -40%; }
-}
+/* @keyframes for every loader are appended to dist/styles.css at build time
+ * (from src/animations/keyframes.ts) — see tsup.config.ts. */
 
 @media (prefers-reduced-motion: reduce) {
   .rl-root *,

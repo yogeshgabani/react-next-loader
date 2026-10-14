@@ -11,6 +11,7 @@ export const TextShimmer = forwardRef<HTMLSpanElement, BaseLoaderProps>(function
   {
     text = 'LOADING',
     size,
+    inline,
     color,
     speed = 1,
     glow,
@@ -24,7 +25,7 @@ export const TextShimmer = forwardRef<HTMLSpanElement, BaseLoaderProps>(function
     injectKeyframes();
   }, []);
 
-  const fontSize = resolveTextSize(size);
+  const fontSize = inline ? 'inherit' : resolveTextSize(size);
   const duration = `${1.8 / Math.max(speed, 0.01)}s`;
   const baseColor = color ?? 'var(--rl-theme-primary, currentColor)';
   // Background gradient: base color → bright highlight → base color

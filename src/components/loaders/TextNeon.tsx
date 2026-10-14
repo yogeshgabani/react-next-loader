@@ -8,14 +8,14 @@ import { resolveTextSize } from '../../utils/textSize';
 import { cn } from '../../utils/cn';
 
 export const TextNeon = forwardRef<HTMLSpanElement, BaseLoaderProps>(function TextNeon(
-  { text = 'LOADING', size, color, speed = 1, className, style, 'aria-label': ariaLabel },
+  { text = 'LOADING', size, inline, color, speed = 1, className, style, 'aria-label': ariaLabel },
   ref,
 ) {
   useEffect(() => {
     injectKeyframes();
   }, []);
 
-  const fontSize = resolveTextSize(size);
+  const fontSize = inline ? 'inherit' : resolveTextSize(size);
   const duration = `${2.4 / Math.max(speed, 0.01)}s`;
   const baseColor = color ?? '#22d3ee';
 

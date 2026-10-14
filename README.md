@@ -1,5 +1,13 @@
 <div align="center">
 
+<a href="https://react-next-loader.netlify.app/">
+  <img
+    src="https://raw.githubusercontent.com/yogeshgabani/react-next-loader/main/playground/public/og-image.png"
+    alt="react-next-loader — 100+ animated loaders, skeletons and progress bars for React and Next.js"
+    width="100%"
+  />
+</a>
+
 # react-next-loader
 
 > All-in-one React loader library — 100+ animated loaders, skeletons, progress bars, text effects, AI-style loaders, and image loaders. Works seamlessly with React, Next.js (App + Pages Router), Vite, Remix, and CRA — in both TypeScript and JavaScript.
@@ -12,7 +20,7 @@
 
 </div>
 
-**v1.1.0 — 100+ loaders.** Production-ready, fully typed, SSR-safe, tree-shakable, and accessible.
+**v1.2.0 — 100+ loaders, now with AI sparkles and button-ready `inline` loaders.** Production-ready, fully typed, SSR-safe, tree-shakable, and accessible.
 
 🌐 **[Live Demo →](https://react-next-loader.netlify.app/)** &nbsp;•&nbsp; 📦 **[NPM](https://www.npmjs.com/package/react-next-loader)** &nbsp;•&nbsp; 💻 **[GitHub](https://github.com/yogeshgabani/react-next-loader)**
 
@@ -32,6 +40,7 @@
 - [Image loader](#image-loader)
 - [Theming](#theming)
 - [Universal props](#universal-props)
+- [Loaders in buttons](#loaders-in-buttons)
 - [Hooks](#hooks)
 - [SSR & Next.js App Router](#ssr--nextjs-app-router)
 - [Accessibility](#accessibility)
@@ -69,8 +78,6 @@ cd react-next-loader
 npm install
 npm run dev
 ```
-
-> The above URLs are placeholders — update them once you publish to npm and deploy the playground.
 
 ---
 
@@ -161,15 +168,31 @@ import { Loader } from 'react-next-loader';
 
 ### Ring / circle
 
-`Clip`, `Puff`, `Ring`, `Rotate`, `TailSpin`, `Oval`, `Moon`, `ColorRing`, `ThreeCircles`
+`Clip`, `Puff`, `Ring`, `Rotate`, `TailSpin`, `Oval`, `Moon`, `ColorRing`, `ThreeCircles`, `Pie`
 
 ### Shapes
 
-`Triangle`, `BallTriangle`, `Hourglass`, `Grid`, `Pacman`, `ClimbingBox`, `Infinity`, `Vortex`
+`Triangle`, `BallTriangle`, `Hourglass`, `Grid`, `Pacman`, `ClimbingBox`, `Infinity`, `Vortex`, `Snake`
 
 ### Specialty
 
-`Clock`, `Watch`, `Propagate`, `MagnifyingGlass`, `MagnifyingScan`
+`Clock`, `Watch`, `Propagate`, `MagnifyingGlass`, `MagnifyingScan`, `Radar`, `Signal`
+
+### Gradient & circle designs
+
+`GradientSpinner`, `ConicGradient`, `BorderRotate`, `SimpleCircle`
+
+### Classics
+
+`FoldingCube`, `CubeGrid`, `ChasingDots`, `DoubleBounce`, `RotatingPlane`, `FadingCircle`, `Atom`, `Fingerprint`, `Flower`, `Pinwheel`, `Helix`, `NewtonCradle`, `Jelly`, `Spiral`, `Gear`, `Heart`
+
+### Modern & fun
+
+`Roller`, `Ellipsis`, `Ring2`, `SpinnerBlade`, `Ping`, `PulseRing`, `Metronome`, `Waveform`, `Wobble`, `Quantum`, `Trefoil`, `DotStream`, `Reuleaux`, `Superballs`, `Planet`, `CoinFlip`, `Droplet`, `Battery`, `Star`, `Hexagon`, `Pentagon`, `Gears`, `Cardio`, `Leapfrog`, `BouncingBall`, `Burst`
+
+### Lines & bars
+
+`LineBar`, `LineSlide`, `LineScale`, `LineScalePulse`, `Barcode`, `Equalizer`
 
 ### react-loader-spinner family
 
@@ -179,9 +202,15 @@ import { Loader } from 'react-next-loader';
 
 `GradientOrb`, `NeuralNetwork`, `AIThinking`, `Matrix`, `Hologram`, `Cyberpunk`, `FloatingGlass`
 
+### AI sparkle
+
+Four-point "AI" sparkles in 11 designs — all follow `color`, and all fit in buttons with [`inline`](#loaders-in-buttons).
+
+`AISparkle`, `SparkleSpin`, `SparklePulse`, `SparkleOrbit`, `SparkleTrail`, `SparkleBurst`, `SparkleWand`, `SparkleDots`, `SparkleRing`, `SparkleField`, `TextSparkle`
+
 ### Creative
 
-`Bolt`, `Book`, `Boxes`, `Wifi`, `Sunspot`, `XLVI`
+`Bolt`, `Book`, `Boxes`, `Wifi`, `Sunspot`, `XLVI`, `Bubbles`, `LiquidFill`, `Coffee`
 
 ### 3D / advanced
 
@@ -194,6 +223,36 @@ import { Loader } from 'react-next-loader';
 ### Fun & community (v1.1.0)
 
 `NeonRing`, `AudiRings`, `CapsulePinwheel`, `StaggerBars`, `ProgressBar`, `CurveArcs`, `FoldRibbon`, `ShapeDraw`, `Bicycle`, `LoadingBall`, `RainCloud`, `Matchstick`
+
+### 🆕 New in v1.2.0
+
+| Component      | `<Loader type>`   | What it does                                          |
+| -------------- | ----------------- | ----------------------------------------------------- |
+| `Cardio`       | `cardio`          | ECG heartbeat line drawn and erased on a loop         |
+| `Leapfrog`     | `leapfrog`        | Three dots taking turns leaping over each other       |
+| `BouncingBall` | `bouncing-ball`   | Ball that squashes on impact over a breathing shadow  |
+| `Radar`        | `radar`           | Rotating sweep with blips flashing as it passes       |
+| `Signal`       | `signal`          | Cellular signal bars filling up one by one            |
+| `AISparkle`    | `ai-sparkle`      | Gemini-style four-point stars twinkling in turn       |
+| `TextScramble` | `text-scramble`   | Random glyphs decoding into your text, left to right  |
+| `Snake`        | `snake`           | Lit head with a fading tail circling a 3×3 grid       |
+| `Burst`        | `burst`           | Particles shooting out from the centre, like a firework |
+| `Bubbles`      | `bubbles`         | Bubbles of different sizes rising and swaying         |
+| `LiquidFill`   | `liquid-fill`     | Round flask filling with wavy liquid, then draining   |
+| `Coffee`       | `coffee`          | Cup on a saucer with wisps of steam rising            |
+| `Pie`          | `pie`             | Wedge sweeping to a full pie, then eaten clockwise    |
+| `TextUnderline`| `text-underline`  | Highlight sliding along an underline under the text   |
+| `TextHighlight`| `text-highlight`  | Marker stroke wiping in behind the text, then out     |
+| `SparkleSpin`  | `sparkle-spin`    | One sparkle turning and breathing — the button classic |
+| `SparklePulse` | `sparkle-pulse`   | Beating sparkle sending out halo rings                |
+| `SparkleOrbit` | `sparkle-orbit`   | Three small sparkles circling a central one           |
+| `SparkleTrail` | `sparkle-trail`   | Sparkle sweeping a circle with a comet tail           |
+| `SparkleBurst` | `sparkle-burst`   | Sparkle pops and throws off a ring of tiny sparkles   |
+| `SparkleWand`  | `sparkle-wand`    | Magic wand waving while its tip sparkles              |
+| `SparkleDots`  | `sparkle-dots`    | Three sparkles twinkling in turn — AI "typing"        |
+| `SparkleRing`  | `sparkle-ring`    | Spinning multi-tone glow ring around a sparkle        |
+| `SparkleField` | `sparkle-field`   | Scattered sparkles twinkling on and off               |
+| `TextSparkle`  | `text-sparkle`    | Spinning sparkle + shimmering text ("✦ Thinking")     |
 
 ```tsx
 import { GradientOrb, Cube, NeuralNetwork } from 'react-next-loader/loaders';
@@ -231,8 +290,8 @@ import {
 <AvatarSkeleton size={48} />
 <CardSkeleton />
 <SkeletonProfile />
-<SkeletonList rows={5} />
-<SkeletonGrid columns={3} rows={2} />
+<SkeletonList />
+<SkeletonGrid width={320} />
 ```
 
 ---
@@ -278,12 +337,23 @@ import {
   TextRainbow,
   TextRipple,
   TextZoom,
+  TextFade,
+  TextBlur,
+  TextJump,
+  TextSwing,
+  TextSquish,
+  TextFill,
+  TextScramble,
+  TextUnderline,
+  TextHighlight,
+  TextSparkle,
 } from 'react-next-loader/loaders';
 
 <TextWave text="Loading..." />
 <TextRainbow text="Please wait" />
 <TextGlitch text="Generating" />
 <TextTyping text="Thinking..." />
+<TextScramble text="DECRYPTING" />
 ```
 
 ---
@@ -295,12 +365,12 @@ Animate an image while content is loading.
 ```tsx
 import { ImageLoader } from 'react-next-loader/loaders';
 
-<ImageLoader src="/logo.svg" animation="spin" size={64} />
-<ImageLoader src="/avatar.png" animation="pulse" />
-<ImageLoader src="/icon.png" animation="bounce" />
+<ImageLoader image="/logo.svg" animation="spin" size={64} />
+<ImageLoader image="/avatar.png" animation="pulse" />
+<ImageLoader image="/icon.png" animation="bounce" />
 ```
 
-Supported animations: `spin`, `pulse`, `fade`, `bounce`, `scale`, `shake`, `flip`, and more.
+Supported animations: `spin`, `pulse`, `bounce`, `shake`, `fade`, `flip-y`, `flip-x`, `swing`, `wobble`, `heartbeat`, `glow`, `blur`, `float`, `rubber`, `jello`, `tada`, `zoom`, `ring`.
 
 ---
 
@@ -376,12 +446,43 @@ Every loader accepts these props:
 | `image`         | `string` (for image-style loaders)               | —             |
 | `className`     | `string`                                         | —             |
 | `style`         | `CSSProperties`                                  | —             |
+| `inline`        | `boolean` — fit inside a button / line of text   | `false`       |
 
 Example with label:
 
 ```tsx
 <Spinner size="lg" label="Loading data" labelPosition="bottom" gap={12} />
 ```
+
+---
+
+## Loaders in buttons
+
+Add `inline` and a loader fits inside a button (or any line of text):
+
+- sized to `1em` — it follows the button's font size, so `size` is ignored
+- coloured with `currentColor` — it follows the button's text colour, even under a `ThemeProvider`
+- sits on the text baseline like an icon, and renders as a `<span>` so the markup stays valid inside `<button>`
+
+```tsx
+import { SparkleSpin, Spinner, TextSparkle } from "react-next-loader";
+
+<button disabled={loading}>
+  {loading && <SparkleSpin inline />}
+  {loading ? "Generating…" : "Generate"}
+</button>
+
+<button disabled>
+  <Spinner inline /> Saving
+</button>
+
+// Text loaders take the button's font size and colour too
+<button disabled>
+  <TextSparkle inline text="Thinking" />
+</button>
+```
+
+Every loader supports `inline`. These read best at text size: `SparkleSpin`, `SparkleDots`, `SparklePulse`, `SparkleRing`, `SparkleWand`, `TextSparkle`, `Spinner`, `DualRing`, `Ring`, `Oval`, `TailSpin`, `GradientSpinner`, `SimpleCircle`, `SpinnerBlade`, `ThreeDots`, `Ellipsis`, `Bars`, `Pulse`, `Clock`, `Signal`, `Pie`, `Cube`.
 
 ---
 
@@ -468,11 +569,11 @@ import { LinearProgress } from "react-next-loader/progress";
 import { ThemeProvider } from "react-next-loader/theme";
 ```
 
-The library is published as ESM + CJS with `sideEffects: false` for tree-shaking (CSS is marked as a side effect so it isn't dropped).
+The library is published as ESM + CJS with a narrow `sideEffects` allow-list for tree-shaking — only the CSS and the keyframe injector are marked, so they aren't dropped.
 
 ### Optional standalone CSS
 
-Keyframes are auto-injected at runtime, so the library works with zero CSS setup. If you prefer external CSS (for stricter CSP, CSS-in-JS migration, or build pipelines that prefer files), import the optional stylesheet **once**:
+Keyframes are auto-injected at runtime, so the library works with zero CSS setup. If you prefer external CSS (for a strict CSP that blocks injected `<style>` tags, CSS-in-JS migration, or build pipelines that prefer files), import the optional stylesheet **once** — it contains the theme variables and every loader keyframe:
 
 ```ts
 import "react-next-loader/styles.css";
@@ -570,6 +671,19 @@ If you're adding a new loader, please:
 ## Changelog
 
 A short summary of recent releases. See **[CHANGELOG.md](./CHANGELOG.md)** for full release notes.
+
+### v1.2.0 — _2026-10-14_ (Minor)
+
+- ✨ **25 new loaders** (catalog now 190+ components)
+- ✨ **AI sparkle family** (11 designs): `AISparkle`, `SparkleSpin`, `SparklePulse`, `SparkleOrbit`, `SparkleTrail`, `SparkleBurst`, `SparkleWand`, `SparkleDots`, `SparkleRing`, `SparkleField`, `TextSparkle`
+- ✨ **14 more**: `Cardio`, `Leapfrog`, `BouncingBall`, `Radar`, `Signal`, `Snake`, `Burst`, `Bubbles`, `LiquidFill`, `Coffee`, `Pie`, `TextScramble`, `TextUnderline`, `TextHighlight`
+- ✨ **`inline` prop** — any loader fits inside a button: `1em`, `currentColor`, baseline-aligned
+- 🐛 `Cube` and `DNA` keep their 3D shape at every size (depth was fixed in px)
+- 🐛 `useDelayedLoading` now actually enforces `minDuration`
+- 🐛 `setMode()` from `useTheme()` works when `<ThemeProvider mode>` is passed
+- 🐛 `react-next-loader/styles.css` now ships every keyframe (was 11), so it can replace runtime injection
+- 🐛 CommonJS consumers get correct `.d.cts` type declarations
+- ✅ Minor release — no breaking API changes; `inline` is opt-in
 
 ### v1.1.0 — _2026-07-13_ (Minor)
 

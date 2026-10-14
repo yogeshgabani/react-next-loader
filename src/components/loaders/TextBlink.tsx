@@ -11,6 +11,7 @@ export const TextBlink = forwardRef<HTMLSpanElement, BaseLoaderProps>(function T
   {
     text = 'Loading',
     size,
+    inline,
     color,
     speed = 1,
     glow,
@@ -24,7 +25,7 @@ export const TextBlink = forwardRef<HTMLSpanElement, BaseLoaderProps>(function T
     injectKeyframes();
   }, []);
 
-  const fontSize = resolveTextSize(size);
+  const fontSize = inline ? 'inherit' : resolveTextSize(size);
   const duration = `${1.2 / Math.max(speed, 0.01)}s`;
 
   return (
@@ -42,7 +43,7 @@ export const TextBlink = forwardRef<HTMLSpanElement, BaseLoaderProps>(function T
         fontSize,
         fontFamily: 'ui-monospace, "SF Mono", Menlo, monospace',
         lineHeight: 1,
-        color: color ?? 'var(--rl-theme-primary, currentColor)',
+        color: color ?? (inline ? 'currentColor' : 'var(--rl-theme-primary, currentColor)'),
         textShadow: glow ? '0 0 12px currentColor' : undefined,
         ...style,
       }}

@@ -8,14 +8,14 @@ import { resolveTextSize } from '../../utils/textSize';
 import { cn } from '../../utils/cn';
 
 export const TextTyping = forwardRef<HTMLSpanElement, BaseLoaderProps>(function TextTyping(
-  { text = 'Loading', size, color, speed = 1, glow, className, style, 'aria-label': ariaLabel },
+  { text = 'Loading', size, inline, color, speed = 1, glow, className, style, 'aria-label': ariaLabel },
   ref,
 ) {
   useEffect(() => {
     injectKeyframes();
   }, []);
 
-  const fontSize = resolveTextSize(size);
+  const fontSize = inline ? 'inherit' : resolveTextSize(size);
   const duration = `${3.6 / Math.max(speed, 0.01)}s`;
   const cursorDuration = `${0.7 / Math.max(speed, 0.01)}s`;
   const charCount = Math.max((text || '').length, 1);
@@ -35,7 +35,7 @@ export const TextTyping = forwardRef<HTMLSpanElement, BaseLoaderProps>(function 
         fontSize,
         fontFamily: 'ui-monospace, "SF Mono", Menlo, monospace',
         lineHeight: 1.4,
-        color: color ?? 'var(--rl-theme-primary, currentColor)',
+        color: color ?? (inline ? 'currentColor' : 'var(--rl-theme-primary, currentColor)'),
         textShadow: glow ? '0 0 12px currentColor' : undefined,
         ...style,
       }}

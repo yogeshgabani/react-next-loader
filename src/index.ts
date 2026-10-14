@@ -139,7 +139,7 @@ export {
   Spiral,
   Gear,
   Heart,
-  // v1.2.0 — more loaders (ldrs + fun/shapes)
+  // v1.1.0 — more loaders (ldrs + fun/shapes)
   Roller,
   Ellipsis,
   Ring2,
@@ -162,21 +162,21 @@ export {
   Planet,
   Superballs,
   PulseRing,
-  // v1.3.0 — line & bar loaders
+  // v1.1.0 — line & bar loaders
   LineBar,
   LineSlide,
   Barcode,
   LineScale,
   LineScalePulse,
   Equalizer,
-  // v1.3.0 — more text effects
+  // v1.1.0 — more text effects
   TextFade,
   TextBlur,
   TextJump,
   TextSwing,
   TextSquish,
   TextFill,
-  // v1.4.0 — uiverse picks
+  // v1.1.0 — uiverse picks
   NeonRing,
   AudiRings,
   CapsulePinwheel,
@@ -189,6 +189,33 @@ export {
   LoadingBall,
   RainCloud,
   Matchstick,
+  // v1.2.0 — new loaders
+  Cardio,
+  Leapfrog,
+  BouncingBall,
+  Radar,
+  Signal,
+  AISparkle,
+  TextScramble,
+  Snake,
+  Burst,
+  Bubbles,
+  LiquidFill,
+  Coffee,
+  Pie,
+  TextUnderline,
+  TextHighlight,
+  // v1.2.0 — AI sparkle family
+  SparkleSpin,
+  SparklePulse,
+  SparkleOrbit,
+  SparkleTrail,
+  SparkleBurst,
+  SparkleWand,
+  SparkleDots,
+  SparkleRing,
+  SparkleField,
+  TextSparkle,
 } from './components/loaders';
 export type {
   ImageLoaderProps,

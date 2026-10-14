@@ -156,7 +156,7 @@ export type LoaderType =
   | 'spiral'
   | 'gear'
   | 'heart'
-  // v1.2.0 — more loaders (ldrs + fun/shapes)
+  // v1.1.0 — more loaders (ldrs + fun/shapes)
   | 'roller'
   | 'ellipsis'
   | 'ring-2'
@@ -179,21 +179,21 @@ export type LoaderType =
   | 'planet'
   | 'superballs'
   | 'pulse-ring'
-  // v1.3.0 — line & bar loaders
+  // v1.1.0 — line & bar loaders
   | 'line-bar'
   | 'line-slide'
   | 'barcode'
   | 'line-scale'
   | 'line-scale-pulse'
   | 'equalizer'
-  // v1.3.0 — more text effects
+  // v1.1.0 — more text effects
   | 'text-fade'
   | 'text-blur'
   | 'text-jump'
   | 'text-swing'
   | 'text-squish'
   | 'text-fill'
-  // v1.4.0 — uiverse picks
+  // v1.1.0 — uiverse picks
   | 'neon-ring'
   | 'audi-rings'
   | 'capsule-pinwheel'
@@ -206,6 +206,33 @@ export type LoaderType =
   | 'loading-ball'
   | 'rain-cloud'
   | 'matchstick'
+  // v1.2.0 — new loaders
+  | 'cardio'
+  | 'leapfrog'
+  | 'bouncing-ball'
+  | 'radar'
+  | 'signal'
+  | 'ai-sparkle'
+  | 'text-scramble'
+  | 'snake'
+  | 'burst'
+  | 'bubbles'
+  | 'liquid-fill'
+  | 'coffee'
+  | 'pie'
+  | 'text-underline'
+  | 'text-highlight'
+  // v1.2.0 — AI sparkle family
+  | 'sparkle-spin'
+  | 'sparkle-pulse'
+  | 'sparkle-orbit'
+  | 'sparkle-trail'
+  | 'sparkle-burst'
+  | 'sparkle-wand'
+  | 'sparkle-dots'
+  | 'sparkle-ring'
+  | 'sparkle-field'
+  | 'text-sparkle'
   // v0.7.0 — skeletons
   | 'skeleton-bar'
   | 'skeleton-text'
@@ -384,7 +411,7 @@ export const LOADER_REGISTRY: Record<LoaderType, LoaderComponent> = {
   gear: lazy(() => import('./components/loaders/Gear').then((m) => ({ default: m.Gear }))),
   heart: lazy(() => import('./components/loaders/Heart').then((m) => ({ default: m.Heart }))),
 
-  // v1.2.0 — more loaders (ldrs + fun/shapes)
+  // v1.1.0 — more loaders (ldrs + fun/shapes)
   roller: lazy(() => import('./components/loaders/Roller').then((m) => ({ default: m.Roller }))),
   ellipsis: lazy(() => import('./components/loaders/Ellipsis').then((m) => ({ default: m.Ellipsis }))),
   'ring-2': lazy(() => import('./components/loaders/Ring2').then((m) => ({ default: m.Ring2 }))),
@@ -408,7 +435,7 @@ export const LOADER_REGISTRY: Record<LoaderType, LoaderComponent> = {
   superballs: lazy(() => import('./components/loaders/Superballs').then((m) => ({ default: m.Superballs }))),
   'pulse-ring': lazy(() => import('./components/loaders/PulseRing').then((m) => ({ default: m.PulseRing }))),
 
-  // v1.3.0 — line & bar loaders
+  // v1.1.0 — line & bar loaders
   'line-bar': lazy(() => import('./components/loaders/LineBar').then((m) => ({ default: m.LineBar }))),
   'line-slide': lazy(() => import('./components/loaders/LineSlide').then((m) => ({ default: m.LineSlide }))),
   barcode: lazy(() => import('./components/loaders/Barcode').then((m) => ({ default: m.Barcode }))),
@@ -416,7 +443,7 @@ export const LOADER_REGISTRY: Record<LoaderType, LoaderComponent> = {
   'line-scale-pulse': lazy(() => import('./components/loaders/LineScalePulse').then((m) => ({ default: m.LineScalePulse }))),
   equalizer: lazy(() => import('./components/loaders/Equalizer').then((m) => ({ default: m.Equalizer }))),
 
-  // v1.3.0 — more text effects
+  // v1.1.0 — more text effects
   'text-fade': lazy(() => import('./components/loaders/TextFade').then((m) => ({ default: m.TextFade as ComponentType<BaseLoaderProps> }))),
   'text-blur': lazy(() => import('./components/loaders/TextBlur').then((m) => ({ default: m.TextBlur as ComponentType<BaseLoaderProps> }))),
   'text-jump': lazy(() => import('./components/loaders/TextJump').then((m) => ({ default: m.TextJump as ComponentType<BaseLoaderProps> }))),
@@ -424,7 +451,7 @@ export const LOADER_REGISTRY: Record<LoaderType, LoaderComponent> = {
   'text-squish': lazy(() => import('./components/loaders/TextSquish').then((m) => ({ default: m.TextSquish as ComponentType<BaseLoaderProps> }))),
   'text-fill': lazy(() => import('./components/loaders/TextFill').then((m) => ({ default: m.TextFill as ComponentType<BaseLoaderProps> }))),
 
-  // v1.4.0 — uiverse picks
+  // v1.1.0 — uiverse picks
   'neon-ring': lazy(() => import('./components/loaders/NeonRing').then((m) => ({ default: m.NeonRing }))),
   'audi-rings': lazy(() => import('./components/loaders/AudiRings').then((m) => ({ default: m.AudiRings as ComponentType<BaseLoaderProps> }))),
   'capsule-pinwheel': lazy(() => import('./components/loaders/CapsulePinwheel').then((m) => ({ default: m.CapsulePinwheel as ComponentType<BaseLoaderProps> }))),
@@ -437,6 +464,35 @@ export const LOADER_REGISTRY: Record<LoaderType, LoaderComponent> = {
   'loading-ball': lazy(() => import('./components/loaders/LoadingBall').then((m) => ({ default: m.LoadingBall }))),
   'rain-cloud': lazy(() => import('./components/loaders/RainCloud').then((m) => ({ default: m.RainCloud as ComponentType<BaseLoaderProps> }))),
   matchstick: lazy(() => import('./components/loaders/Matchstick').then((m) => ({ default: m.Matchstick as ComponentType<BaseLoaderProps> }))),
+
+  // v1.2.0 — new loaders
+  cardio: lazy(() => import('./components/loaders/Cardio').then((m) => ({ default: m.Cardio }))),
+  leapfrog: lazy(() => import('./components/loaders/Leapfrog').then((m) => ({ default: m.Leapfrog }))),
+  'bouncing-ball': lazy(() => import('./components/loaders/BouncingBall').then((m) => ({ default: m.BouncingBall }))),
+  radar: lazy(() => import('./components/loaders/Radar').then((m) => ({ default: m.Radar }))),
+  signal: lazy(() => import('./components/loaders/Signal').then((m) => ({ default: m.Signal }))),
+  'ai-sparkle': lazy(() => import('./components/loaders/AISparkle').then((m) => ({ default: m.AISparkle }))),
+  'text-scramble': lazy(() => import('./components/loaders/TextScramble').then((m) => ({ default: m.TextScramble as ComponentType<BaseLoaderProps> }))),
+  snake: lazy(() => import('./components/loaders/Snake').then((m) => ({ default: m.Snake }))),
+  burst: lazy(() => import('./components/loaders/Burst').then((m) => ({ default: m.Burst }))),
+  bubbles: lazy(() => import('./components/loaders/Bubbles').then((m) => ({ default: m.Bubbles }))),
+  'liquid-fill': lazy(() => import('./components/loaders/LiquidFill').then((m) => ({ default: m.LiquidFill }))),
+  coffee: lazy(() => import('./components/loaders/Coffee').then((m) => ({ default: m.Coffee }))),
+  pie: lazy(() => import('./components/loaders/Pie').then((m) => ({ default: m.Pie }))),
+  'text-underline': lazy(() => import('./components/loaders/TextUnderline').then((m) => ({ default: m.TextUnderline as ComponentType<BaseLoaderProps> }))),
+  'text-highlight': lazy(() => import('./components/loaders/TextHighlight').then((m) => ({ default: m.TextHighlight as ComponentType<BaseLoaderProps> }))),
+
+  // v1.2.0 — AI sparkle family
+  'sparkle-spin': lazy(() => import('./components/loaders/SparkleSpin').then((m) => ({ default: m.SparkleSpin }))),
+  'sparkle-pulse': lazy(() => import('./components/loaders/SparklePulse').then((m) => ({ default: m.SparklePulse }))),
+  'sparkle-orbit': lazy(() => import('./components/loaders/SparkleOrbit').then((m) => ({ default: m.SparkleOrbit }))),
+  'sparkle-trail': lazy(() => import('./components/loaders/SparkleTrail').then((m) => ({ default: m.SparkleTrail }))),
+  'sparkle-burst': lazy(() => import('./components/loaders/SparkleBurst').then((m) => ({ default: m.SparkleBurst }))),
+  'sparkle-wand': lazy(() => import('./components/loaders/SparkleWand').then((m) => ({ default: m.SparkleWand }))),
+  'sparkle-dots': lazy(() => import('./components/loaders/SparkleDots').then((m) => ({ default: m.SparkleDots }))),
+  'sparkle-ring': lazy(() => import('./components/loaders/SparkleRing').then((m) => ({ default: m.SparkleRing }))),
+  'sparkle-field': lazy(() => import('./components/loaders/SparkleField').then((m) => ({ default: m.SparkleField }))),
+  'text-sparkle': lazy(() => import('./components/loaders/TextSparkle').then((m) => ({ default: m.TextSparkle as ComponentType<BaseLoaderProps> }))),
 
   // v0.7.0 — skeletons
   'skeleton-bar':           skeletonLazy('SkeletonBar'),

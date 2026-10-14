@@ -11,6 +11,7 @@ export const TextDots = forwardRef<HTMLSpanElement, BaseLoaderProps>(function Te
   {
     text = 'Loading',
     size,
+    inline,
     color,
     speed = 1,
     glow,
@@ -24,7 +25,7 @@ export const TextDots = forwardRef<HTMLSpanElement, BaseLoaderProps>(function Te
     injectKeyframes();
   }, []);
 
-  const fontSize = resolveTextSize(size);
+  const fontSize = inline ? 'inherit' : resolveTextSize(size);
   const duration = `${1.4 / Math.max(speed, 0.01)}s`;
 
   return (
@@ -41,7 +42,7 @@ export const TextDots = forwardRef<HTMLSpanElement, BaseLoaderProps>(function Te
         fontWeight: 600,
         fontSize,
         lineHeight: 1,
-        color: color ?? 'var(--rl-theme-primary, currentColor)',
+        color: color ?? (inline ? 'currentColor' : 'var(--rl-theme-primary, currentColor)'),
         textShadow: glow ? '0 0 12px currentColor' : undefined,
         ...style,
       }}

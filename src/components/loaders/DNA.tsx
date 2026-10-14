@@ -22,7 +22,8 @@ export const DNA = forwardRef<HTMLDivElement, DNAProps>(function DNA(
           position: 'relative',
           width: '100%',
           height: '60%',
-          perspective: '120px',
+          // Depth scales with --rl-size (tuned at 64px), so small/inline sizes stay in the box.
+          perspective: 'calc(var(--rl-size) * 1.875)',
         }}
       >
         {[0, 1].map((row) => (
@@ -51,7 +52,7 @@ export const DNA = forwardRef<HTMLDivElement, DNAProps>(function DNA(
                     aspectRatio: '1 / 1',
                     borderRadius: '50%',
                     background: colors[row]!,
-                    transform: `translate(-50%, -50%) translateZ(${z}px)`,
+                    transform: `translate(-50%, -50%) translateZ(calc(var(--rl-size) * ${(z / 64).toFixed(3)}))`,
                     opacity: 0.4 + scale * 0.6,
                     boxShadow: `0 0 ${6 * scale}px ${colors[row]}`,
                   }}

@@ -56,8 +56,16 @@ export function ThemeProvider({
   children,
   scope = 'wrapper',
 }: ThemeProviderProps) {
-  const [internalMode, setInternalMode] = useState<ThemeMode>(controlledMode ?? 'auto');
-  const mode: ThemeMode = controlledMode ?? internalMode;
+  const [mode, setInternalMode] = useState<ThemeMode>(controlledMode ?? 'auto');
+  // The `mode` prop sets (and re-sets, whenever it changes) the mode, while
+  // `setMode()` from `useTheme()` still works — previously it was a silent
+  // no-op whenever the `mode` prop was passed. Synced during render (not in an
+  // effect) so a prop change never paints a frame with the old theme.
+  const [prevControlledMode, setPrevControlledMode] = useState(controlledMode);
+  if (controlledMode !== prevControlledMode) {
+    setPrevControlledMode(controlledMode);
+    if (controlledMode) setInternalMode(controlledMode);
+  }
   const systemMode = useSystemMode();
   const resolvedMode: 'light' | 'dark' = mode === 'auto' ? systemMode : mode;
 

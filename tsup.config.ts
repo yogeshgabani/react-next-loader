@@ -1,6 +1,7 @@
 import { defineConfig } from 'tsup';
-import { copyFileSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
+import { KEYFRAMES_CSS } from './src/animations/keyframes';
 
 const USE_CLIENT = '"use client";';
 
@@ -59,7 +60,9 @@ export default defineConfig({
     const src = 'src/styles/base.css';
     const dest = 'dist/styles.css';
     mkdirSync(dirname(dest), { recursive: true });
-    copyFileSync(src, dest);
+    // Ship every keyframe in the standalone stylesheet so it can fully replace
+    // runtime injection (e.g. under a strict CSP that blocks injected <style>).
+    writeFileSync(dest, `${readFileSync(src, 'utf8')}\n/* Keyframes */${KEYFRAMES_CSS}`);
     prependUseClient('dist');
   },
 });

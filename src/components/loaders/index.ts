@@ -140,7 +140,7 @@ export { Spiral } from './Spiral';
 export { Gear } from './Gear';
 export { Heart } from './Heart';
 
-// v1.2.0 — more loaders (ldrs + fun/shapes)
+// v1.1.0 — more loaders (ldrs + fun/shapes)
 export { Roller } from './Roller';
 export { Ellipsis } from './Ellipsis';
 export { Ring2 } from './Ring2';
@@ -164,7 +164,7 @@ export { Planet } from './Planet';
 export { Superballs } from './Superballs';
 export { PulseRing } from './PulseRing';
 
-// v1.3.0 — line & bar loaders
+// v1.1.0 — line & bar loaders
 export { LineBar } from './LineBar';
 export { LineSlide } from './LineSlide';
 export { Barcode } from './Barcode';
@@ -172,7 +172,7 @@ export { LineScale } from './LineScale';
 export { LineScalePulse } from './LineScalePulse';
 export { Equalizer } from './Equalizer';
 
-// v1.4.0 — uiverse picks
+// v1.1.0 — uiverse picks
 export { NeonRing } from './NeonRing';
 export { AudiRings } from './AudiRings';
 export type { AudiRingsProps } from './AudiRings';
@@ -192,7 +192,36 @@ export type { RainCloudProps } from './RainCloud';
 export { Matchstick } from './Matchstick';
 export type { MatchstickProps } from './Matchstick';
 
-// v1.3.0 — more text effects
+// v1.2.0 — new loaders
+export { Cardio } from './Cardio';
+export { Leapfrog } from './Leapfrog';
+export { BouncingBall } from './BouncingBall';
+export { Radar } from './Radar';
+export { Signal } from './Signal';
+export { AISparkle } from './AISparkle';
+export { TextScramble } from './TextScramble';
+export { Snake } from './Snake';
+export { Burst } from './Burst';
+export { Bubbles } from './Bubbles';
+export { LiquidFill } from './LiquidFill';
+export { Coffee } from './Coffee';
+export { Pie } from './Pie';
+export { TextUnderline } from './TextUnderline';
+export { TextHighlight } from './TextHighlight';
+
+// v1.2.0 — AI sparkle family
+export { SparkleSpin } from './SparkleSpin';
+export { SparklePulse } from './SparklePulse';
+export { SparkleOrbit } from './SparkleOrbit';
+export { SparkleTrail } from './SparkleTrail';
+export { SparkleBurst } from './SparkleBurst';
+export { SparkleWand } from './SparkleWand';
+export { SparkleDots } from './SparkleDots';
+export { SparkleRing } from './SparkleRing';
+export { SparkleField } from './SparkleField';
+export { TextSparkle } from './TextSparkle';
+
+// v1.1.0 — more text effects
 export { TextFade } from './TextFade';
 export { TextBlur } from './TextBlur';
 export { TextJump } from './TextJump';
