@@ -44,6 +44,13 @@ export interface BaseLoaderProps extends Omit<HTMLAttributes<HTMLDivElement>, 'c
   imageAlt?: string;
   /** Animation style for skeleton-style loaders. Ignored by other loaders. */
   skeletonAnimation?: 'shimmer' | 'pulse' | 'wave' | 'none';
+  /**
+   * Fit inside a button or a line of text: the loader is sized to `1em` (the
+   * surrounding font size, overriding `size`), defaults its colour to
+   * `currentColor` (the button's text colour), sits on the text baseline and
+   * renders as a `<span>` so it is valid inside `<button>`.
+   */
+  inline?: boolean;
 }
 
 export interface ThemeTokens {

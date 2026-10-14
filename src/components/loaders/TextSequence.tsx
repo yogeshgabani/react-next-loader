@@ -28,6 +28,7 @@ export const TextSequence = forwardRef<HTMLSpanElement, BaseLoaderProps>(functio
     height,
     thickness,
     rounded,
+    inline,
     ...rest
   },
   ref,
@@ -36,7 +37,7 @@ export const TextSequence = forwardRef<HTMLSpanElement, BaseLoaderProps>(functio
     injectKeyframes();
   }, []);
 
-  const fontSize = resolveTextSize(size);
+  const fontSize = inline ? 'inherit' : resolveTextSize(size);
   const duration = `${1.4 / Math.max(speed, 0.01)}s`;
   const baseStyle: CSSProperties = {
     display: 'inline-flex',
@@ -45,7 +46,7 @@ export const TextSequence = forwardRef<HTMLSpanElement, BaseLoaderProps>(functio
     fontWeight: 700,
     fontSize,
     lineHeight: 1,
-    color: color ?? 'var(--rl-theme-primary, currentColor)',
+    color: color ?? (inline ? 'currentColor' : 'var(--rl-theme-primary, currentColor)'),
     textShadow: glow ? '0 0 12px currentColor' : undefined,
     ...style,
   };

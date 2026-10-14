@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export interface UseDelayedLoadingOptions {
   delay?: number;
@@ -12,27 +12,26 @@ export function useDelayedLoading(
   { delay = 200, minDuration = 400 }: UseDelayedLoadingOptions = {},
 ): boolean {
   const [shown, setShown] = useState(false);
+  // Kept in a ref (not a local) so it survives the effect re-run triggered by
+  // `setShown(true)` — otherwise elapsed time is measured from 0 and
+  // `minDuration` is never enforced.
+  const shownAtRef = useRef(0);
 
   useEffect(() => {
-    let showTimer: ReturnType<typeof setTimeout> | undefined;
-    let hideTimer: ReturnType<typeof setTimeout> | undefined;
-    let shownAt = 0;
-
     if (loading) {
-      showTimer = setTimeout(() => {
-        shownAt = Date.now();
+      if (shown) return;
+      const showTimer = setTimeout(() => {
+        shownAtRef.current = Date.now();
         setShown(true);
       }, delay);
-    } else if (shown) {
-      const elapsed = Date.now() - shownAt;
-      const remaining = Math.max(0, minDuration - elapsed);
-      hideTimer = setTimeout(() => setShown(false), remaining);
+      return () => clearTimeout(showTimer);
     }
 
-    return () => {
-      if (showTimer) clearTimeout(showTimer);
-      if (hideTimer) clearTimeout(hideTimer);
-    };
+    if (!shown) return;
+    const elapsed = Date.now() - shownAtRef.current;
+    const remaining = Math.max(0, minDuration - elapsed);
+    const hideTimer = setTimeout(() => setShown(false), remaining);
+    return () => clearTimeout(hideTimer);
   }, [loading, delay, minDuration, shown]);
 
   return shown;

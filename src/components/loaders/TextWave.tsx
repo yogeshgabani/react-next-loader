@@ -11,6 +11,7 @@ export const TextWave = forwardRef<HTMLSpanElement, BaseLoaderProps>(function Te
   {
     text = 'LOADING',
     size,
+    inline,
     color,
     speed = 1,
     glow,
@@ -24,7 +25,7 @@ export const TextWave = forwardRef<HTMLSpanElement, BaseLoaderProps>(function Te
     injectKeyframes();
   }, []);
 
-  const fontSize = resolveTextSize(size);
+  const fontSize = inline ? 'inherit' : resolveTextSize(size);
   const duration = `${1.2 / Math.max(speed, 0.01)}s`;
   const chars = (text || '').split('');
 
@@ -43,7 +44,7 @@ export const TextWave = forwardRef<HTMLSpanElement, BaseLoaderProps>(function Te
         fontWeight: 700,
         fontSize,
         lineHeight: 1.4,
-        color: color ?? 'var(--rl-theme-primary, currentColor)',
+        color: color ?? (inline ? 'currentColor' : 'var(--rl-theme-primary, currentColor)'),
         textShadow: glow ? '0 0 12px currentColor' : undefined,
         ...style,
       }}

@@ -7,6 +7,107 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.2.0] — 2026-10-14
+
+25 new loaders — including a family of 11 AI sparkles — a new `inline` prop
+that fits any loader inside a button, and a round of bug fixes.
+
+### Added
+
+- **AI sparkle family (11 designs).** Four-point "AI" sparkles built on one
+  shared shape (a CSS mask, so any number of instances can share a page without
+  SVG id clashes). All follow `color`, and all fit in buttons with `inline`.
+  - **`AISparkle`** (`ai-sparkle`) — Gemini-style stars twinkling in turn.
+  - **`SparkleSpin`** (`sparkle-spin`) — one sparkle turning and breathing; the
+    go-to loader for buttons.
+  - **`SparklePulse`** (`sparkle-pulse`) — a beating sparkle sending out halo rings.
+  - **`SparkleOrbit`** (`sparkle-orbit`) — three small sparkles circling a central one.
+  - **`SparkleTrail`** (`sparkle-trail`) — a sparkle sweeping a circle with a comet tail.
+  - **`SparkleBurst`** (`sparkle-burst`) — a sparkle pops and throws off tiny sparkles.
+  - **`SparkleWand`** (`sparkle-wand`) — a magic wand waving while its tip
+    sparkles, for "Generate with AI" buttons.
+  - **`SparkleDots`** (`sparkle-dots`) — three sparkles twinkling in turn, an AI
+    "typing" indicator.
+  - **`SparkleRing`** (`sparkle-ring`) — a spinning multi-tone glow ring around a
+    sparkle.
+  - **`SparkleField`** (`sparkle-field`) — scattered sparkles twinkling on and off.
+  - **`TextSparkle`** (`text-sparkle`) — a spinning sparkle beside shimmering
+    text ("✦ Thinking").
+- **14 more new loaders**, all registered for `<Loader type="..." />`:
+  - **`Cardio`** (`cardio`) — an ECG heartbeat line drawn and erased on a loop.
+  - **`Leapfrog`** (`leapfrog`) — three dots taking turns leaping over each other.
+  - **`BouncingBall`** (`bouncing-ball`) — a ball that squashes on impact over a
+    breathing shadow.
+  - **`Radar`** (`radar`) — a rotating sweep over range rings, with blips that
+    flash as the sweep passes.
+  - **`Signal`** (`signal`) — cellular signal bars filling up one by one.
+  - **`Snake`** (`snake`) — a lit head with a fading tail circling a 3×3 grid.
+  - **`Burst`** (`burst`) — two staggered waves of particles shooting out from
+    the centre, like a firework.
+  - **`Bubbles`** (`bubbles`) — bubbles of different sizes rising and swaying.
+  - **`LiquidFill`** (`liquid-fill`) — a round flask filling with wavy liquid,
+    then draining.
+  - **`Coffee`** (`coffee`) — a cup on a saucer with wisps of steam rising.
+  - **`Pie`** (`pie`) — a wedge sweeps clockwise to a full pie, then is eaten
+    away clockwise.
+  - **`TextScramble`** (`text-scramble`) — random glyphs decode into the text
+    left-to-right. Renders plain text on the server and stays static when the
+    user prefers reduced motion.
+  - **`TextUnderline`** (`text-underline`) — a highlight sliding along an
+    underline beneath the text.
+  - **`TextHighlight`** (`text-highlight`) — a marker stroke wiping in behind
+    the text from the left, then out to the right.
+- **`inline` prop on every loader** — fits it inside a button or a line of
+  text: sized to `1em`, coloured with `currentColor` (so it stays visible on a
+  button whose background is the theme colour), aligned to the text baseline,
+  and rendered as a `<span>` so it is valid inside `<button>`. Text loaders
+  inherit the font size.
+
+  ```tsx
+  <button disabled>
+    <SparkleSpin inline /> Generating…
+  </button>
+  ```
+
+- Playground: "AI sparkle" category, a "Loaders in buttons" showcase, and an
+  "In a button (inline)" toggle in the configure dialog.
+- README: Open Graph banner, a "Loaders in buttons" section, and the full
+  loader catalog (54 existing loaders were missing from it).
+
+### Fixed
+
+- **`Cube` and `DNA` keep their 3D shape at every size.** Their depth
+  (`translateZ` / `perspective`) was fixed in px, so `Cube` only closed up at
+  ~57px (faces split apart at `md`, overlapped at `lg`) and both broke out of
+  their box at small sizes. Depth now scales with the loader size.
+- **`useDelayedLoading` now enforces `minDuration`.** The "shown at" timestamp
+  was a local variable reset on every effect run, so the loader could hide
+  immediately after appearing.
+- **`setMode()` from `useTheme()` works when `<ThemeProvider mode>` is passed.**
+  It was a silent no-op in that case; the `mode` prop now sets the mode (and
+  re-sets it when the prop changes) without blocking `setMode()`.
+- **`react-next-loader/styles.css` ships every keyframe.** It previously held
+  only 11 of 152, so it could not replace runtime injection (e.g. under a strict
+  CSP). Keyframes are now appended from `src/animations/keyframes.ts` at build.
+- **Correct types for CommonJS consumers.** `exports` now points the `require`
+  condition at the `.d.cts` declarations (flagged by `publint`).
+- README examples: `ImageLoader` takes `image` (not `src`); `SkeletonList` /
+  `SkeletonGrid` have no `rows` / `columns` props; corrected the list of image
+  animations.
+- Playground: "Copy code" produced non-existent imports (`Dna`, `Xlvi`,
+  `AiThinking`, `TextFlip3d`, `ImageSpin`, `SkeletonText`, …). It now uses the
+  real export names, and `<Loader type="..." />` for image and skeleton types.
+
+### Notes
+
+- This is a **minor** release: no breaking API changes — existing imports,
+  component names and props work unchanged, and `inline` is opt-in.
+- Two visible behaviour changes come from the fixes above: `setMode()` now
+  takes effect even when `<ThemeProvider mode>` is set, and `Cube` renders as a
+  closed cube at sizes where its faces used to float apart.
+
+---
+
 ## [1.1.0] — 2026-07-13
 
 ### Added

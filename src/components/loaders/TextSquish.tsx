@@ -9,14 +9,14 @@ import { cn } from '../../utils/cn';
 
 /** Text Squish — letters squash vertically in a travelling wave. */
 export const TextSquish = forwardRef<HTMLSpanElement, BaseLoaderProps>(function TextSquish(
-  { text = 'LOADING', size, color, speed = 1, glow, className, style, 'aria-label': ariaLabel },
+  { text = 'LOADING', size, inline, color, speed = 1, glow, className, style, 'aria-label': ariaLabel },
   ref,
 ) {
   useEffect(() => {
     injectKeyframes();
   }, []);
 
-  const fontSize = resolveTextSize(size);
+  const fontSize = inline ? 'inherit' : resolveTextSize(size);
   const duration = `${1 / Math.max(speed, 0.01)}s`;
   const chars = (text || '').split('');
 
@@ -35,7 +35,7 @@ export const TextSquish = forwardRef<HTMLSpanElement, BaseLoaderProps>(function 
         fontWeight: 700,
         fontSize,
         lineHeight: 1.4,
-        color: color ?? 'var(--rl-theme-primary, currentColor)',
+        color: color ?? (inline ? 'currentColor' : 'var(--rl-theme-primary, currentColor)'),
         textShadow: glow ? '0 0 12px currentColor' : undefined,
         ...style,
       }}

@@ -148,7 +148,7 @@ export const KEYFRAME = {
   jelly: 'rl-jelly',
   heartBeat: 'rl-heart-beat',
 
-  // v1.2.0 — more loaders (ldrs + fun/shapes)
+  // v1.1.0 — more loaders (ldrs + fun/shapes)
   ellipsisGrow: 'rl-ellipsis-grow',
   ellipsisShrink: 'rl-ellipsis-shrink',
   ellipsisMove: 'rl-ellipsis-move',
@@ -157,11 +157,11 @@ export const KEYFRAME = {
   batteryCharge: 'rl-battery',
   bladeFade: 'rl-blade-fade',
 
-  // v1.3.0 — line & bar loaders
+  // v1.1.0 — line & bar loaders
   lineBar: 'rl-line-bar',
   lineSlide: 'rl-line-slide',
 
-  // v1.3.0 — more text effects
+  // v1.1.0 — more text effects
   textFade: 'rl-text-fade',
   textBlur: 'rl-text-blur',
   textJump: 'rl-text-jump',
@@ -169,10 +169,10 @@ export const KEYFRAME = {
   textSwing: 'rl-text-swing',
   textSquish: 'rl-text-squish',
 
-  // v1.4.0 — 3D pyramid
+  // v1.1.0 — 3D pyramid
   pyramidSpin: 'rl-pyramid-spin',
 
-  // v1.4.0 — uiverse picks
+  // v1.1.0 — uiverse picks
   neonGlow: 'rl-neon-glow',
   audiPulse: 'rl-audi-pulse',
   staggerBar: 'rl-stagger-bar',
@@ -181,6 +181,29 @@ export const KEYFRAME = {
   drawPath: 'rl-draw-path',
   loadingBall: 'rl-loading-ball',
   matchGlow: 'rl-match-glow',
+
+  // v1.2.0 — cardio, leapfrog, bouncing ball, radar, signal, AI sparkle
+  leapfrog: 'rl-leapfrog',
+  ballBounce: 'rl-ball-bounce',
+  ballShadow: 'rl-ball-shadow',
+  radarBlip: 'rl-radar-blip',
+  signalBar: 'rl-signal-bar',
+  sparkle: 'rl-sparkle',
+
+  // v1.2.0 — snake, burst, bubbles, liquid fill, coffee, text highlight
+  snake: 'rl-snake',
+  burst: 'rl-burst',
+  bubbleRise: 'rl-bubble-rise',
+  bubbleSway: 'rl-bubble-sway',
+  liquidRise: 'rl-liquid-rise',
+  steam: 'rl-steam',
+  textHighlight: 'rl-text-highlight',
+
+  // v1.2.0 — AI sparkle family
+  sparkleSpin: 'rl-sparkle-spin',
+  sparklePop: 'rl-sparkle-pop',
+  sparkleTwinkle: 'rl-sparkle-twinkle',
+  wandWave: 'rl-wand-wave',
 } as const;
 
 export type KeyframeName = (typeof KEYFRAME)[keyof typeof KEYFRAME];
@@ -810,7 +833,7 @@ export const KEYFRAMES_CSS = `
   60%      { transform: scale(0.95); }
 }
 
-/* v1.2.0 — more loaders (ldrs + fun/shapes) */
+/* v1.1.0 — more loaders (ldrs + fun/shapes) */
 @keyframes ${KEYFRAME.ellipsisGrow} {
   0%   { transform: scale(0); }
   100% { transform: scale(1); }
@@ -840,7 +863,7 @@ export const KEYFRAMES_CSS = `
   100% { opacity: 0.15; }
 }
 
-/* v1.3.0 — line & bar loaders */
+/* v1.1.0 — line & bar loaders */
 @keyframes ${KEYFRAME.lineBar} {
   0%   { left: -40%; }
   100% { left: 100%; }
@@ -850,7 +873,7 @@ export const KEYFRAMES_CSS = `
   50%      { left: 58%; }
 }
 
-/* v1.3.0 — more text effects */
+/* v1.1.0 — more text effects */
 @keyframes ${KEYFRAME.textFade} {
   0%, 80%, 100% { opacity: 0.15; }
   40%           { opacity: 1; }
@@ -876,13 +899,13 @@ export const KEYFRAMES_CSS = `
   50%      { transform: scaleY(0.4); }
 }
 
-/* v1.4.0 — 3D pyramid */
+/* v1.1.0 — 3D pyramid */
 @keyframes ${KEYFRAME.pyramidSpin} {
   0%   { transform: rotateY(0deg); }
   100% { transform: rotateY(360deg); }
 }
 
-/* v1.4.0 — uiverse picks */
+/* v1.1.0 — uiverse picks */
 @keyframes ${KEYFRAME.neonGlow} {
   0%, 100% { opacity: 0.55; }
   50%      { opacity: 1; }
@@ -916,5 +939,93 @@ export const KEYFRAMES_CSS = `
 @keyframes ${KEYFRAME.matchGlow} {
   0%, 100% { opacity: 0.35; transform: scale(0.9); }
   50%      { opacity: 1; transform: scale(1.06); }
+}
+
+/* v1.2.0 — cardio, leapfrog, bouncing ball, radar, signal, AI sparkle */
+@keyframes ${KEYFRAME.leapfrog} {
+  0%      { transform: translateX(0) rotate(0deg); }
+  33.333% { transform: translateX(0) rotate(180deg); }
+  66.666% { transform: translateX(-39%) rotate(180deg); }
+  99.999% { transform: translateX(-78%) rotate(180deg); }
+  100%    { transform: translateX(0) rotate(0deg); }
+}
+@keyframes ${KEYFRAME.ballBounce} {
+  0%, 100% { transform: translateY(0) scale(1, 1); animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45); }
+  45%      { transform: translateY(200%) scale(1, 1); animation-timing-function: linear; }
+  50%      { transform: translateY(200%) scale(1.3, 0.7); animation-timing-function: linear; }
+  55%      { transform: translateY(200%) scale(1, 1); animation-timing-function: cubic-bezier(0, 0.55, 0.45, 1); }
+}
+@keyframes ${KEYFRAME.ballShadow} {
+  0%, 100% { transform: scaleX(0.4); opacity: 0.15; animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45); }
+  50%      { transform: scaleX(1.1); opacity: 0.45; animation-timing-function: cubic-bezier(0, 0.55, 0.45, 1); }
+}
+@keyframes ${KEYFRAME.radarBlip} {
+  0%        { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  70%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(0.4); }
+}
+@keyframes ${KEYFRAME.signalBar} {
+  0%, 100% { opacity: 0.18; }
+  20%, 70% { opacity: 1; }
+}
+@keyframes ${KEYFRAME.sparkle} {
+  0%, 100% { transform: scale(0.55) rotate(0deg); opacity: 0.55; }
+  50%      { transform: scale(1) rotate(90deg); opacity: 1; }
+}
+
+/* v1.2.0 — snake, burst, bubbles, liquid fill, coffee, text highlight */
+@keyframes ${KEYFRAME.snake} {
+  0%        { opacity: 1; }
+  45%, 100% { opacity: 0.12; }
+}
+@keyframes ${KEYFRAME.burst} {
+  0%   { transform: translateY(0) scale(0.4); opacity: 0; }
+  15%  { opacity: 1; }
+  100% { transform: translateY(-340%) scale(1); opacity: 0; }
+}
+@keyframes ${KEYFRAME.bubbleRise} {
+  0%   { transform: translateY(0) scale(0.4); opacity: 0; }
+  15%  { opacity: 1; }
+  80%  { opacity: 0.8; }
+  100% { transform: translateY(-82%) scale(1); opacity: 0; }
+}
+@keyframes ${KEYFRAME.bubbleSway} {
+  0%, 100% { transform: translateX(-25%); }
+  50%      { transform: translateX(25%); }
+}
+@keyframes ${KEYFRAME.liquidRise} {
+  0%, 100% { transform: translateY(92%); }
+  50%      { transform: translateY(18%); }
+}
+@keyframes ${KEYFRAME.steam} {
+  0%   { transform: translateY(4px); opacity: 0; }
+  50%  { opacity: 0.9; }
+  100% { transform: translateY(-4px); opacity: 0; }
+}
+@keyframes ${KEYFRAME.textHighlight} {
+  0%   { background-size: 0% 45%; background-position: 0% 90%; }
+  45%  { background-size: 100% 45%; background-position: 0% 90%; }
+  55%  { background-size: 100% 45%; background-position: 100% 90%; }
+  100% { background-size: 0% 45%; background-position: 100% 90%; }
+}
+
+/* v1.2.0 — AI sparkle family */
+@keyframes ${KEYFRAME.sparkleSpin} {
+  0%   { transform: rotate(0deg) scale(0.82); }
+  50%  { transform: rotate(180deg) scale(1); }
+  100% { transform: rotate(360deg) scale(0.82); }
+}
+@keyframes ${KEYFRAME.sparklePop} {
+  0%        { transform: scale(0.2) rotate(-90deg); opacity: 0; }
+  35%       { transform: scale(1.08) rotate(0deg); opacity: 1; }
+  50%       { transform: scale(1) rotate(0deg); opacity: 1; }
+  85%, 100% { transform: scale(0.2) rotate(45deg); opacity: 0; }
+}
+@keyframes ${KEYFRAME.sparkleTwinkle} {
+  0%, 100% { transform: scale(0) rotate(0deg); opacity: 0; }
+  50%      { transform: scale(1) rotate(90deg); opacity: 1; }
+}
+@keyframes ${KEYFRAME.wandWave} {
+  0%, 100% { transform: rotate(-6deg); }
+  50%      { transform: rotate(8deg); }
 }
 `;

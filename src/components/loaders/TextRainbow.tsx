@@ -8,14 +8,14 @@ import { resolveTextSize } from '../../utils/textSize';
 import { cn } from '../../utils/cn';
 
 export const TextRainbow = forwardRef<HTMLSpanElement, BaseLoaderProps>(function TextRainbow(
-  { text = 'LOADING', size, speed = 1, glow, className, style, 'aria-label': ariaLabel },
+  { text = 'LOADING', size, inline, speed = 1, glow, className, style, 'aria-label': ariaLabel },
   ref,
 ) {
   useEffect(() => {
     injectKeyframes();
   }, []);
 
-  const fontSize = resolveTextSize(size);
+  const fontSize = inline ? 'inherit' : resolveTextSize(size);
   const duration = `${2.4 / Math.max(speed, 0.01)}s`;
   const chars = (text || '').split('');
 

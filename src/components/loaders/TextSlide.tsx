@@ -11,6 +11,7 @@ export const TextSlide = forwardRef<HTMLSpanElement, BaseLoaderProps>(function T
   {
     text = 'LOADING',
     size,
+    inline,
     color,
     speed = 1,
     glow,
@@ -24,7 +25,7 @@ export const TextSlide = forwardRef<HTMLSpanElement, BaseLoaderProps>(function T
     injectKeyframes();
   }, []);
 
-  const fontSize = resolveTextSize(size);
+  const fontSize = inline ? 'inherit' : resolveTextSize(size);
   const duration = `${1.8 / Math.max(speed, 0.01)}s`;
   const chars = (text || '').split('');
 
@@ -44,7 +45,7 @@ export const TextSlide = forwardRef<HTMLSpanElement, BaseLoaderProps>(function T
         fontSize,
         lineHeight: 1,
         overflow: 'hidden',
-        color: color ?? 'var(--rl-theme-primary, currentColor)',
+        color: color ?? (inline ? 'currentColor' : 'var(--rl-theme-primary, currentColor)'),
         textShadow: glow ? '0 0 12px currentColor' : undefined,
         ...style,
       }}

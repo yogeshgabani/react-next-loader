@@ -9,14 +9,14 @@ import { cn } from '../../utils/cn';
 
 /** Text Fill — a colour fill rises through the letters like liquid. */
 export const TextFill = forwardRef<HTMLSpanElement, BaseLoaderProps>(function TextFill(
-  { text = 'LOADING', size, color, speed = 1, glow, className, style, 'aria-label': ariaLabel },
+  { text = 'LOADING', size, inline, color, speed = 1, glow, className, style, 'aria-label': ariaLabel },
   ref,
 ) {
   useEffect(() => {
     injectKeyframes();
   }, []);
 
-  const fontSize = resolveTextSize(size);
+  const fontSize = inline ? 'inherit' : resolveTextSize(size);
   const duration = `${1.8 / Math.max(speed, 0.01)}s`;
   const c = color ?? 'var(--rl-theme-primary, currentColor)';
 

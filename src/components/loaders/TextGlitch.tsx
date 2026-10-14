@@ -8,14 +8,14 @@ import { resolveTextSize } from '../../utils/textSize';
 import { cn } from '../../utils/cn';
 
 export const TextGlitch = forwardRef<HTMLSpanElement, BaseLoaderProps>(function TextGlitch(
-  { text = 'GLITCH', size, color, speed = 1, glow, className, style, 'aria-label': ariaLabel },
+  { text = 'GLITCH', size, inline, color, speed = 1, glow, className, style, 'aria-label': ariaLabel },
   ref,
 ) {
   useEffect(() => {
     injectKeyframes();
   }, []);
 
-  const fontSize = resolveTextSize(size);
+  const fontSize = inline ? 'inherit' : resolveTextSize(size);
   const duration = `${0.8 / Math.max(speed, 0.01)}s`;
   const baseColor = color ?? 'var(--rl-theme-primary, currentColor)';
 

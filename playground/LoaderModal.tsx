@@ -60,11 +60,81 @@ const mono: CSSProperties = {
   fontFamily: 'ui-monospace, "SF Mono", Menlo, Consolas, monospace',
 };
 
-function pascalCase(type: LoaderType): string {
-  return type
-    .split('-')
-    .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
-    .join('');
+// Exports whose name isn't the plain PascalCase of their type key.
+const EXPORT_NAME_OVERRIDES: Partial<Record<LoaderType, string>> = {
+  dna: 'DNA',
+  xlvi: 'XLVI',
+  'ai-thinking': 'AIThinking',
+  'ai-sparkle': 'AISparkle',
+  'text-flip-3d': 'TextFlip3D',
+};
+
+export function pascalCase(type: LoaderType): string {
+  return (
+    EXPORT_NAME_OVERRIDES[type] ??
+    type
+      .split('-')
+      .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
+      .join('')
+  );
+}
+
+/** Image and skeleton types have no 1:1 named export — the snippet uses `<Loader type>`. */
+export function usesUnifiedLoader(type: LoaderType): boolean {
+  return type.startsWith('image-') || type.startsWith('skeleton-');
+}
+
+function Switch({ on, onToggle, isLight }: { on: boolean; onToggle: () => void; isLight: boolean }) {
+  return (
+    <button
+      onClick={onToggle}
+      style={{
+        position: 'relative',
+        width: 56,
+        height: 30,
+        borderRadius: 999,
+        // Solid borders in light mode (white card → currentColor-based
+        // borders are too faint). Translucent borders work fine on dark.
+        border: on
+          ? '1px solid transparent'
+          : isLight
+            ? '1px solid #9ca3af'
+            : '1px solid color-mix(in srgb, currentColor 45%, transparent)',
+        background: on
+          ? BRAND_GRADIENT
+          : isLight
+            ? '#e5e7eb'
+            : 'color-mix(in srgb, currentColor 28%, transparent)',
+        cursor: 'pointer',
+        padding: 0,
+        transition: 'background 160ms, border-color 160ms',
+        boxSizing: 'border-box',
+      }}
+      role="switch"
+      aria-checked={on}
+    >
+      <span
+        style={{
+          position: 'absolute',
+          top: 2,
+          left: on ? 27 : 2,
+          width: 24,
+          height: 24,
+          borderRadius: '50%',
+          background: '#fff',
+          // Solid darker border in light mode for clear visibility on
+          // the white modal card.
+          border: isLight
+            ? '1px solid #9ca3af'
+            : '1px solid color-mix(in srgb, currentColor 35%, transparent)',
+          boxShadow: isLight
+            ? '0 2px 6px rgba(0, 0, 0, 0.22), 0 0 0 1px rgba(0, 0, 0, 0.06)'
+            : '0 2px 8px rgba(0, 0, 0, 0.4)',
+          transition: 'left 200ms cubic-bezier(0.4, 0, 0.2, 1)',
+        }}
+      />
+    </button>
+  );
 }
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
@@ -148,6 +218,7 @@ export function LoaderModal({
   const [speed, setSpeed] = useState(1);
   const [thickness, setThickness] = useState<number | ''>('');
   const [glow, setGlow] = useState(false);
+  const [inline, setInline] = useState(false);
   const [ariaLabel, setAriaLabel] = useState('Loading');
   const [label, setLabel] = useState('');
   const [labelPosition, setLabelPosition] = useState<LabelPosition>('right');
@@ -187,6 +258,7 @@ export function LoaderModal({
     setSpeed(1);
     setThickness('');
     setGlow(false);
+    setInline(false);
     setAriaLabel('Loading');
     setLabel('');
     setLabelPosition('right');
@@ -199,7 +271,7 @@ export function LoaderModal({
     setGap(8);
     // Default text differs slightly across loader styles.
     if (type?.startsWith('text-')) {
-      const sentenceCase = type === 'text-dots' || type === 'text-blink';
+      const sentenceCase = type === 'text-dots' || type === 'text-blink' || type === 'text-sparkle';
       setText(sentenceCase ? 'Loading' : 'LOADING');
     } else {
       setText('');
@@ -227,8 +299,12 @@ export function LoaderModal({
   const { name, snippet } = useMemo(() => {
     if (!type) return { name: '', snippet: '' };
     const n = pascalCase(type);
+    const unified = usesUnifiedLoader(type);
     const props: string[] = [];
-    props.push(`size="${size}"`);
+    const asInline = inline && !isSkeletonLoader;
+    if (unified) props.push(`type="${type}"`);
+    // `inline` sizes the loader to the button's font, so `size` is dropped.
+    props.push(asInline ? 'inline' : `size="${size}"`);
     if (typeof customWidth === 'number') props.push(`width={${customWidth}}`);
     if (typeof customHeight === 'number') props.push(`height={${customHeight}}`);
     if (color) props.push(`color="${color}"`);
@@ -254,12 +330,20 @@ export function LoaderModal({
     if (className) props.push(`className="${className}"`);
 
     const propLines = props.length === 1 ? ` ${props[0]} ` : `\n  ${props.join('\n  ')}\n`;
+    const component = unified ? 'Loader' : n;
+    const tag = `<${component}${propLines}/>`;
+    const body = asInline
+      ? `<button disabled>\n  ${tag.replace(/\n/g, '\n  ')}${isTextLoader ? '' : '\n  Loading…'}\n</button>`
+      : tag;
     return {
       name: n,
-      snippet: `import { ${n} } from 'react-next-loader';\n\n<${n}${propLines}/>`,
+      snippet: `import { ${component} } from 'react-next-loader';\n\n${body}`,
     };
   }, [
     type,
+    inline,
+    isTextLoader,
+    isSkeletonLoader,
     size,
     color,
     speed,
@@ -616,55 +700,14 @@ export function LoaderModal({
           </Field>
 
           <Field label="Glow">
-            <button
-              onClick={() => setGlow((g) => !g)}
-              style={{
-                position: 'relative',
-                width: 56,
-                height: 30,
-                borderRadius: 999,
-                // Solid borders in light mode (white card → currentColor-based
-                // borders are too faint). Translucent borders work fine on dark.
-                border: glow
-                  ? '1px solid transparent'
-                  : isLight
-                    ? '1px solid #9ca3af'
-                    : '1px solid color-mix(in srgb, currentColor 45%, transparent)',
-                background: glow
-                  ? BRAND_GRADIENT
-                  : isLight
-                    ? '#e5e7eb'
-                    : 'color-mix(in srgb, currentColor 28%, transparent)',
-                cursor: 'pointer',
-                padding: 0,
-                transition: 'background 160ms, border-color 160ms',
-                boxSizing: 'border-box',
-              }}
-              role="switch"
-              aria-checked={glow}
-            >
-              <span
-                style={{
-                  position: 'absolute',
-                  top: 2,
-                  left: glow ? 27 : 2,
-                  width: 24,
-                  height: 24,
-                  borderRadius: '50%',
-                  background: '#fff',
-                  // Solid darker border in light mode for clear visibility on
-                  // the white modal card.
-                  border: isLight
-                    ? '1px solid #9ca3af'
-                    : '1px solid color-mix(in srgb, currentColor 35%, transparent)',
-                  boxShadow: isLight
-                    ? '0 2px 6px rgba(0, 0, 0, 0.22), 0 0 0 1px rgba(0, 0, 0, 0.06)'
-                    : '0 2px 8px rgba(0, 0, 0, 0.4)',
-                  transition: 'left 200ms cubic-bezier(0.4, 0, 0.2, 1)',
-                }}
-              />
-            </button>
+            <Switch on={glow} onToggle={() => setGlow((g) => !g)} isLight={isLight} />
           </Field>
+
+          {!isSkeletonLoader && (
+            <Field label="In a button (inline)">
+              <Switch on={inline} onToggle={() => setInline((v) => !v)} isLight={isLight} />
+            </Field>
+          )}
 
           <Field label="aria-label">
             <input
@@ -1005,6 +1048,38 @@ export function LoaderModal({
                 padding: 24,
               }}
             >
+              {inline && !isSkeletonLoader ? (
+                <button
+                  type="button"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 8,
+                    padding: '10px 18px',
+                    borderRadius: 10,
+                    border: 'none',
+                    background: BRAND_GRADIENT,
+                    color: '#fff',
+                    fontSize: 15,
+                    fontWeight: 600,
+                    cursor: 'progress',
+                    boxShadow: BRAND_SHADOW,
+                  }}
+                >
+                  <Loader
+                    type={type}
+                    inline
+                    color={color || undefined}
+                    speed={speed}
+                    thickness={typeof thickness === 'number' ? thickness : undefined}
+                    glow={glow}
+                    aria-label={ariaLabel || 'Loading'}
+                    text={text || undefined}
+                    image={image || undefined}
+                  />
+                  {!isTextLoader && 'Loading…'}
+                </button>
+              ) : (
               <Loader
                 type={type}
                 size={size}
@@ -1026,6 +1101,7 @@ export function LoaderModal({
                 skeletonAnimation={isSkeletonLoader ? skeletonAnimation : undefined}
                 className={className || undefined}
               />
+              )}
             </div>
             <div
               style={{

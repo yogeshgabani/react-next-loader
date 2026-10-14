@@ -8,14 +8,14 @@ import { resolveTextSize } from '../../utils/textSize';
 import { cn } from '../../utils/cn';
 
 export const TextFlip3D = forwardRef<HTMLSpanElement, BaseLoaderProps>(function TextFlip3D(
-  { text = 'LOADING', size, color, speed = 1, glow, className, style, 'aria-label': ariaLabel },
+  { text = 'LOADING', size, inline, color, speed = 1, glow, className, style, 'aria-label': ariaLabel },
   ref,
 ) {
   useEffect(() => {
     injectKeyframes();
   }, []);
 
-  const fontSize = resolveTextSize(size);
+  const fontSize = inline ? 'inherit' : resolveTextSize(size);
   const duration = `${1.6 / Math.max(speed, 0.01)}s`;
   const chars = (text || '').split('');
 
@@ -34,7 +34,7 @@ export const TextFlip3D = forwardRef<HTMLSpanElement, BaseLoaderProps>(function 
         fontWeight: 800,
         fontSize,
         lineHeight: 1.4,
-        color: color ?? 'var(--rl-theme-primary, currentColor)',
+        color: color ?? (inline ? 'currentColor' : 'var(--rl-theme-primary, currentColor)'),
         textShadow: glow ? '0 0 12px currentColor' : undefined,
         perspective: '300px',
         ...style,
